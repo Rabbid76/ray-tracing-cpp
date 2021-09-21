@@ -5,7 +5,7 @@
 
 namespace core
 {
-	extern void add_core_unit_tests(cute::suite &s);
+	extern void add_core_unit_tests(cute::suite &suite);
 }
 
 #endif

@@ -3,7 +3,7 @@
 
 #include <math/types.h>
 
-namespace ray_traycing_core
+namespace ray_tracing_core
 {
 	namespace material
 	{
@@ -24,7 +24,7 @@ namespace ray_traycing_core
 			const material::Material *material;
 			const ScatterRecord *scatter_record;
 
-			static HitRecord empty(void);
+			static inline HitRecord empty(void);
 		};
 
 		HitRecord HitRecord::empty(void)

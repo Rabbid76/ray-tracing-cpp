@@ -3,8 +3,8 @@
 
 namespace core
 {
-	void add_core_unit_tests(cute::suite &s)
+	void add_core_unit_tests(cute::suite &suite)
 	{
-		s.push_back(CUTE(hit_record_empty_test));
+		suite.push_back(CUTE(hit_record_empty_test));
 	}
 }

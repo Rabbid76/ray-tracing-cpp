@@ -10,13 +10,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-namespace ray_traycing_core
+namespace ray_tracing_core
 {
 	namespace math
 	{
 		using Distance = double;
 		using Point3D = glm::dvec3;
 		using Vector3D = glm::dvec3;
+		using Time = double;
 	}
 }
 
