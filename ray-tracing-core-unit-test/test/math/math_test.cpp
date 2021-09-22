@@ -5,6 +5,6 @@ namespace math
 {
 	void add_math_unit_test(cute::suite &suite)
 	{
-		suite.push_back(CUTE(math::ray_new_ray_test));
+		suite.push_back(CUTE(math::ray_point_at_test));
 	}
 }

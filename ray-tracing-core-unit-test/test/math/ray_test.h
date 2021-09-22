@@ -3,7 +3,7 @@
 
 namespace math
 {
-	extern void ray_new_ray_test(void);
+	extern void ray_point_at_test(void);
 }
 
 #endif

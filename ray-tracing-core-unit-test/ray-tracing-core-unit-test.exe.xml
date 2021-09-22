@@ -1,10 +1,6 @@
 <testsuites>
 	<testsuite name="ray_tracing_unit_test" tests="2">
 		<testcase classname="ray_tracing_unit_test" name="hit_record_empty_test"/>
-		<testcase classname="ray_tracing_unit_test" name="math::ray_new_ray_test">
-			<failure message="../test/math/ray_test.cpp:14 ray_new_ray_test: 3.1 == ray.origin.z expected:	3.1	but was:	3	">
-ray_new_ray_test: 3.1 == ray.origin.z expected:	3.1	but was:	3	
-			</failure>
-		</testcase>
+		<testcase classname="ray_tracing_unit_test" name="math::ray_point_at_test"/>
 	</testsuite>
 </testsuites>

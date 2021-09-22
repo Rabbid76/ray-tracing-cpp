@@ -17,6 +17,8 @@ namespace ray_tracing_core
 			Time time;
 
 			static inline Ray new_ray(const Point3D &ray_origin, const Vector3D &ray_direction);
+
+			inline Point3D point_at(Distance distance) const;
 		};
 
 		Ray Ray::new_ray(const Point3D &ray_origin, const Vector3D &ray_direction)
@@ -27,6 +29,11 @@ namespace ray_tracing_core
 				direction : ray_direction,
 				time : 0,
 			};
+		}
+
+		Point3D Ray::point_at(Distance distance) const
+		{
+			return origin + direction * distance;
 		}
 	}
 }
