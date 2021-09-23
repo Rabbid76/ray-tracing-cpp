@@ -7,6 +7,7 @@
 
 // GLM [https://glm.g-truc.net/0.9.9/api/index.html]
 #include <glm/glm.hpp>
+#include <glm/common.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -18,6 +19,18 @@ namespace ray_tracing_core
 		using Point3D = glm::dvec3;
 		using Vector3D = glm::dvec3;
 		using Time = double;
+
+		template<typename T>
+		T minimum(T first_term, T second_term)
+		{
+			return glm::min(first_term, second_term);
+		}
+
+		template<typename T>
+		T maximum(T first_term, T second_term)
+		{
+			return glm::max(first_term, second_term);
+		}
 	}
 }
 

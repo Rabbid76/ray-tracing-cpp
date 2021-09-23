@@ -1,6 +1,7 @@
 <testsuites>
-	<testsuite name="ray_tracing_unit_test" tests="2">
+	<testsuite name="ray_tracing_unit_test" tests="3">
 		<testcase classname="ray_tracing_unit_test" name="hit_record_empty_test"/>
 		<testcase classname="ray_tracing_unit_test" name="math::ray_point_at_test"/>
+		<testcase classname="ray_tracing_unit_test" name="math::aabb_new_box_test"/>
 	</testsuite>
 </testsuites>
