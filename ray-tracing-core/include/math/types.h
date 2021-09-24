@@ -1,9 +1,11 @@
 #ifndef __RTC__MATH__TYPES_H__
 #define __RTC__MATH__TYPES_H__
 
+#include <tuple>
+
 #define VECTOR_AND_MATRIX_LIBRARY GLM
 
-#if VECTOR_AND_MATRIX_LIBRARY == GLM
+#if VECTOR_AND_MATRIX_LIBRARY == GLMS
 
 // GLM [https://glm.g-truc.net/0.9.9/api/index.html]
 #include <glm/glm.hpp>
@@ -16,6 +18,7 @@ namespace ray_tracing_core
 	namespace math
 	{
 		using Distance = double;
+		using DistanceRange = std::tuple<Distance, Distance>;
 		using Point3D = glm::dvec3;
 		using Vector3D = glm::dvec3;
 		using Time = double;

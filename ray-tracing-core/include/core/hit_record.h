@@ -34,7 +34,7 @@ namespace ray_tracing_core
 				distance : 0,
 				position : math::Point3D(0),
 				normal : math::Vector3D(0),
-				material : nullptr,           // TODO: NoMaterial
+				material : nullptr,           // TODO: static NoMaterial
 				scatter_record : nullptr
 			};
 		}

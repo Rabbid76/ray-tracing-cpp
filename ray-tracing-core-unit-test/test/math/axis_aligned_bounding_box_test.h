@@ -4,6 +4,7 @@
 namespace math
 {
 	extern void aabb_new_box_test(void);
+	extern void aabb_hit_test(void);
 }
 
 #endif

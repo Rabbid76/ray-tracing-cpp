@@ -2,6 +2,8 @@
 #define __RTC__MATH__AXID_ALIGNED_BOUNDIG_BOX_H__
 
 #include "types.h"
+#include "ray.h"
+#include <utility>
 
 namespace ray_tracing_core
 {
@@ -18,6 +20,8 @@ namespace ray_tracing_core
 			Point3D maximum_point;
 
 			static inline AxisAlignedBoundingBox new_box(const Point3D &pt1, const Point3D &pt2);
+
+			inline bool hit(const Ray &ray, const DistanceRange &range);
 		};
 
 		AxisAlignedBoundingBox AxisAlignedBoundingBox::new_box(const Point3D &pt1, const Point3D &pt2)
@@ -27,6 +31,21 @@ namespace ray_tracing_core
 				minimum_point : minimum(pt1, pt2),
 				maximum_point : maximum(pt1, pt2)
 			};
+		}
+
+		bool AxisAlignedBoundingBox::hit(const Ray &ray, const DistanceRange &range)
+		{
+			for (int axis = 0; axis < 3; axis ++)
+			{
+				const auto inv_d = 1.0 / ray.direction[axis];
+				auto t0 = (minimum_point[axis] - ray.origin[axis]) * inv_d;
+				auto t1 = (maximum_point[axis] - ray.origin[axis]) * inv_d;
+				if (inv_d < 0.0)
+					std::swap(t0, t1);
+				if (std::max(t0, std::get<0>(range)) >= std::min(t1, std::get<1>(range)))
+					return false;
+			}
+			return true;
 		}
 	}
 }
