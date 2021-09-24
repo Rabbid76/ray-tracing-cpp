@@ -22,6 +22,7 @@ namespace ray_tracing_core
 			static inline AxisAlignedBoundingBox new_box(const Point3D &pt1, const Point3D &pt2);
 
 			inline bool hit(const Ray &ray, const DistanceRange &range);
+			inline AxisAlignedBoundingBox& operator |= (const Point3D &point);
 		};
 
 		AxisAlignedBoundingBox AxisAlignedBoundingBox::new_box(const Point3D &pt1, const Point3D &pt2)
@@ -46,6 +47,13 @@ namespace ray_tracing_core
 					return false;
 			}
 			return true;
+		}
+
+		AxisAlignedBoundingBox & AxisAlignedBoundingBox::operator |= (const Vector3D &point)
+		{
+			minimum_point = minimum(minimum_point, point);
+			maximum_point = maximum(maximum_point, point);
+			return *this;
 		}
 	}
 }

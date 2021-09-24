@@ -9,5 +9,6 @@ namespace math
 		suite.push_back(CUTE(math::ray_point_at_test));
 		suite.push_back(CUTE(math::aabb_new_box_test));
 		suite.push_back(CUTE(math::aabb_hit_test));
+		suite.push_back(CUTE(math::aabb_or_point_test));
 	}
 }
