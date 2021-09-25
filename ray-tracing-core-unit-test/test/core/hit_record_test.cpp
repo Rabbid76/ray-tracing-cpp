@@ -4,9 +4,11 @@
 
 namespace core
 {
+	using namespace ray_tracing_core::core;
+
 	void hit_record_empty_test(void)
 	{
-		auto hit_record = ray_tracing_core::core::HitRecord::empty();
+		auto hit_record = HitRecord::empty();
 		ASSERT_EQUAL(0, hit_record.distance);
 		ASSERT_EQUAL(0, hit_record.position.x);
 		ASSERT_EQUAL(0, hit_record.position.y);

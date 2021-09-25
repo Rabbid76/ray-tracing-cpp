@@ -4,10 +4,10 @@
 #include <tuple>
 #include <vector>
 
-using namespace ray_tracing_core::math;
-
 namespace math
 {
+	using namespace ray_tracing_core::math;
+
 	void ray_point_at_test(void)
 	{
 		std::vector<std::tuple<Point3D, Point3D, Vector3D, Distance>> test_data =
