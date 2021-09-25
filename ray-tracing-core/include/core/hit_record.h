@@ -2,6 +2,7 @@
 #define __RTC__CORE__HIT_RECORD_H__
 
 #include <math/types.h>
+#include <math/hit_point.h>
 
 namespace ray_tracing_core
 {
@@ -18,9 +19,7 @@ namespace ray_tracing_core
 		{
 		public:
 
-			math::Distance distance;
-			math::Point3D position;
-			math::Vector3D normal;
+			math::HitPoint hit_point;
 			const material::Material *material;
 			const ScatterRecord *scatter_record;
 
@@ -31,10 +30,8 @@ namespace ray_tracing_core
 		{
 			return HitRecord
 			{
-				distance : 0,
-				position : math::Point3D(0),
-				normal : math::Vector3D(0),
-				material : nullptr,           // TODO: static NoMaterial
+				hit_point : math::HitPoint::new_hit(0, math::Point3D(0), math::Vector3D(0)),
+				material : nullptr,
 				scatter_record : nullptr
 			};
 		}

@@ -3,7 +3,7 @@
 
 namespace geometry
 {
-	extern void sphere_bounding_box_test(void);
+
 }
 
 #endif

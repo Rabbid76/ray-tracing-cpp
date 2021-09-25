@@ -3,6 +3,7 @@
 
 #include "geometry.h"
 #include <math/types.h>
+#include <math/Sphere.h>
 
 namespace ray_tracing_core
 {
@@ -13,13 +14,14 @@ namespace ray_tracing_core
 		{
 		private:
 
-			math::Point3D center;
-			math::Distance radius;
+			math::Sphere sphere_geometry;
 
 		public:
 
 			Sphere(const math::Point3D &center_point, math::Distance sphere_radius);
+			virtual ~Sphere() = default;
 			virtual math::AxisAlignedBoundingBox bounding_box(void) const override;
+			virtual bool hit(const math::Ray &ray, const math::DistanceRange &range) const override;
 		};
 	}
 }

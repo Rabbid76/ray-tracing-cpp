@@ -1,5 +1,5 @@
 #ifndef __RTC__MATH__AXIS_ALIGNED_BOUNDIG_BOX_H__
-#define __RTC__MATH__AXID_ALIGNED_BOUNDIG_BOX_H__
+#define __RTC__MATH__AXIS_ALIGNED_BOUNDIG_BOX_H__
 
 #include "types.h"
 #include "ray.h"
