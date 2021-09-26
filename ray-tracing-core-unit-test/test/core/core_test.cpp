@@ -1,5 +1,6 @@
 #include "core_test.h"
 #include "hit_record_test.h"
+#include "cute.h"
 
 namespace core
 {

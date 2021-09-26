@@ -2,6 +2,7 @@
 #define __RTC_UT__TEST_ASSERT_HELPER_H__
 
 #include <math/types.h>
+#include <core/color.h>
 #include <cute.h>
 
 inline void assert_equal_point(
@@ -22,6 +23,16 @@ inline void assert_equal_vector(
 	ASSERT_EQUAL_DELTA(expected_vector.x, actual_vector.x, delta);
 	ASSERT_EQUAL_DELTA(expected_vector.y, actual_vector.y, delta);
 	ASSERT_EQUAL_DELTA(expected_vector.z, actual_vector.z, delta);
+}
+
+inline void assert_equal_color(
+		const ray_tracing_core::core::Color &expected_color,
+		const ray_tracing_core::core::Color &actual_color,
+		float delta)
+{
+	ASSERT_EQUAL_DELTA(expected_color.r, actual_color.r, delta);
+	ASSERT_EQUAL_DELTA(expected_color.g, actual_color.g, delta);
+	ASSERT_EQUAL_DELTA(expected_color.b, actual_color.b, delta);
 }
 
 #endif

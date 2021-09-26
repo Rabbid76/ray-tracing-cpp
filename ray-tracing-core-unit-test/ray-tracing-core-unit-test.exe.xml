@@ -1,5 +1,5 @@
 <testsuites>
-	<testsuite name="ray_tracing_unit_test" tests="8">
+	<testsuite name="ray_tracing_unit_test" tests="9">
 		<testcase classname="ray_tracing_unit_test" name="hit_record_empty_test"/>
 		<testcase classname="ray_tracing_unit_test" name="math::ray_point_at_test"/>
 		<testcase classname="ray_tracing_unit_test" name="math::hit_point_new_hit_test"/>
@@ -8,5 +8,6 @@
 		<testcase classname="ray_tracing_unit_test" name="math::aabb_or_point_test"/>
 		<testcase classname="ray_tracing_unit_test" name="math::sphere_bounding_box_test"/>
 		<testcase classname="ray_tracing_unit_test" name="math::sphere_hit_test"/>
+		<testcase classname="ray_tracing_unit_test" name="no_material_new_material"/>
 	</testsuite>
 </testsuites>
