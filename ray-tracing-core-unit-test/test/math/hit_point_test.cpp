@@ -1,6 +1,7 @@
 #include "hit_point_test.h"
-#include <cute.h>
 #include <math/hit_point.h>
+#include <cute.h>
+#include "test_assert_helper.h"
 
 namespace math
 {
@@ -10,11 +11,7 @@ namespace math
 	{
 		auto hit_point = HitPoint::new_hit(1, Point3D(2, 3, 4), Vector3D(5, 6, 7));
 		ASSERT_EQUAL(1, hit_point.distance);
-		ASSERT_EQUAL(2, hit_point.position.x);
-		ASSERT_EQUAL(3, hit_point.position.y);
-		ASSERT_EQUAL(4, hit_point.position.z);
-		ASSERT_EQUAL(5, hit_point.normal.x);
-		ASSERT_EQUAL(6, hit_point.normal.y);
-		ASSERT_EQUAL(7, hit_point.normal.z);
+		assert_equal_point(Point3D(2, 3, 4), hit_point.position, 0);
+		assert_equal_vector(Vector3D(5, 6, 7), hit_point.normal, 0);
 	}
 }

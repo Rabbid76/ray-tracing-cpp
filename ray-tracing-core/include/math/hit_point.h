@@ -15,8 +15,14 @@ namespace ray_tracing_core
 			Point3D position;
 			Vector3D normal;
 
+			static inline HitPoint zero(void);
 			static inline HitPoint new_hit(Distance distance, const Point3D &hit_point, const Vector3D &normal_vector);
 		};
+
+		HitPoint HitPoint::zero(void)
+		{
+			return HitPoint{ 0, Point3D(0), Vector3D(0)};
+		}
 
 		HitPoint HitPoint::new_hit(Distance distance, const Point3D &hit_point, const Vector3D &normal_vector)
 		{

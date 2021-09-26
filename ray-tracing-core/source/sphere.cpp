@@ -13,7 +13,7 @@ namespace ray_tracing_core
 			return sphere_geometry.bounding_box();
 		}
 
-		bool Sphere::hit(const math::Ray &ray, const math::DistanceRange &range) const
+		bool Sphere::hit(const math::Ray &ray, const math::DistanceRange &distance_range, core::HitRecord &hit_record) const
 		{
 			return false;
 		}

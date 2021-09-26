@@ -34,6 +34,12 @@ namespace ray_tracing_core
 		{
 			return glm::max(first_term, second_term);
 		}
+
+		template<typename T>
+		inline Distance dot(T first_vector, T second_vector)
+		{
+			return glm::dot(first_vector, second_vector);
+		}
 	}
 }
 

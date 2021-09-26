@@ -1,5 +1,6 @@
 #include "ray_test.h"
 #include <math/ray.h>
+#include "test_assert_helper.h"
 #include <cute.h>
 #include <tuple>
 #include <vector>
@@ -22,10 +23,9 @@ namespace math
 
 		for (auto [expected_point, origin, direction, distance] : test_data)
 		{
-			auto actual_point = Ray::new_ray(origin, direction).point_at(distance);
-			ASSERT_EQUAL_DELTA(expected_point.x, actual_point.x, 0.001);
-			ASSERT_EQUAL_DELTA(expected_point.y, actual_point.y, 0.001);
-			ASSERT_EQUAL_DELTA(expected_point.z, actual_point.z, 0.001);
+			auto actual_point = Ray::new_ray(origin, direction)
+				.point_at(distance);
+			assert_equal_point(expected_point, actual_point, 0.001);
 		}
 	}
 }
