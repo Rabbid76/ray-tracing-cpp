@@ -14,6 +14,7 @@ namespace core
 		ASSERT_EQUAL(0, hit_record.hit_point.distance);
 		assert_equal_point(math::Point3D(0), hit_record.hit_point.position, 0);
 		assert_equal_vector(math::Vector3D(0), hit_record.hit_point.normal, 0);
+		assert_equal_texture_coordinate(TextureCoordinate{0 ,0}, hit_record.texture_coordinate, 0);
 		ASSERT_EQUAL(nullptr, hit_record.material);
 		ASSERT_EQUAL(nullptr, hit_record.scatter_record);
 	}

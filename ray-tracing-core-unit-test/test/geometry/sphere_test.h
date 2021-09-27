@@ -3,7 +3,7 @@
 
 namespace geometry
 {
-
+	extern void sphere_hit_texture_coordinate_test(void);
 }
 
 #endif

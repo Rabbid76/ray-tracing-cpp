@@ -21,7 +21,8 @@ namespace ray_tracing_core
 			Sphere(const math::Point3D &center_point, math::Distance sphere_radius);
 			virtual ~Sphere() = default;
 			virtual math::AxisAlignedBoundingBox bounding_box(void) const override;
-			virtual bool hit(const math::Ray &ray, const math::DistanceRange &distance_range, core::HitRecord &hit_record) const override;
+			virtual bool hit(const math::Ray &ray, const math::DistanceRange &distance_range, bool set_texture_coordinatne,
+				core::HitRecord &hit_record) const override;
 		};
 	}
 }

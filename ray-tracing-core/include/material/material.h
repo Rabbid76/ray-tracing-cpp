@@ -18,6 +18,7 @@ namespace ray_tracing_core
 			virtual bool scatter(const math::Ray &ray, core::HitRecord &hit_record, core::ScatterRecord &scatter_record) const = 0;
 			virtual math::Distance scattering_pdf(const math::Ray &ray_in, const core::HitRecord &hit_recocrd, const math::Ray &scattered) const = 0;
 			virtual core::Color emitt(const math::Ray &ray_in, const core::HitRecord &hit_record) const = 0;
+			virtual bool has_texture(void) const = 0;
 			virtual bool has_alpha(void) const = 0;
 		};
 	}

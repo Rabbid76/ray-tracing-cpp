@@ -20,8 +20,8 @@ namespace ray_tracing_core
 
 			static inline Sphere new_sphere(const Point3D &sphere_cente, const Distance &radius);
 			inline AxisAlignedBoundingBox bounding_box(void) const;
-			inline bool hit(const Ray &ray, const DistanceRange &distance_range, HitPoint &hit_point);
-			inline Vector3D normal_vector(const Point3D &point_on_sphere);
+			inline bool hit(const Ray &ray, const DistanceRange &distance_range, HitPoint &hit_point) const;
+			inline Vector3D normal_vector(const Point3D &point_on_sphere) const;
 		};
 
 		Sphere Sphere::new_sphere(const Point3D &sphere_center, const Distance &sphere_radius)
@@ -41,7 +41,11 @@ namespace ray_tracing_core
 			);
 		}
 
-		bool Sphere::hit(const Ray &ray, const DistanceRange &distance_range, HitPoint &hit_point)
+		/// Sphere:         dot(p-C, p-C) = R*R            `C`: center, `p`: point on the sphere, `R`, radius
+		/// Ray:            p(t) = A + B * t               `A`: origin, `B`: direction
+		/// Intersection:   dot(A +B*t-C, A+B*t-C) = R*R
+		/// t*t*dot(B,B) + 2*t*dot(B,A-C) + dot(A-C,A-C) - R*R = 0
+		bool Sphere::hit(const Ray &ray, const DistanceRange &distance_range, HitPoint &hit_point) const
 		{
 			const auto oc = ray.origin - center;
 			const auto a = dot(ray.direction, ray.direction);
@@ -74,7 +78,7 @@ namespace ray_tracing_core
 			return false;
 		}
 
-		Vector3D Sphere::normal_vector(const Point3D &point_on_sphere)
+		Vector3D Sphere::normal_vector(const Point3D &point_on_sphere) const
 		{
 			return (point_on_sphere - center) / radius;
 		}

@@ -20,6 +20,7 @@ namespace material
 		ASSERT_EQUAL(false, no_material.scatter(ray, hit_record, scatter_record));
 		ASSERT_EQUAL(1, no_material.scattering_pdf(ray, hit_record, ray));
 		assert_equal_color(core::Color(0), no_material.emitt(ray, hit_record), 0.001f);
+		ASSERT_EQUAL(false, no_material.has_texture());
 		ASSERT_EQUAL(true, no_material.has_alpha());
 	}
 }

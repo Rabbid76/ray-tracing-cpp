@@ -16,8 +16,14 @@ namespace ray_tracing_core
 			math::TextureDistance u;
 			math::TextureDistance v;
 
+			inline static TextureCoordinate null(void);
 			inline static TextureCoordinate from_sphere(const math::Vector3D &vector_form_center);
 		};
+
+		TextureCoordinate TextureCoordinate::null(void)
+		{
+			return TextureCoordinate{ 0, 0 };
+		}
 
 		TextureCoordinate TextureCoordinate::from_sphere(const math::Vector3D &vector_form_center)
 		{
