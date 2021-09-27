@@ -23,6 +23,7 @@ namespace ray_tracing_core
 		using Vector3D = glm::dvec3;
 		using ColorRGB = glm::vec3;
 		using Time = double;
+		using TextureDistance = float;
 
 		template<typename T>
 		T minimum(T first_term, T second_term)
