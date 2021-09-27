@@ -27,4 +27,19 @@ namespace geometry
 			assert_equal_texture_coordinate(expected_coordinates, hit_record.texture_coordinate, set_texture_coordinate ? 0.001 : 0);
 		}
 	}
+
+	void sphere_probability_density_function_value_test()
+	{
+		std::vector<std::tuple<math::Distance, Sphere, math::Point3D, math::Vector3D>> test_data
+		{
+			{0, Sphere(math::Point3D(0), 1), math::Point3D(-2, 0, 0), math::Vector3D(-1, 0, 0)},
+			{1.18795, Sphere(math::Point3D(0), 1), math::Point3D(-2, 0, 0), math::Vector3D(1, 0, 0)}
+		};
+
+		for (auto [expected_pdf_value, sphere, origin, direction] : test_data)
+		{
+			auto actual_pdf_value = sphere.probability_density_function_value(origin, direction);
+			ASSERT_EQUAL_DELTA(expected_pdf_value, actual_pdf_value, 0.001);
+		}
+	}
 }

@@ -1,4 +1,6 @@
 #include <geometry/sphere.h>
+#include <limits>
+#include <cmath>
 
 namespace ray_tracing_core
 {
@@ -22,6 +24,19 @@ namespace ray_tracing_core
 					? core::TextureCoordinate::from_sphere(hit_record.hit_point.normal)
 					: core::TextureCoordinate::null();
 			return true;
+		}
+
+		math::Distance Sphere::probability_density_function_value(const math::Point3D &origin, const math::Vector3D &direction) const
+		{
+			math::HitPoint hit_point;
+			const math::DistanceRange distance_range(0.001, std::numeric_limits<math::Distance>::max());
+			if (!sphere_geometry.hit(math::Ray::new_ray(origin, direction), distance_range, hit_point))
+				return 0;
+
+			const auto cos_theta_max = std::sqrt(1 - sphere_geometry.radius * sphere_geometry.radius /
+				dot(sphere_geometry.center - origin, sphere_geometry.center - origin));
+			const auto solid_angle = 2 * math::pi<math::Distance> * (1 - cos_theta_max);
+			return 1 / solid_angle;
 		}
 	}
 }

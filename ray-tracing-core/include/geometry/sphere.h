@@ -23,6 +23,8 @@ namespace ray_tracing_core
 			virtual math::AxisAlignedBoundingBox bounding_box(void) const override;
 			virtual bool hit(const math::Ray &ray, const math::DistanceRange &distance_range, bool set_texture_coordinatne,
 				core::HitRecord &hit_record) const override;
+			virtual math::Distance probability_density_function_value(
+				const math::Point3D &origin, const math::Vector3D &direction) const override;
 		};
 	}
 }
