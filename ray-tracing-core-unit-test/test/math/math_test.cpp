@@ -4,6 +4,7 @@
 #include "axis_aligned_bounding_box_test.h"
 #include "sphere_test.h"
 #include "ortho_normal_base_test.h"
+#include "random_test.h"
 
 namespace math
 {
@@ -17,5 +18,7 @@ namespace math
 		suite.push_back(CUTE(sphere_bounding_box_test));
 		suite.push_back(CUTE(sphere_hit_test));
 		suite.push_back(CUTE(orhto_normal_base_form_normal_test));
+		suite.push_back(CUTE(random_size_test));
+		suite.push_back(CUTE(random_vector_to_sphere));
 	}
 }
