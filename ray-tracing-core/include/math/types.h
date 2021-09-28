@@ -24,23 +24,31 @@ namespace ray_tracing_core
 		using ColorRGB = glm::vec3;
 		using Time = double;
 		using TextureDistance = float;
+		using NormalMatrix = glm::dmat3;
 
-		template<typename T>
-		T minimum(T first_term, T second_term)
+		template<typename T> T minimum(T first_term, T second_term)
 		{
 			return glm::min(first_term, second_term);
 		}
 
-		template<typename T>
-		T maximum(T first_term, T second_term)
+		template<typename T> T maximum(T first_term, T second_term)
 		{
 			return glm::max(first_term, second_term);
 		}
 
-		template<typename T>
-		inline Distance dot(T first_vector, T second_vector)
+		template<typename T> T normalize(const T &vector)
+		{
+			return glm::normalize(vector);
+		}
+
+		template<typename T> Distance dot(const T &first_vector, const T &second_vector)
 		{
 			return glm::dot(first_vector, second_vector);
+		}
+
+		template<typename T> T cross(const T &first_vector, const T &second_vector)
+		{
+			return glm::cross(first_vector, second_vector);
 		}
 	}
 }
