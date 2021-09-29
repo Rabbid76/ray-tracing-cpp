@@ -1,4 +1,6 @@
 #include <geometry/sphere.h>
+#include <math/ortho_normal_base.h>
+#include <math/random.h>
 #include <limits>
 #include <cmath>
 
@@ -37,6 +39,15 @@ namespace ray_tracing_core
 				dot(sphere_geometry.center - origin, sphere_geometry.center - origin));
 			const auto solid_angle = 2 * math::pi<math::Distance> * (1 - cos_theta_max);
 			return 1 / solid_angle;
+		}
+
+		math::Vector3D Sphere::random(const math::Point3D &origin) const
+		{
+			auto direction = sphere_geometry.center - origin;
+			auto distance_squared = math::dot(direction, direction);
+			auto ortho_normal_base = math::OrthoNormalBase::from_normal(direction);
+			auto random_vector = math::RandomGenerator().random_vector_to_sphere(sphere_geometry.radius, distance_squared);
+			return ortho_normal_base.transform(random_vector);
 		}
 	}
 }

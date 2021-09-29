@@ -4,7 +4,7 @@
 namespace math
 {
 	extern void ortho_normal_base_form_normal_test(void);
-	extern void ortho_normal_base_taransform(void);
+	extern void ortho_normal_base_taransform_test(void);
 }
 
 #endif

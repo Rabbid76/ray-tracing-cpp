@@ -38,8 +38,7 @@ namespace ray_tracing_core
 
 		Vector3D OrthoNormalBase::transform(const Vector3D &vector) const
 		{
-			return axis[0] * vector + axis[1] * vector + axis[2] * vector;
-			//return vector * axis;
+			return axis * vector;
 		}
 	}
 }

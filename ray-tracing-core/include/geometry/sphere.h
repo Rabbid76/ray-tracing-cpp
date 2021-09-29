@@ -25,6 +25,7 @@ namespace ray_tracing_core
 				core::HitRecord &hit_record) const override;
 			virtual math::Distance probability_density_function_value(
 				const math::Point3D &origin, const math::Vector3D &direction) const override;
+			virtual math::Vector3D random(const math::Point3D &origin) const override;
 		};
 	}
 }

@@ -27,7 +27,7 @@ namespace math
 		}
 	}
 
-	void ortho_normal_base_taransform(void)
+	void ortho_normal_base_taransform_test(void)
 	{
 		std::vector<std::tuple<Vector3D, Vector3D, Vector3D>> test_data
 		{
@@ -35,8 +35,8 @@ namespace math
 			{Vector3D(0, 1, 0), Vector3D(0, 0, 1), Vector3D(0, 1, 0)},
 			{Vector3D(-1, 0, 0), Vector3D(0, 0, 1), Vector3D(1, 0, 0)},
 			{Vector3D(-1, 2, 3), Vector3D(0, 0, 1), Vector3D(1, 2, 3)},
-			{Vector3D(-1, 2, -3), Vector3D(0, 1, 0), Vector3D(1, 2, 3)},
-			{Vector3D(1, -2, 3), Vector3D(1, 0, 0), Vector3D(1, 2, 3)},
+			{Vector3D(-1, 3, -2), Vector3D(0, 1, 0), Vector3D(1, 2, 3)},
+			{Vector3D(3, -1, 2), Vector3D(1, 0, 0), Vector3D(1, 2, 3)},
 		};
 
 		for (auto [expected_vector, normal_vector, source_vector] : test_data)

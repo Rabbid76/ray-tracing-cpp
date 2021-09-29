@@ -5,6 +5,7 @@ namespace geometry
 {
 	extern void sphere_hit_texture_coordinate_test(void);
 	extern void sphere_probability_density_function_value_test(void);
+	extern void sphere_random_test(void);
 }
 
 #endif

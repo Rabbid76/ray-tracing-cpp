@@ -18,7 +18,7 @@ namespace math
 		suite.push_back(CUTE(sphere_bounding_box_test));
 		suite.push_back(CUTE(sphere_hit_test));
 		suite.push_back(CUTE(ortho_normal_base_form_normal_test));
-		suite.push_back(CUTE(ortho_normal_base_taransform));
+		suite.push_back(CUTE(ortho_normal_base_taransform_test));
 		suite.push_back(CUTE(random_size_test));
 		suite.push_back(CUTE(random_vector_to_sphere));
 	}

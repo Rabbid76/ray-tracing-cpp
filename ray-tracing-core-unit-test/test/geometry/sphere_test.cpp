@@ -4,6 +4,7 @@
 #include "cute.h"
 #include <tuple>
 #include <vector>
+#include <cmath>
 
 namespace geometry
 {
@@ -40,6 +41,27 @@ namespace geometry
 		{
 			auto actual_pdf_value = sphere.probability_density_function_value(origin, direction);
 			ASSERT_EQUAL_DELTA(expected_pdf_value, actual_pdf_value, 0.001);
+		}
+	}
+
+	void sphere_random_test(void)
+	{
+		const int test_iterations = 10;
+
+		std::vector<std::tuple<math::Vector3D, math::Distance, Sphere, math::Point3D>> test_data
+		{
+			{ math::Vector3D(1, 0, 0), 0.5, Sphere(math::Point3D(0), 1), math::Vector3D(-2, 0, 0) }
+		};
+
+		for (auto [expected_vector, expected_delta, sphere, origin] : test_data)
+		{
+			for (int iteration = 0; iteration < test_iterations; ++iteration)
+			{
+				auto actual_vector = sphere.random(origin);
+				assert_equal_vector(expected_vector, actual_vector, expected_delta);
+				auto actual_length = std::sqrt(math::dot(actual_vector, actual_vector));
+				ASSERT_EQUAL_DELTA(1, actual_length, 0.001);
+			}
 		}
 	}
 }
