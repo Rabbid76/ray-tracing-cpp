@@ -21,6 +21,7 @@ namespace ray_tracing_core
 			Vector3D &u(void) { return axis[0]; }
 			Vector3D &v(void) { return axis[1]; }
 			Vector3D &w(void) { return axis[2]; }
+			inline Vector3D transform(const Vector3D &vecotr) const;
 		};
 
 		OrthoNormalBase OrthoNormalBase::from_normal(const Vector3D &normal)
@@ -33,6 +34,12 @@ namespace ray_tracing_core
 			{
 				axis : NormalMatrix(axis_x, axis_y, axis_z)
 			};
+		}
+
+		Vector3D OrthoNormalBase::transform(const Vector3D &vector) const
+		{
+			return axis[0] * vector + axis[1] * vector + axis[2] * vector;
+			//return vector * axis;
 		}
 	}
 }
