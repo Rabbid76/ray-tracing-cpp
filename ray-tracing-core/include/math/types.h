@@ -22,6 +22,7 @@ namespace ray_tracing_core
 		using Point3D = glm::dvec3;
 		using Vector3D = glm::dvec3;
 		using ColorRGB = glm::vec3;
+		using AlphaValue = float;
 		using Time = double;
 		using TextureDistance = float;
 		using NormalMatrix = glm::dmat3;

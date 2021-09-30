@@ -13,12 +13,18 @@ namespace ray_tracing_core
 		public:
 
 			virtual ~NoMaterial() = default;
+			virtual bool hit(core::HitRecord &hit_record) const override;
 			virtual bool scatter(const math::Ray &ray, core::HitRecord &hit_record, core::ScatterRecord &scatter_record) const override;
 			virtual math::Distance scattering_pdf(const math::Ray &ray_in, const core::HitRecord &hit_recocrd, const math::Ray &scattered) const override;
 			virtual core::Color emitt(const math::Ray &ray_in, const core::HitRecord &hit_record) const override;
 			virtual bool has_texture(void) const override;
-			virtual bool has_alpha(void) const override;
+			virtual bool has_mask(void) const override;
 		};
+
+		bool NoMaterial::hit(core::HitRecord &hit_record) const
+		{
+			return true;
+		}
 
 		bool NoMaterial::scatter(const math::Ray &ray, core::HitRecord &hit_record, core::ScatterRecord &scatter_record) const
 		{
@@ -40,9 +46,9 @@ namespace ray_tracing_core
 			return false;
 		}
 
-		bool NoMaterial::has_alpha(void) const
+		bool NoMaterial::has_mask(void) const
 		{
-			return true;
+			return false;
 		}
 	}
 }

@@ -14,8 +14,6 @@ namespace ray_tracing_core
 
 	namespace core
 	{
-		class ScatterRecord;
-
 		class HitRecord
 		{
 		public:
@@ -23,7 +21,7 @@ namespace ray_tracing_core
 			math::HitPoint hit_point;
 			core::TextureCoordinate texture_coordinate;
 			const material::Material *material;
-			const ScatterRecord *scatter_record;
+			bool scatter_record_is_set;
 
 			static inline HitRecord empty(void);
 		};
@@ -35,7 +33,7 @@ namespace ray_tracing_core
 				hit_point : math::HitPoint::new_hit(0, math::Point3D(0), math::Vector3D(0)),
 				texture_coordinate : core::TextureCoordinate::null(),
 				material : nullptr,
-				scatter_record : nullptr
+				scatter_record_is_set : false,
 			};
 		}
 	}
