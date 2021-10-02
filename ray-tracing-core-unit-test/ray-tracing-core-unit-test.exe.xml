@@ -1,5 +1,5 @@
 <testsuites>
-	<testsuite name="ray_tracing_unit_test" tests="18">
+	<testsuite name="ray_tracing_unit_test" tests="19">
 		<testcase classname="ray_tracing_unit_test" name="hit_record_empty_test"/>
 		<testcase classname="ray_tracing_unit_test" name="texture_coordinate_form_sphere_unit_test"/>
 		<testcase classname="ray_tracing_unit_test" name="shape_hit_test"/>
@@ -18,5 +18,6 @@
 		<testcase classname="ray_tracing_unit_test" name="sphere_probability_density_function_value_test"/>
 		<testcase classname="ray_tracing_unit_test" name="sphere_random_test"/>
 		<testcase classname="ray_tracing_unit_test" name="no_material_new_material"/>
+		<testcase classname="ray_tracing_unit_test" name="constant_texture_channels_test"/>
 	</testsuite>
 </testsuites>

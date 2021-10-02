@@ -18,8 +18,8 @@ namespace core
 		{
 			{ true, TextureCoordinate::null(), false, false, false},
 			{ true, TextureCoordinate::constant(0, 0.5), false, true, false},
-			{ false, TextureCoordinate::constant(0, 0.5), false, false, true},
-			{ true, TextureCoordinate::constant(0, 0.5), true, false, true},
+			{ false, TextureCoordinate::null(), false, false, true},
+			{ true, TextureCoordinate::null(), true, false, true},
 			{ true, TextureCoordinate::constant(0, 0.5), true, true, true},
 		};
 

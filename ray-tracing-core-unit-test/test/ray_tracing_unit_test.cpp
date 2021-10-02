@@ -5,6 +5,7 @@
 #include "math/math_test.h"
 #include "geometry/geometry_test.h"
 #include "material/material_test.h"
+#include "texture/texture_test.h"
 
 cute::suite make_suite_ray_tracing_unit_test() {
 	cute::suite suite { };
@@ -12,5 +13,6 @@ cute::suite make_suite_ray_tracing_unit_test() {
 	math::add_math_unit_test(suite);
 	geometry::add_geometry_unit_test(suite);
 	material::add_material_unit_test(suite);
+	texture::add_texture_unit_test(suite);
 	return suite;
 }
