@@ -1,5 +1,5 @@
 #ifndef __RTC__TEXTURE__TEXTURE_TEST_H__
-#define __RTC__TEXTURE__TExTURE_TEST_H__
+#define __RTC__TEXTURE__TEXTURE_TEST_H__
 
 #include <math/types.h>
 #include <core/color.h>

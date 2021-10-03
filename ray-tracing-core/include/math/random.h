@@ -18,6 +18,7 @@ namespace ray_tracing_core
 		public:
 
 	  	    Distance random_size(void) const;
+	  	    Vector3D generate_cosine_direction(void);
 	  	    Vector3D random_vector_to_sphere(Distance radius, Distance distance_squared) const;
 		};
 	}
