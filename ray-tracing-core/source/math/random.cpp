@@ -9,10 +9,17 @@ namespace ray_tracing_core
 		std::default_random_engine RandomGenerator::generator;
 		std::uniform_real_distribution<Distance> RandomGenerator::distribution_size =
 			std::uniform_real_distribution<Distance>(0.0, 1.0);
+		std::uniform_real_distribution<Distance> RandomGenerator::distribution_unit =
+			std::uniform_real_distribution<Distance>(-1.0, 1.0);
 
 		Distance RandomGenerator::random_size(void) const
 		{
 			return distribution_size(generator);
+		}
+
+		Distance RandomGenerator::random_unit(void) const
+		{
+			return distribution_unit(generator);
 		}
 
 		Vector3D RandomGenerator::random_vector_to_sphere(Distance radius, Distance distance_squared) const

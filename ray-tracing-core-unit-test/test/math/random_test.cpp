@@ -18,7 +18,16 @@ namespace math
 		}
 	}
 
-	void extern random_vector_to_sphere(void)
+	void random_unit_test(void)
+	{
+		for (int iteration = 0; iteration < test_iterations; ++iteration)
+		{
+			auto actual_random_value = RandomGenerator().random_unit();
+			ASSERT_EQUAL_DELTA(0.0, actual_random_value, 1.0);
+		}
+	}
+
+	void random_vector_to_sphere(void)
 	{
 		for (int iteration = 0; iteration < test_iterations; ++iteration)
 		{
