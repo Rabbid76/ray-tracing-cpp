@@ -20,7 +20,7 @@ namespace ray_tracing_core
 
 	  	    Distance random_size(void) const;
 	  	    Distance random_unit(void) const;
-	  	    Vector3D generate_cosine_direction(void);
+	  	    Vector3D random_cosine_direction(void) const;
 	  	    Vector3D random_vector_to_sphere(Distance radius, Distance distance_squared) const;
 		};
 	}

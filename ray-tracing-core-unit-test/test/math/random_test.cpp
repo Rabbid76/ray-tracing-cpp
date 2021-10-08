@@ -27,7 +27,17 @@ namespace math
 		}
 	}
 
-	void random_vector_to_sphere(void)
+	void random_cosine_direction_test(void)
+	{
+		for (int iteration = 0; iteration < test_iterations; ++iteration)
+		{
+			auto actual_random_vector = RandomGenerator().random_cosine_direction();
+			auto actual_length = std::sqrt(dot(actual_random_vector, actual_random_vector));
+			ASSERT_EQUAL_DELTA(1.5, actual_length, 0.5);
+		}
+	}
+
+	void random_vector_to_sphere_test(void)
 	{
 		for (int iteration = 0; iteration < test_iterations; ++iteration)
 		{

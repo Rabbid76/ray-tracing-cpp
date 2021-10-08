@@ -45,8 +45,8 @@ namespace ray_tracing_core
 		bool LambertianMaterial::scatter(const math::Ray &ray, core::HitRecord &hit_record, core::ScatterRecord &scatter_record) const
 		{
 			auto uvw = math::OrthoNormalBase::from_normal(hit_record.hit_point.normal);
-			//auto direction = math::normalize(uvw.transform(math::RandomGenerator().generate_cosine_direction()));
-			//LambertianMaterialauto albedo = albedo_texture->channels(hit_record.texture_coordinate, hit_record.hit_point.position);
+			auto direction = math::normalize(uvw.transform(math::RandomGenerator().random_cosine_direction()));
+			auto albedo = albedo_texture->channels(hit_record.texture_coordinate, hit_record.hit_point.position);
 			/*
 			 Some(ScatterRecord::new(
 				Ray::new_ray_with_attributes(hit_record.position, direction, ray_in),

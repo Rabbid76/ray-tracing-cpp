@@ -5,7 +5,8 @@ namespace math
 {
 	extern void random_size_test(void);
 	extern void random_unit_test(void);
-	extern void random_vector_to_sphere(void);
+	extern void random_cosine_direction_test(void);
+	extern void random_vector_to_sphere_test(void);
 }
 
 #endif
