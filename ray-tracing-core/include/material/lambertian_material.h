@@ -2,6 +2,7 @@
 #define __RTC__MATERIAL__LAMBERTIAN_MATERIAL_H__
 
 #include "material.h"
+#include "core/scatter_record.h"
 #include <texture/texture.h>
 #include <math/random.h>
 #include <math/constants.h>
@@ -46,17 +47,12 @@ namespace ray_tracing_core
 		{
 			auto uvw = math::OrthoNormalBase::from_normal(hit_record.hit_point.normal);
 			auto direction = math::normalize(uvw.transform(math::RandomGenerator().random_cosine_direction()));
-			auto albedo = albedo_texture->channels(hit_record.texture_coordinate, hit_record.hit_point.position);
-			/*
-			 Some(ScatterRecord::new(
-				Ray::new_ray_with_attributes(hit_record.position, direction, ray_in),
-				false,
-				albedo.truncate(3),
-				albedo.w,
-				Some(Arc::new(CosinePdf::from_w(&hit_record.normal))),
-				self_material,
-        ))
-			 */
+			auto [albedo_color, alpha_value] = albedo_texture->channels(hit_record.texture_coordinate, hit_record.hit_point.position);
+			scatter_record.ray = math::Ray::new_ray(hit_record.hit_point.position, direction); // new_ray_with_attributes
+			scatter_record.attenuation = albedo_color; // albedo.truncate(3)
+			scatter_record.alpha = alpha_value;
+			// scatter_record.probability_density_function : CosinePdf::from_w(&hit_record.normal)
+			scatter_record.material = this;
 			return true;
 		}
 

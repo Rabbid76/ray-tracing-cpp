@@ -2,8 +2,10 @@
 #define __RTC__CORE__SCATTER_RECORD_H__
 
 #include "color.h"
+#include <pdf/probability_density_function.h>
 #include <math/ray.h>
 #include <math/types.h>
+#include <memory>
 
 namespace ray_tracing_core
 {
@@ -22,7 +24,7 @@ namespace ray_tracing_core
 			bool is_specular;
 			Color attenuation;
 			math::AlphaValue alpha;
-			// ProbabilityDensityFunction
+			std::unique_ptr<pdf::ProbabilityDensityFunction> probability_density_function;
 			const material::Material *material;
 
 			static inline ScatterRecord empty(void);
@@ -35,6 +37,7 @@ namespace ray_tracing_core
 				ray : math::Ray::new_ray(math::Point3D(0), math::Vector3D(0)),
 				is_specular : false,
 				alpha : 0,
+				probability_density_function: nullptr,
 				material : nullptr
 			};
 		}

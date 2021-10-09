@@ -1,5 +1,5 @@
 <testsuites>
-	<testsuite name="ray_tracing_unit_test" tests="27">
+	<testsuite name="ray_tracing_unit_test" tests="28">
 		<testcase classname="ray_tracing_unit_test" name="hit_record_empty_test"/>
 		<testcase classname="ray_tracing_unit_test" name="texture_coordinate_form_sphere_unit_test"/>
 		<testcase classname="ray_tracing_unit_test" name="shape_hit_test"/>
@@ -27,5 +27,6 @@
 		<testcase classname="ray_tracing_unit_test" name="lambertian_material_has_texture_test"/>
 		<testcase classname="ray_tracing_unit_test" name="lambertian_material_has_mask_test"/>
 		<testcase classname="ray_tracing_unit_test" name="constant_texture_channels_test"/>
+		<testcase classname="ray_tracing_unit_test" name="cosine_pdf_test"/>
 	</testsuite>
 </testsuites>
