@@ -25,9 +25,9 @@ namespace ray_tracing_core
 		{
 			return Ray
 			{
-				origin : ray_origin,
-				direction : ray_direction,
-				time : 0,
+				.origin = ray_origin,
+				.direction = ray_direction,
+				.time = 0,
 			};
 		}
 

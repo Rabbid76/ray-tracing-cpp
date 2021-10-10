@@ -34,11 +34,11 @@ namespace ray_tracing_core
 		{
 			return ScatterRecord
 			{
-				ray : math::Ray::new_ray(math::Point3D(0), math::Vector3D(0)),
-				is_specular : false,
-				alpha : 0,
-				probability_density_function: nullptr,
-				material : nullptr
+				.ray = math::Ray::new_ray(math::Point3D(0), math::Vector3D(0)),
+				.is_specular = false,
+				.alpha = 0,
+				.probability_density_function = nullptr,
+				.material = nullptr
 			};
 		}
 	}

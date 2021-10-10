@@ -28,8 +28,8 @@ namespace ray_tracing_core
 		{
 			return Sphere
 			{
-				center : sphere_center,
-			    radius : sphere_radius,
+				.center = sphere_center,
+			    .radius = sphere_radius,
 			};
 		}
 

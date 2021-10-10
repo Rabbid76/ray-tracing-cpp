@@ -30,10 +30,10 @@ namespace ray_tracing_core
 		{
 			return HitRecord
 			{
-				hit_point : math::HitPoint::new_hit(0, math::Point3D(0), math::Vector3D(0)),
-				texture_coordinate : core::TextureCoordinate::null(),
-				material : nullptr,
-				scatter_record_is_set : false,
+				.hit_point = math::HitPoint::new_hit(0, math::Point3D(0), math::Vector3D(0)),
+				.texture_coordinate = core::TextureCoordinate::null(),
+				.material = nullptr,
+				.scatter_record_is_set = false,
 			};
 		}
 	}

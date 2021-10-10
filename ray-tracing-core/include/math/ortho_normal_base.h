@@ -32,7 +32,7 @@ namespace ray_tracing_core
 			auto axis_x = cross(axis_z, axis_y);
 			return OrthoNormalBase
 			{
-				axis : NormalMatrix(axis_x, axis_y, axis_z)
+				.axis = NormalMatrix(axis_x, axis_y, axis_z)
 			};
 		}
 

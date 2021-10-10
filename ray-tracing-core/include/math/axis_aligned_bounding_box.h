@@ -29,8 +29,8 @@ namespace ray_tracing_core
 		{
 			return AxisAlignedBoundingBox
 			{
-				minimum_point : minimum(pt1, pt2),
-				maximum_point : maximum(pt1, pt2)
+				.minimum_point = minimum(pt1, pt2),
+				.maximum_point = maximum(pt1, pt2)
 			};
 		}
 

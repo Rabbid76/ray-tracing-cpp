@@ -28,9 +28,9 @@ namespace ray_tracing_core
 		{
 			return HitPoint
 			{
-				distance : distance,
-				position : hit_point,
-				normal : normal_vector
+				.distance = distance,
+				.position = hit_point,
+				.normal = normal_vector
 			};
 		}
 	}

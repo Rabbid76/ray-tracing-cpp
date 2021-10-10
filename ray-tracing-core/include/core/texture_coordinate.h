@@ -38,8 +38,8 @@ namespace ray_tracing_core
 			const float pi = math::pi<math::TextureDistance>;
 			return TextureCoordinate
 			{
-				u : static_cast<math::TextureDistance>(1.0 - (phi + pi) / (2.0 * pi)),
-				v : static_cast<math::TextureDistance>((theta + pi / 2.0) / pi)
+				.u = static_cast<math::TextureDistance>(1.0 - (phi + pi) / (2.0 * pi)),
+				.v = static_cast<math::TextureDistance>((theta + pi / 2.0) / pi)
 			};
 		}
 	}
