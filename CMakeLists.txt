@@ -8,6 +8,12 @@ set (CMAKE_CXX_STANDARD 20)
 
 project ("ray-tracing-cpp")
 
+include_directories (
+    "test-suite"
+    "C:/source/_cpp_extern/glm-0.9.9.3/glm")
+
+ENABLE_TESTING()
+
 # Include sub-projects.
 add_subdirectory ("ray-tracing-core")
 add_subdirectory ("ray-tracing-core-playground")

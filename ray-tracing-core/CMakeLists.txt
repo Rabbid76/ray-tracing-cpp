@@ -6,7 +6,6 @@ set (CMAKE_CXX_STANDARD 20)
 
 # Add include directories
 include_directories (
-    "C:/source/_cpp_extern/glm-0.9.9.3/glm"
     "./include")
 
 # Add source to this project's executable.
@@ -17,4 +16,12 @@ file(GLOB rtc_core_math_source
 add_library (ray-tracing-core STATIC 
     ${rtc_core_math_source})
 
+add_subdirectory (test)
+
+# Add catch2 test https://github.com/catchorg/Catch2
+
+#add_executable(ray-tracing-core-tests test/test.cpp)
+#target_link_libraries(ray-tracing-core-tests PRIVATE Catch2::Catch2WithMain)
+
 # TODO: Add tests and install targets if needed.
+
