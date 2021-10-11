@@ -15,19 +15,19 @@ namespace ray_tracing_core_unit_test
         {
             std::vector<std::tuple<math::TextureDistance, math::TextureDistance, math::Vector3D>> test_data
             {
-                { 0, 0.5, math::Vector3D(-1, 0, 0) },
-                { 0.5, 0.5, math::Vector3D(1, 0, 0) },
-                { 0.5, 0, math::Vector3D(0, -1, 0) },
-                { 0.5, 1, math::Vector3D(0, 1, 0) },
-                { 0.75, 0.5, math::Vector3D(0, 0, -1) },
-                { 0.25, 0.5, math::Vector3D(0, 0, 1) },
+                { 0.0f, 0.5f, math::Vector3D(-1, 0, 0) },
+                { 0.5f, 0.5f, math::Vector3D(1, 0, 0) },
+                { 0.5f, 0.0f, math::Vector3D(0, -1, 0) },
+                { 0.5f, 1.0f, math::Vector3D(0, 1, 0) },
+                { 0.75f, 0.5f, math::Vector3D(0, 0, -1) },
+                { 0.25f, 0.5f, math::Vector3D(0, 0, 1) },
             };
 
             for (auto [expected_u, expected_v, point_on_sphere] : test_data)
             {
                 auto actual_texture_coordiante = TextureCoordinate::from_sphere(point_on_sphere);
-                TEST_ASSERT_EQUAL_DELTA(expected_u, actual_texture_coordiante.u, 0.001);
-                TEST_ASSERT_EQUAL_DELTA(expected_v, actual_texture_coordiante.v, 0.001);
+                assert_equal_texture_coordinate(
+                    TextureCoordinate::constant(expected_u, expected_v), actual_texture_coordiante, 0.001f);
             }
         }
     }
