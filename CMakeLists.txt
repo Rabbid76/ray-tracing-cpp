@@ -10,7 +10,8 @@ project ("ray-tracing-cpp")
 
 include_directories (
     "test-suite"
-    "C:/source/_cpp_extern/glm-0.9.9.3/glm")
+    #"C:/source/_cpp_extern/glm-0.9.9.8/glm"
+    "lib/glm-0.9.9.8/glm")
 
 ENABLE_TESTING()
 
