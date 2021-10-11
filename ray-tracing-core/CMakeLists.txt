@@ -18,8 +18,6 @@ add_library (ray-tracing-core STATIC
 
 add_subdirectory (test)
 
-# Add catch2 test https://github.com/catchorg/Catch2
-
 #add_executable(ray-tracing-core-tests test/test.cpp)
 #target_link_libraries(ray-tracing-core-tests PRIVATE Catch2::Catch2WithMain)
 

@@ -14,4 +14,5 @@ add_executable (ray-tracing-core-test
     "rtc_core_test_assert.h")
 target_link_libraries(ray-tracing-core-test ray-tracing-core)
 
-ADD_TEST (ray-tracing-core-unit-test ray-tracing-core-test)
+add_test (NAME ray-tracing-core-unit-test COMMAND ray-tracing-core-test)
+

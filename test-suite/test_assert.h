@@ -1,9 +1,6 @@
 #ifndef __TEST_ASSERT_H__
 #define __TEST_ASSERT_H__
 
-// https://gitlab.kitware.com/cmake/community/-/wikis/doc/ctest/Testing-With-CTest
-// https://cmake.org/cmake/help/latest/command/add_test.html
-
 #include <assert.h>
 
 #define TEST_ASSERT(condition) assert( condition )
