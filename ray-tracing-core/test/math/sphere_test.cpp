@@ -19,7 +19,7 @@ namespace ray_tracing_core_unit_test
 
             for (auto [expected_minimum, expected_maximum, center, radius] : test_data)
             {
-                auto actual_box = Sphere(center, radius)
+                auto actual_box = Sphere::new_sphere(center, radius)
                     .bounding_box();
                 assert_equal_point(expected_minimum, actual_box.minimum_point, 0.001);
                 assert_equal_point(expected_maximum, actual_box.maximum_point, 0.001);

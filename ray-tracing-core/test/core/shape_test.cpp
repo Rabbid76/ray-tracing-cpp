@@ -34,7 +34,7 @@ namespace ray_tracing_core_unit_test
                 Shape shape(&sphere, &material);
                 auto hit_record = HitRecord::empty();
                 bool hit = shape.hit(
-                    ray_tracing_core::math::Ray(
+                    ray_tracing_core::math::Ray::new_ray(
                         ray_tracing_core::math::Point3D(-2, 0, 0),
                         ray_tracing_core::math::Vector3D(1, 0, 0)),
                     { 0, 5 },

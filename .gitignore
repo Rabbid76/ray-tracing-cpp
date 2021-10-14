@@ -33,3 +33,5 @@
 /.metadata/
 /out
 /.vs
+/.idea
+/cmake-build-*

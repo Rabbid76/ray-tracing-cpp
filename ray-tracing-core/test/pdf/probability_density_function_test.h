@@ -1,4 +1,4 @@
-#ifndef __RTC_UT__PDF__PROBABILITY_DENISTY_FUNCITON_TEST_H__
+#ifndef __RTC_UT__PDF__PROBABILITY_DENSITY_FUNCTION_TEST_H__
 #define __RTC_UT__PDF__PROBABILITY_DENSITY_FUNCTION_TEST_H__
 
 namespace ray_tracing_core_unit_test
