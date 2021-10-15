@@ -34,16 +34,25 @@ namespace ray_tracing_core_unit_test
 
         void lambertian_material_has_texture_test(void)
         {
+            std::vector<std::tuple<bool, std::shared_ptr<texture::Texture>>> test_data
+            {
+                { false, std::make_shared<texture::ConstantTexture>(core::Color(0), 0.0f) },
+            };
 
+            for (auto [expected_has_texture, albedo] : test_data)
+            {
+                auto actual_has_texture = LambertianMaterial(albedo.get()).has_texture();
+                TEST_ASSERT_EQUAL(expected_has_texture, actual_has_texture);
+            }
         }
 
         void lambertian_material_has_mask_test(void)
         {
             std::vector<std::tuple<bool, texture::ConstantTexture>> test_data
             {
-                { false, texture::ConstantTexture(core::Color(0), 1.0) },
-                { true, texture::ConstantTexture(core::Color(0), 0.5) },
-                { true, texture::ConstantTexture(core::Color(0), 0.0) },
+                { false, texture::ConstantTexture(core::Color(0), 1.0f) },
+                { true, texture::ConstantTexture(core::Color(0), 0.5f) },
+                { true, texture::ConstantTexture(core::Color(0), 0.0f) },
             };
 
             for (auto [expected_has_mask, albedo] : test_data)
