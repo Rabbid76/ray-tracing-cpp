@@ -29,7 +29,11 @@ namespace ray_tracing_core_unit_test
 
         void lambertian_material_emitt_test(void)
         {
-
+            auto texture = texture::ConstantTexture(core::Color(0), 0.0f);
+            auto actual_emitt = LambertianMaterial(&texture).emitt(
+                math::Ray::new_ray(math::Point3D(0), math::Vector3D(0)),
+                core::HitRecord::empty());
+            assert_equal_color(core::Color(0), actual_emitt, false);
         }
 
         void lambertian_material_has_texture_test(void)
