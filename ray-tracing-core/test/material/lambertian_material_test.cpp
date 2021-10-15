@@ -22,7 +22,8 @@ namespace ray_tracing_core_unit_test
 
             for (auto [expected_hit, albedo] : test_data)
             {
-                auto actual_hit = LambertianMaterial(&albedo).hit(core::HitRecord::empty());
+                auto actual_hit = LambertianMaterial(&albedo)
+                    .hit(core::HitRecord::empty());
                 TEST_ASSERT_EQUAL(expected_hit, actual_hit);
             }
         }
@@ -34,15 +35,34 @@ namespace ray_tracing_core_unit_test
 
         void lambertian_material_scattering_pfd_test(void)
         {
+            std::vector<std::tuple<math::Distance, math::Vector3D, math::Vector3D>> test_data
+            {
+                { 0, math::Vector3D(-1, 0, 0), math::Vector3D(1, 0, 0) },
+                { 0, math::Vector3D(0, 1, 0), math::Vector3D(1, 0, 0) },
+                { 1 / math::pi<math::Distance>, math::Vector3D(1, 0, 0), math::Vector3D(1, 0, 0) },
+            };
 
+            for (auto [expected_distance, normal, direction] : test_data)
+            {
+                auto hit_record = core::HitRecord::empty();
+                hit_record.hit_point.normal = normal;
+                texture::ConstantTexture albedo(core::Color(0), 1.0f);
+                auto actual_distance = LambertianMaterial(&albedo)
+                    .scattering_pdf(
+                        math::Ray::new_ray(math::Point3D(0), math::Vector3D(0)),
+                        hit_record,
+                        math::Ray::new_ray(math::Point3D(0), direction));
+                TEST_ASSERT_EQUAL_DELTA(expected_distance, actual_distance, 0.001);
+            }
         }
 
         void lambertian_material_emitt_test(void)
         {
             auto albedo = texture::ConstantTexture(core::Color(0), 0.0f);
-            auto actual_emitt = LambertianMaterial(&albedo).emitt(
-                math::Ray::new_ray(math::Point3D(0), math::Vector3D(0)),
-                core::HitRecord::empty());
+            auto actual_emitt = LambertianMaterial(&albedo)
+                .emitt(
+                    math::Ray::new_ray(math::Point3D(0), math::Vector3D(0)),
+                    core::HitRecord::empty());
             assert_equal_color(core::Color(0), actual_emitt, false);
         }
 
@@ -55,7 +75,8 @@ namespace ray_tracing_core_unit_test
 
             for (auto [expected_has_texture, albedo] : test_data)
             {
-                auto actual_has_texture = LambertianMaterial(albedo.get()).has_texture();
+                auto actual_has_texture = LambertianMaterial(albedo.get())
+                    .has_texture();
                 TEST_ASSERT_EQUAL(expected_has_texture, actual_has_texture);
             }
         }
@@ -71,7 +92,8 @@ namespace ray_tracing_core_unit_test
 
             for (auto [expected_has_mask, albedo] : test_data)
             {
-                auto actual_has_mask = LambertianMaterial(&albedo).has_mask();
+                auto actual_has_mask = LambertianMaterial(&albedo)
+                    .has_mask();
                 TEST_ASSERT_EQUAL(expected_has_mask, actual_has_mask);
             }
         }
