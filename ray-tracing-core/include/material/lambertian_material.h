@@ -23,7 +23,7 @@ namespace ray_tracing_core
 
 			inline LambertianMaterial(const texture::Texture* albedo);
 			virtual ~LambertianMaterial() = default;
-			inline virtual bool hit(core::HitRecord &hit_record) const override;
+			inline virtual bool hit(const core::HitRecord &hit_record) const override;
 			inline virtual bool scatter(const math::Ray &ray, core::HitRecord &hit_record, core::ScatterRecord &scatter_record) const override;
 			inline virtual math::Distance scattering_pdf(const math::Ray &ray_in, const core::HitRecord &hit_recocrd, const math::Ray &scattered) const override;
 			inline virtual core::Color emitt(const math::Ray &ray_in, const core::HitRecord &hit_record) const override;
@@ -35,7 +35,7 @@ namespace ray_tracing_core
 			: albedo_texture(albedo)
 		{}
 
-		bool LambertianMaterial::hit(core::HitRecord &hit_record) const
+		bool LambertianMaterial::hit(const core::HitRecord &hit_record) const
 		{
 			if (!has_mask())
 				return true;

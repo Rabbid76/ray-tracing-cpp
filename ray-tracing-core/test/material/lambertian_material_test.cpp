@@ -14,7 +14,17 @@ namespace ray_tracing_core_unit_test
 
         void lambertain_material_hit_test(void)
         {
+            std::vector<std::tuple<bool, texture::ConstantTexture>> test_data
+            {
+                { true, texture::ConstantTexture(core::Color(0), 1.0f) },
+                { false, texture::ConstantTexture(core::Color(0), 0.0f) }
+            };
 
+            for (auto [expected_hit, albedo] : test_data)
+            {
+                auto actual_hit = LambertianMaterial(&albedo).hit(core::HitRecord::empty());
+                TEST_ASSERT_EQUAL(expected_hit, actual_hit);
+            }
         }
 
         void lambertian_material_scatter_test(void)
@@ -29,8 +39,8 @@ namespace ray_tracing_core_unit_test
 
         void lambertian_material_emitt_test(void)
         {
-            auto texture = texture::ConstantTexture(core::Color(0), 0.0f);
-            auto actual_emitt = LambertianMaterial(&texture).emitt(
+            auto albedo = texture::ConstantTexture(core::Color(0), 0.0f);
+            auto actual_emitt = LambertianMaterial(&albedo).emitt(
                 math::Ray::new_ray(math::Point3D(0), math::Vector3D(0)),
                 core::HitRecord::empty());
             assert_equal_color(core::Color(0), actual_emitt, false);

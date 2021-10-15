@@ -24,7 +24,7 @@ namespace ray_tracing_core_unit_test
 
             virtual ~MockupMaterial() = default;
 
-            virtual bool hit(ray_tracing_core::core::HitRecord& hit_record) const override
+            virtual bool hit(const ray_tracing_core::core::HitRecord& hit_record) const override
             {
                 return hit_result;
             }
