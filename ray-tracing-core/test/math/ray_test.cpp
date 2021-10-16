@@ -29,5 +29,22 @@ namespace ray_tracing_core_unit_test
                 assert_equal_point(expected_point, actual_point, 0.001);
             }
         }
+
+        void ray_with_attributes_test(void)
+        {
+            std::vector<std::tuple<Point3D, Vector3D, Time>> test_data
+            {
+                { Point3D(1, 2, 3), Vector3D(4, 5, 6), 7 },
+            };
+
+            for (auto [origin, direction, time] : test_data)
+            {
+                Ray attributes{ .time = time };
+                auto actual_ray = Ray::new_ray_with_attributes(origin, direction, attributes);
+                assert_equal_point(origin, actual_ray.origin, 0);
+                assert_equal_vector(direction, actual_ray.direction, 0);
+                TEST_ASSERT_EQUAL(time, actual_ray.time);
+            }
+        }
     }
 }

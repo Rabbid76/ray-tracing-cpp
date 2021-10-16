@@ -27,7 +27,7 @@ namespace ray_tracing_core
 		OrthoNormalBase OrthoNormalBase::from_normal(const Vector3D &normal)
 		{
 			auto axis_z = normalize(normal);
-			auto normal_to_y = axis_z.x > 0.9 ? Vector3D(0, 1, 0) : Vector3D(1, 0, 0);
+			auto normal_to_y = std::fabs(axis_z.x) > 0.9 ? Vector3D(0, 1, 0) : Vector3D(1, 0, 0);
 			auto axis_y = normalize(cross(axis_z, normal_to_y));
 			auto axis_x = cross(axis_z, axis_y);
 			return OrthoNormalBase

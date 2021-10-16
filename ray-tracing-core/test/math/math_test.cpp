@@ -13,6 +13,7 @@ namespace ray_tracing_core_unit_test
         void math_unit_test(void)
         {
             ray_point_at_test();
+            ray_with_attributes_test();
             hit_point_new_hit_test();
             aabb_new_box_test();
             aabb_hit_test();

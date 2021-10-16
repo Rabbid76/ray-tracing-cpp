@@ -30,7 +30,33 @@ namespace ray_tracing_core_unit_test
 
         void lambertian_material_scatter_test(void)
         {
+            std::vector<std::tuple<core::Color, math::AlphaValue, math::Ray, math::HitPoint>> test_data
+            {
+                { core::Color(0.1f, 0.2f, 0.3f), 1.0f, 
+                  math::Ray{ math::Point3D(0), math::Vector3D(1, 0, 0), 1 },
+                  math::HitPoint::new_hit(0, math::Point3D(0), math::Vector3D(-1, 0, 0)) },
+            };
 
+            for (auto [color, alpha_value, ray_in, hit_point] : test_data)
+            {
+                auto hit_record = core::HitRecord::empty();
+                hit_record.hit_point = hit_point;
+                core::ScatterRecord scatter_record;
+                texture::ConstantTexture albedo(color, alpha_value);
+                LambertianMaterial material(&albedo);
+                auto actual_scatter = material
+                    .scatter(ray_in, hit_record, scatter_record);
+
+                TEST_ASSERT_EQUAL(true, actual_scatter);
+                assert_equal_point(hit_point.position, scatter_record.ray.origin, 0);
+                assert_equal_point(hit_point.normal, scatter_record.ray.direction, 1.0f);
+                TEST_ASSERT_EQUAL(ray_in.time, scatter_record.ray.time);
+                assert_equal_color(color, scatter_record.attenuation, 0);
+                TEST_ASSERT_EQUAL(alpha_value, scatter_record.alpha);
+                TEST_ASSERT_NOT_EQUAL(nullptr, scatter_record.probability_density_function.get());
+                std::make_unique<pdf::CosinePDF>(pdf::CosinePDF::from_normal(hit_record.hit_point.normal));
+                TEST_ASSERT_EQUAL(&material, scatter_record.material);
+            }
         }
 
         void lambertian_material_scattering_pfd_test(void)

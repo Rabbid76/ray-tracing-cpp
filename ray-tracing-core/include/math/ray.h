@@ -17,6 +17,7 @@ namespace ray_tracing_core
 			Time time;
 
 			static inline Ray new_ray(const Point3D &ray_origin, const Vector3D &ray_direction);
+			static inline Ray new_ray_with_attributes(const Point3D& ray_origin, const Vector3D& ray_direction, const Ray &attributes);
 
 			inline Point3D point_at(Distance distance) const;
 		};
@@ -27,7 +28,17 @@ namespace ray_tracing_core
 			{
 				.origin = ray_origin,
 				.direction = ray_direction,
-				.time = 0,
+				.time = 0
+			};
+		}
+
+		Ray Ray::new_ray_with_attributes(const Point3D& ray_origin, const Vector3D& ray_direction, const Ray& attributes)
+		{
+			return Ray
+			{
+				.origin = ray_origin,
+				.direction = ray_direction,
+				.time = attributes.time
 			};
 		}
 
