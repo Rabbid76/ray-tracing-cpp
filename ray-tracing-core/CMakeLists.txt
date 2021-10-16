@@ -11,7 +11,8 @@ include_directories (
 
 # Add source to this project's executable.
 
-file(GLOB rtc_core_source 
+file(GLOB rtc_core_source
+    "include/*/*.h"
     "source/*/*.cpp")
 
 add_library (ray-tracing-core STATIC 

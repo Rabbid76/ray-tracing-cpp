@@ -11,7 +11,7 @@ namespace ray_tracing_core_unit_test
         using namespace ray_tracing_core::core;
         using namespace ray_tracing_core;
 
-        void texture_coordinate_form_sphere_unit_test(void)
+        void texture_coordinate_form_sphere_unit_test()
         {
             std::vector<std::tuple<math::TextureDistance, math::TextureDistance, math::Vector3D>> test_data
             {

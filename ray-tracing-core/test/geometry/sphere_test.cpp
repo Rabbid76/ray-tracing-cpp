@@ -26,7 +26,7 @@ namespace ray_tracing_core_unit_test
             {
                 core::HitRecord hit_record;
                 sphere.hit(in_ray, distance_range, set_texture_coordinate, hit_record);
-                assert_equal_texture_coordinate(expected_coordinates, hit_record.texture_coordinate, set_texture_coordinate ? 0.001 : 0);
+                assert_equal_texture_coordinate(expected_coordinates, hit_record.texture_coordinate, set_texture_coordinate ? 0.001f : 0);
             }
         }
 

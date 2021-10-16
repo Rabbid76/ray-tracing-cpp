@@ -5,7 +5,7 @@ namespace ray_tracing_core_unit_test
 {
     namespace core
     {
-        void hit_record_empty_test(void);
+        void hit_record_empty_test();
     }
 }
 

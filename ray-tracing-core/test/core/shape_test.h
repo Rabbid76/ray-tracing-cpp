@@ -5,7 +5,7 @@ namespace ray_tracing_core_unit_test
 {
     namespace core
     {
-        extern void shape_hit_test(void);
+        extern void shape_hit_test();
     }
 }
 

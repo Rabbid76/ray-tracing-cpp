@@ -25,7 +25,7 @@ namespace ray_tracing_core_unit_test
                 auto [actual_color, actual_alpha] = texture.channels(core::TextureCoordinate::null(), math::Point3D(0));
                 auto actual_depends_on_texture = texture.depends_on_texture_coordinates();
                 auto actual_has_alpha = texture.has_alpha_channel();
-                assert_equal_color(expected_color, actual_color, 0.001);
+                assert_equal_color(expected_color, actual_color, 0.001f);
                 TEST_ASSERT_EQUAL_DELTA(ecpected_alpha_value, actual_alpha, 0.001);
                 TEST_ASSERT_EQUAL(expected_depends_on_texture, actual_depends_on_texture);
                 TEST_ASSERT_EQUAL(expected_has_alpha, actual_has_alpha);

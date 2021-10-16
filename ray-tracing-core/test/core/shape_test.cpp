@@ -13,7 +13,7 @@ namespace ray_tracing_core_unit_test
     {
         using namespace ray_tracing_core::core;
 
-        void shape_hit_test(void)
+        void shape_hit_test()
         {
             std::vector<std::tuple<bool, TextureCoordinate, bool, bool, bool>> test_data
             {
@@ -40,7 +40,7 @@ namespace ray_tracing_core_unit_test
                     { 0, 5 },
                     hit_record);
                 TEST_ASSERT_EQUAL(expected_hit, hit);
-                assert_equal_texture_coordinate(expected_texture_coordinate, hit_record.texture_coordinate, 0.001);
+                assert_equal_texture_coordinate(expected_texture_coordinate, hit_record.texture_coordinate, 0.001f);
             }
         }
     }

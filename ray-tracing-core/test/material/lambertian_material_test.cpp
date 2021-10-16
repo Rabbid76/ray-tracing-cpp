@@ -54,7 +54,6 @@ namespace ray_tracing_core_unit_test
                 assert_equal_color(color, scatter_record.attenuation, 0);
                 TEST_ASSERT_EQUAL(alpha_value, scatter_record.alpha);
                 TEST_ASSERT_NOT_EQUAL(nullptr, scatter_record.probability_density_function.get());
-                std::make_unique<pdf::CosinePDF>(pdf::CosinePDF::from_normal(hit_record.hit_point.normal));
                 TEST_ASSERT_EQUAL(&material, scatter_record.material);
             }
         }

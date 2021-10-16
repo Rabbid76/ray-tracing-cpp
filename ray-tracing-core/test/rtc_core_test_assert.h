@@ -45,4 +45,22 @@ inline void assert_equal_color(
 	TEST_ASSERT_EQUAL_DELTA(expected_color.b, actual_color.b, delta);
 }
 
+inline void assert_equal_distance_range(
+	const ray_tracing_core::math::DistanceRange& expected_range,
+	const ray_tracing_core::math::DistanceRange& actual_range,
+	ray_tracing_core::math::TextureDistance delta)
+{
+	TEST_ASSERT_EQUAL_DELTA(std::get<0>(expected_range), std::get<0>(actual_range), delta);
+	TEST_ASSERT_EQUAL_DELTA(std::get<1>(expected_range), std::get<1>(actual_range), delta);
+}
+
+inline void assert_equal_time_range(
+	const ray_tracing_core::math::TimeRange& expected_range,
+	const ray_tracing_core::math::TimeRange& actual_range,
+	ray_tracing_core::math::Time delta)
+{
+	TEST_ASSERT_EQUAL_DELTA(std::get<0>(expected_range), std::get<0>(actual_range), delta);
+	TEST_ASSERT_EQUAL_DELTA(std::get<1>(expected_range), std::get<1>(actual_range), delta);
+}
+
 #endif

@@ -9,7 +9,7 @@ namespace ray_tracing_core_unit_test
         using namespace ray_tracing_core::core;
         using namespace ray_tracing_core;
 
-        void hit_record_empty_test(void)
+        void hit_record_empty_test()
         {
             auto hit_record = HitRecord::empty();
             TEST_ASSERT_EQUAL(0, hit_record.hit_point.distance);

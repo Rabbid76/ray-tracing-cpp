@@ -24,6 +24,7 @@ namespace ray_tracing_core
 		using ColorRGB = glm::vec3;
 		using AlphaValue = float;
 		using Time = double;
+		using TimeRange = std::tuple<Time, Time>;
 		using TextureDistance = float;
 		using NormalMatrix = glm::dmat3;
 

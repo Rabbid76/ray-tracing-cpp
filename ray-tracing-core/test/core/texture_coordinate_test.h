@@ -5,7 +5,7 @@ namespace ray_tracing_core_unit_test
 {
     namespace core
     {
-        extern void texture_coordinate_form_sphere_unit_test(void);
+        extern void texture_coordinate_form_sphere_unit_test();
     }
 }
 
