@@ -37,6 +37,7 @@ namespace ray_tracing_core
             Camera(Camera&&) = default;
 
             inline math::Ray ray_to(math::Distance u, math::Distance v) const;
+            inline Camera & change_aspect(double new_aspect);
         };
 
         Camera Camera::new_camera_from_vertical_field(double field_of_view_y, double aspect)
@@ -99,6 +100,17 @@ namespace ray_tracing_core
                 .direction = lower_left_corner + horizontal * u + vertical * v - origin - offset,
                 .time = time
             };
+        }
+
+        Camera& Camera::change_aspect(double new_aspect)
+        {
+            auto len_x = math::length(horizontal);
+            auto len_y = math::length(vertical);
+            auto new_len_x = len_y * new_aspect;
+            auto horizontal_dir = math::normalize(horizontal);
+            horizontal = horizontal_dir * new_len_x;
+            lower_left_corner += horizontal_dir * (len_x - new_len_x) / 2.0;
+            return *this;
         }
     }
 }
