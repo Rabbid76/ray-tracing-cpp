@@ -43,6 +43,11 @@ namespace ray_tracing_core
 			return glm::normalize(vector);
 		}
 
+		template<typename T> Distance length(const T& vector)
+		{
+			return glm::length(vector);
+		}
+
 		template<typename T> Distance dot(const T &first_vector, const T &second_vector)
 		{
 			return glm::dot(first_vector, second_vector);

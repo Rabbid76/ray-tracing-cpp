@@ -24,6 +24,7 @@ namespace ray_tracing_core_unit_test
             ortho_normal_base_taransform_test();
             random_size_test();
             random_unit_test();
+            random_in_unit_sphere_test();
             random_cosine_direction_test();
             random_vector_to_sphere_test();
         }

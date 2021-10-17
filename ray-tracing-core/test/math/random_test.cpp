@@ -11,7 +11,7 @@ namespace ray_tracing_core_unit_test
 
         const int test_iterations = 10;
 
-        void random_size_test(void)
+        void random_size_test()
         {
             for (int iteration = 0; iteration < test_iterations; ++iteration)
             {
@@ -20,7 +20,7 @@ namespace ray_tracing_core_unit_test
             }
         }
 
-        void random_unit_test(void)
+        void random_unit_test()
         {
             for (int iteration = 0; iteration < test_iterations; ++iteration)
             {
@@ -29,7 +29,17 @@ namespace ray_tracing_core_unit_test
             }
         }
 
-        void random_cosine_direction_test(void)
+        void random_in_unit_sphere_test()
+        {
+            for (int iteration = 0; iteration < test_iterations; ++iteration)
+            {
+                auto actual_random_vector = RandomGenerator().random_in_unit_sphere();
+                TEST_ASSERT(dot(actual_random_vector, actual_random_vector) < 1);
+                assert_equal_vector(Vector3D(0), actual_random_vector, 1);
+            }
+        }
+
+        void random_cosine_direction_test()
         {
             for (int iteration = 0; iteration < test_iterations; ++iteration)
             {
@@ -39,7 +49,7 @@ namespace ray_tracing_core_unit_test
             }
         }
 
-        void random_vector_to_sphere_test(void)
+        void random_vector_to_sphere_test()
         {
             for (int iteration = 0; iteration < test_iterations; ++iteration)
             {

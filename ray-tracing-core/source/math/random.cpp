@@ -22,6 +22,17 @@ namespace ray_tracing_core
             return distribution_unit(generator);
         }
 
+        Vector3D RandomGenerator::random_in_unit_sphere(void) const
+        {
+            Vector3D random_vector;
+            do
+            {
+                random_vector = Vector3D(random_unit(), random_unit(), random_unit());
+            } 
+            while (math::dot(random_vector, random_vector) >= 1.0);
+            return random_vector;
+        }
+
         Vector3D RandomGenerator::random_cosine_direction(void) const
         {
             auto r1 = random_size();

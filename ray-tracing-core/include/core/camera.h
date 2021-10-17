@@ -3,6 +3,8 @@
 
 #include <math/types.h>
 #include <math/constants.h>
+#include <math/ray.h>
+#include <math/random.h> 
 #include <cmath>
 
 namespace ray_tracing_core
@@ -33,6 +35,8 @@ namespace ray_tracing_core
             Camera() = default;
             Camera(const Camera&) = default;
             Camera(Camera&&) = default;
+
+            inline math::Ray ray_to(math::Distance u, math::Distance v) const;
         };
 
         Camera Camera::new_camera_from_vertical_field(double field_of_view_y, double aspect)
@@ -80,6 +84,11 @@ namespace ray_tracing_core
             , v(math::normalize(vertical_direction))
             , w(math::normalize(origin_point - lower_left_point - horizontal_direction * 0.5 - vertical_direction * 0.5))
         {}
+
+        math::Ray Camera::ray_to(math::Distance u, math::Distance v) const
+        {
+           
+        }
     }
 }
 
