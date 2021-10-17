@@ -24,6 +24,9 @@ namespace ray_tracing_core
             math::TimeRange time_range;
 
             static inline Camera new_camera_from_vertical_field(double field_of_view_y, double aspect);
+            static inline Camera new_camera_from_look_at(
+                const math::Point3D& look_from, const math::Point3D& look_at, const math::Vector3D& up_vector,
+                double field_of_view_y, double aspect, double adepture, math::Distance focus_distance, math::TimeRange time_range);
 
             Camera(const math::Point3D& lower_left_point, const math::Vector3D& horzontal_direction, const math::Vector3D& vertical_direction,
                 const math::Point3D& origin_point, double lens_radius_distance, const math::TimeRange& time_range_form_to);
@@ -44,6 +47,25 @@ namespace ray_tracing_core
                 math::Point3D(0.0),
                 0.0,
                 { 0.0, 0.0 } );
+        }
+
+        Camera Camera::new_camera_from_look_at(
+            const math::Point3D& look_from, const math::Point3D& look_at, const math::Vector3D& up_vector,
+            double field_of_view_y, double aspect, double adepture, math::Distance focus_distance, math::TimeRange time_range)
+        {
+            auto theta = field_of_view_y * math::pi<math::Distance> / 180.0;
+            auto half_height = std::tan(theta / 2.0);
+            auto half_width = half_height * aspect;
+            auto w = math::normalize(look_from - look_at);
+            auto u = math::cross(up_vector, w);
+            auto v = math::cross(w, u);
+            return Camera(
+                look_from - u * half_width * focus_distance - v * half_height * focus_distance - w * focus_distance,
+                u * half_width * 2.0 * focus_distance,
+                v * half_height * 2.0 * focus_distance,
+                look_from,
+                adepture / 2,
+                time_range);
         }
 
         Camera::Camera(const math::Point3D& lower_left_point, const math::Vector3D& horizontal_direction, const math::Vector3D& vertical_direction,
