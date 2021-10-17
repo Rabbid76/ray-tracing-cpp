@@ -3,6 +3,7 @@
 #include <rtc_core_test_assert.h>
 #include <vector>
 #include <tuple>
+#include <algorithm>
 
 namespace ray_tracing_core_unit_test
 {
@@ -73,7 +74,22 @@ namespace ray_tracing_core_unit_test
 
         void camera_ray_to_test()
         {
+            const auto _1_sqrt_3 = 1 / std::sqrt(3);
+            std::vector<std::tuple<Point3D, Vector3D, Distance, TimeRange, Distance, Distance, Camera>> test_data
+            {
+                { Point3D(0), Vector3D(0.0, 0.0, -1.0), 0.001, {0, 0}, 0.5, 0.5, Camera::new_camera_from_vertical_field(45, 2) },
+                { Point3D(0), Vector3D(_1_sqrt_3, _1_sqrt_3, -_1_sqrt_3), 0.001, {0, 0}, 1, 1, Camera::new_camera_from_vertical_field(90, 1) },
+            };
 
+            for (auto [expected_origin, expected_direction, delta, expected_time_range, u, v, camera] : test_data)
+            {
+                auto actual_ray = camera.ray_to(u, v);
+                assert_equal_point(expected_origin, actual_ray.origin, delta);
+                auto actual_direction = math::normalize(actual_ray.direction);
+                assert_equal_vector(expected_direction, actual_direction, delta);
+                auto [ts, te] = expected_time_range;
+                TEST_ASSERT_EQUAL_DELTA((ts + te) / 2, actual_ray.time, std::max((te - ts) / 2, 0.001));
+            }
         }
         
         void camera_change_aspect_test()

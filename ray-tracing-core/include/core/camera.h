@@ -87,7 +87,18 @@ namespace ray_tracing_core
 
         math::Ray Camera::ray_to(math::Distance u, math::Distance v) const
         {
-           
+            auto rd = math::RandomGenerator().random_in_unit_sphere() * lens_radius;
+            auto offset = u * rd.x + v * rd.y;
+            auto time = std::get<0>(time_range);
+            auto time_span = std::get<1>(time_range) - std::get<0>(time_range);
+            if (time_span > 0)
+                time += time_span * math::RandomGenerator().random_size();
+            return math::Ray
+            {
+                .origin = origin + offset,
+                .direction = lower_left_corner + horizontal * u + vertical * v - origin - offset,
+                .time = time
+            };
         }
     }
 }
