@@ -21,4 +21,4 @@ add_test (NAME unit-test.ray-tracing-core.texture COMMAND ray-tracing-core-test 
 add_test (NAME unit-test.ray-tracing-core.geometry COMMAND ray-tracing-core-test "geometry")
 add_test (NAME unit-test.ray-tracing-core.material COMMAND ray-tracing-core-test "material")
 add_test (NAME unit-test.ray-tracing-core.core COMMAND ray-tracing-core-test "core")
-
+add_test (NAME unit-test.ray-tracing-core.environment COMMAND ray-tracing-core-test "environment")

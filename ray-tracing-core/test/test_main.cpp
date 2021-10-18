@@ -5,6 +5,7 @@
 #include "geometry/geometry_test.h"
 #include "material/material_test.h"
 #include "core/core_test.h"
+#include "environment/environment_test.h"
 #include <string>
 
 void unit_test(std::string selected_test);
@@ -32,4 +33,6 @@ void unit_test(std::string selected_test)
         material::material_unit_test();
     if (selected_test.empty() || selected_test.starts_with("core"))
         core::core_unit_tests();
+    if (selected_test.empty() || selected_test.starts_with("environment"))
+        environment::environment_unit_test();
 }
