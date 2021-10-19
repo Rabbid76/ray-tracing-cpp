@@ -8,6 +8,7 @@ namespace ray_tracing_core_unit_test
         extern void aabb_new_box_test(void);
         extern void aabb_hit_test(void);
         extern void aabb_or_point_test(void);
+        extern void aabb_or_box_test(void);
     }
 }
 

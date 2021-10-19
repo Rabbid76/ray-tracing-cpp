@@ -3,6 +3,7 @@
 #include "texture_coordinate_test.h"
 #include "shape_test.h"
 #include "camera_test.h"
+#include "shape_list_test.h"
 
 namespace ray_tracing_core_unit_test
 {
@@ -17,6 +18,7 @@ namespace ray_tracing_core_unit_test
             camera_from_look_at_test();
             camera_ray_to_test();
             camera_change_aspect_test();
+            shape_list_bounding_box_test();
         }
     }
 }

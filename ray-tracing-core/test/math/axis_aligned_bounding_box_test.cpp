@@ -72,5 +72,21 @@ namespace ray_tracing_core_unit_test
                 assert_equal_vector(expected_maximum, actual_box.maximum_point, 0.001);
             }
         }
+
+        void aabb_or_box_test(void)
+        {
+            std::vector<std::tuple<Point3D, Point3D, Point3D, Point3D, Point3D, Point3D>> test_data
+            {
+                {Point3D(-1, -2, -3), Point3D(10, 11, 12), Point3D(1, 2, 3), Point3D(7, 8, 9), Point3D(-1, -2, -3), Point3D(10, 11, 12)},
+            };
+
+            for (auto [expected_minimum, expected_maximum, box1_minimum, box1_maximum, box2_minimum, box2_maximum] : test_data)
+            {
+                auto actual_box = AxisAlignedBoundingBox::new_box(box1_minimum, box1_maximum);
+                actual_box |= AxisAlignedBoundingBox::new_box(box2_minimum, box2_maximum);
+                assert_equal_vector(expected_minimum, actual_box.minimum_point, 0.001);
+                assert_equal_vector(expected_maximum, actual_box.maximum_point, 0.001);
+            }
+        }
     }
 }

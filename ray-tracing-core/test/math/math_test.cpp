@@ -18,6 +18,7 @@ namespace ray_tracing_core_unit_test
             aabb_new_box_test();
             aabb_hit_test();
             aabb_or_point_test();
+            aabb_or_box_test();
             sphere_bounding_box_test();
             sphere_hit_test();
             ortho_normal_base_form_normal_test();
