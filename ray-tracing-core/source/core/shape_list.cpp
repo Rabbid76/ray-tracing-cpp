@@ -16,8 +16,13 @@ namespace ray_tracing_core
             return box;
         }
 
-        bool ShapeList::hit(const math::Ray& ray_in, const math::DistanceRange& istance_range, HitRecord& hit_record) const
+        bool ShapeList::hit(const math::Ray& ray_in, const math::DistanceRange& distance_range, HitRecord& hit_record) const
         {
+            for (auto shape : shapes)
+            {
+                if (shape->hit(ray_in, distance_range, hit_record))
+                    return true;
+            }
             return false;
         }
 

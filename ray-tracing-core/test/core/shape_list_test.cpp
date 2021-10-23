@@ -31,5 +31,29 @@ namespace ray_tracing_core_unit_test
                 assert_equal_vector(expected_maximum, actual_box.maximum_point, 0.001);
             }
         }
+
+        void shape_list_hit_test()
+        {
+            std::vector<std::tuple<bool, math::Ray, math::DistanceRange>> test_data
+            {
+                { true, math::Ray::new_ray(math::Point3D(-2, -2, 0), math::Vector3D(0, 1, 0)), math::DistanceRange{0, 5} },
+                { false, math::Ray::new_ray(math::Point3D(0, -2, 0), math::Vector3D(0, 1, 0)), math::DistanceRange{0, 5} },
+                { true, math::Ray::new_ray(math::Point3D(2, -2, 0), math::Vector3D(0, 1, 0)), math::DistanceRange{0, 5} },
+            };
+
+            geometry::Sphere sphere1(math::Point3D(-2, 0, 0), 1);
+            geometry::Sphere sphere2(math::Point3D(2, 0, 0), 1);
+            material::NoMaterial no_material;
+            Shape shape1(&sphere1, &no_material);
+            Shape shape2(&sphere2, &no_material);
+            auto shape_list = ShapeList(std::vector<const ShapeNode*>{ &shape1, & shape2});
+
+            for (auto [expected_hit, ray, distance_range] : test_data)
+            {
+                auto hit_record = HitRecord::empty();
+                auto actual_hit = shape_list.hit(ray, distance_range, hit_record);
+                TEST_ASSERT_EQUAL(expected_hit, actual_hit);
+            }
+        }
     }
 }

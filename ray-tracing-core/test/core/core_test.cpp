@@ -19,6 +19,7 @@ namespace ray_tracing_core_unit_test
             camera_ray_to_test();
             camera_change_aspect_test();
             shape_list_bounding_box_test();
+            shape_list_hit_test();
         }
     }
 }
