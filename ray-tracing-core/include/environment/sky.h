@@ -6,7 +6,7 @@
 
 namespace ray_tracing_core
 {
-    namespace environemnt
+    namespace environment
     {
         class Sky
         {
@@ -16,7 +16,7 @@ namespace ray_tracing_core
             core::Color zenith_color;
 
             static inline Sky new_sky(const core::Color& nadir, const core::Color& zenith);
-            inline core::Color color_at(const math::Ray& ray);
+            inline core::Color color_at(const math::Ray& ray) const;
         };
 
         Sky Sky::new_sky(const core::Color& nadir, const core::Color& zenith)
@@ -28,7 +28,7 @@ namespace ray_tracing_core
             };
         }
 
-        core::Color Sky::color_at(const math::Ray& ray)
+        core::Color Sky::color_at(const math::Ray& ray) const
         {
             auto unit_direction = math::normalize(ray.direction);
             auto t = (math::AlphaValue)(unit_direction.y * 0.5 + 0.5);

@@ -5,6 +5,7 @@
 #include "camera_test.h"
 #include "shape_list_test.h"
 #include "configuration_test.h"
+#include "scene_test.h"
 
 namespace ray_tracing_core_unit_test
 {
@@ -22,6 +23,7 @@ namespace ray_tracing_core_unit_test
             shape_list_bounding_box_test();
             shape_list_hit_test();
             configuration_test();
+            scene_ray_trace_color_test();
         }
     }
 }

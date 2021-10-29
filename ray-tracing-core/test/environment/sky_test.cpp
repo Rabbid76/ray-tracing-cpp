@@ -9,7 +9,7 @@ namespace ray_tracing_core_unit_test
     namespace environment
     {
         using namespace ray_tracing_core;
-        using namespace ray_tracing_core::environemnt;
+        using namespace ray_tracing_core::environment;
 
         void sky_color_at_test()
         {

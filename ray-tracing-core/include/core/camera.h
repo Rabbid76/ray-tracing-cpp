@@ -30,7 +30,7 @@ namespace ray_tracing_core
                 const math::Point3D& look_from, const math::Point3D& look_at, const math::Vector3D& up_vector,
                 double field_of_view_y, double aspect, double adepture, math::Distance focus_distance, math::TimeRange time_range);
 
-            Camera(const math::Point3D& lower_left_point, const math::Vector3D& horzontal_direction, const math::Vector3D& vertical_direction,
+            inline Camera(const math::Point3D& lower_left_point, const math::Vector3D& horzontal_direction, const math::Vector3D& vertical_direction,
                 const math::Point3D& origin_point, double lens_radius_distance, const math::TimeRange& time_range_form_to);
             Camera() = default;
             Camera(const Camera&) = default;
