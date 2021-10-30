@@ -23,7 +23,7 @@ namespace ray_tracing_core_unit_test
             };
             auto camera = Camera::new_camera_from_vertical_field(45.0, 2);
             auto sky = environment::Sky::new_sky(Color(1.0f), Color(0.5f, 0.7f, 1.0f));
-            geometry::Sphere sphere_geometry(math::Point3D(0), 1);
+            geometry::Sphere sphere_geometry(math::Point3D(0.0f, 0.0f, -3.0f), 1.0f);
             texture::ConstantTexture sphere_color(Color(1.0f, 0, 0), 1.0f);
             material::LambertianMaterial sphere_material(&sphere_color);
             Shape sphere(&sphere_geometry, &sphere_material);
@@ -31,9 +31,9 @@ namespace ray_tracing_core_unit_test
 
             std::vector<std::tuple<Color, math::AlphaValue, double, double>> test_data
             {
-                { Color(1.0f, 0, 0), 0.2f, 0.5, 0.5 },
-                { Color(0.5f, 0.7f, 1.0f), 0.2f, 0.5, 0.0 },
-                { Color(1.0f), 0.2f, 0.5, 1.0 },
+                { Color(0.7f, 0, 0), 0.2f, 0.5, 0.5 },
+                { Color(0.5f, 0.7f, 1.0f), 0.2f, 0.5, 1.0 },
+                { Color(1.0f), 0.2f, 0.5, 0 },
             };
 
             for (auto [expected_color, delta, u, v] : test_data)

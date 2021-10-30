@@ -30,6 +30,7 @@ namespace ray_tracing_core
                     {
                         if (scatter_record.is_specular)
                         {
+                            attenuation *= scatter_record.attenuation;
                             ray = scatter_record.ray;
                         }
                         else
@@ -73,6 +74,7 @@ namespace ray_tracing_core
                 else
                 {
                     color += attenuation * sky.color_at(ray);
+                    break;
                 }
             }
             return color;
