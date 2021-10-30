@@ -15,4 +15,4 @@ add_executable (ray-tracing-utility-test
     "rtu_test_assert.h")
 #target_link_libraries(ray-tracing-utility-test ray-tracing-utility)
 
-add_test (NAME unit-test.ray-tracing-utility.math COMMAND ray-tracing-utility-test "iterator")
+add_test (NAME unit-test.ray-tracing-utility.iterator COMMAND ray-tracing-utility-test "iterator")

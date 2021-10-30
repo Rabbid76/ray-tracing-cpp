@@ -28,7 +28,12 @@ namespace ray_tracing_core
                     ScatterRecord scatter_record;
                     if (hit_record.material->scatter(ray, hit_record, scatter_record))
                     {
-                        if (!scatter_record.is_specular)
+                        if (scatter_record.is_specular)
+                        {
+                            attenuation *= scatter_record.attenuation;
+                            ray = scatter_record.ray;
+                        }
+                        else 
                         {
                             auto pdf = scatter_record.probability_density_function.get();
                         /*
@@ -53,15 +58,15 @@ namespace ray_tracing_core
                                 auto scattered = math::Ray::new_ray_with_attributes(hit_record.hit_point.position, pdf->generate(), ray);
                                 scattering_pdf = 
                                     scatter_record.material->scattering_pdf(ray, hit_record, scattered) / pdf->value(scattered.direction);
+                                ray = scattered; // ? ray = scatter_record.ray;
                             }
                             else
                             {
                                 scattering_pdf = scatter_record.material->scattering_pdf(ray, hit_record, scatter_record.ray);
+                                ray = scatter_record.ray;
                             }
-                            attenuation *= (math::AlphaValue)scattering_pdf;
+                            attenuation *= scatter_record.attenuation * (math::AlphaValue)scattering_pdf;
                         }
-                        attenuation *= scatter_record.attenuation;
-                        ray = scatter_record.ray;
                     }
                     else
                     {
