@@ -1,6 +1,6 @@
 #include "sky_test.h"
 #include <environment/sky.h>
-#include <rtc_core_test_assert.h>
+#include <rtc_test_assert.h>
 #include <vector>
 #include <tuple>
 

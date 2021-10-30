@@ -21,11 +21,11 @@ namespace ray_tracing_core
 		public:
 
 			math::Ray ray;
-			bool is_specular;
-			Color attenuation;
-			math::AlphaValue alpha;
+			bool is_specular{ false };
+			Color attenuation{ Color(0) };
+			math::AlphaValue alpha{ 0.0f };
 			std::unique_ptr<pdf::ProbabilityDensityFunction> probability_density_function;
-			const material::Material *material;
+			const material::Material *material = nullptr;
 
 			static inline ScatterRecord empty(void);
 		};

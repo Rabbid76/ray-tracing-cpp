@@ -12,7 +12,7 @@ file(GLOB rtc_core_test_source
 add_executable (ray-tracing-core-test 
     ${rtc_core_test_source}
     "test_main.cpp"
-    "rtc_core_test_assert.h")
+    "rtc_test_assert.h")
 target_link_libraries(ray-tracing-core-test ray-tracing-core)
 
 add_test (NAME unit-test.ray-tracing-core.math COMMAND ray-tracing-core-test "math")

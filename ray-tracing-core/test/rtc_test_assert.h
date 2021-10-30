@@ -1,5 +1,5 @@
-#ifndef __RTC_CORE_TEST_ASSERT_H__
-#define __RTC_CORE_TEST_ASSERT_H__
+#ifndef __RTC_TEST_ASSERT_H__
+#define __RTC_TEST_ASSERT_H__
 
 #include "test_assert.h"
 #include <math/types.h>

@@ -1,6 +1,6 @@
 #include "random_test.h"
 #include <math/random.h>
-#include <rtc_core_test_assert.h>
+#include <rtc_test_assert.h>
 #include <cmath>
 
 namespace ray_tracing_core_unit_test

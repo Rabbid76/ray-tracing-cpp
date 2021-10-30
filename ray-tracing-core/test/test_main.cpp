@@ -1,4 +1,4 @@
-#include "rtc_core_test_assert.h"
+#include "rtc_test_assert.h"
 #include "math/math_test.h"
 #include "pdf/probability_density_function_test.h"
 #include "texture/texture_test.h"

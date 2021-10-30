@@ -3,7 +3,7 @@
 #include <core/texture_coordinate.h>
 #include <geometry/sphere.h>
 #include <material/mockup_material.h>
-#include <rtc_core_test_assert.h>
+#include <rtc_test_assert.h>
 #include <vector>
 #include <tuple>
 

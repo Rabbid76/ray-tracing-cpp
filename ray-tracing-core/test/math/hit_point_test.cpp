@@ -1,6 +1,6 @@
 #include "hit_point_test.h"
 #include <math/hit_point.h>
-#include <rtc_core_test_assert.h>
+#include <rtc_test_assert.h>
 
 namespace ray_tracing_core_unit_test
 {

@@ -1,6 +1,6 @@
 #include "sphere_test.h"
 #include <math/sphere.h>
-#include <rtc_core_test_assert.h>
+#include <rtc_test_assert.h>
 #include <tuple>
 #include <vector>
 

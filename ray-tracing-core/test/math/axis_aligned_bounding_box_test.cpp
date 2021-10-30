@@ -1,7 +1,7 @@
 #include "axis_aligned_bounding_box_test.h"
 #include <math/axis_aligned_bounding_box.h>
 #include <math/ray.h>
-#include <rtc_core_test_assert.h>
+#include <rtc_test_assert.h>
 #include <tuple>
 #include <vector>
 

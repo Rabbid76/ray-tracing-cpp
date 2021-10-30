@@ -1,6 +1,6 @@
 #include "ortho_normal_base_test.h"
 #include <math/ortho_normal_base.h>
-#include <rtc_core_test_assert.h>
+#include <rtc_test_assert.h>
 #include <vector>
 #include <tuple>
 

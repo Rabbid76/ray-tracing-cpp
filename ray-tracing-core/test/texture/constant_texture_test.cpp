@@ -1,7 +1,7 @@
 #include "constant_texture_test.h"
 #include "texture/constant_texture.h"
 #include <texture/texture_test.h>
-#include <rtc_core_test_assert.h>
+#include <rtc_test_assert.h>
 #include <vector>
 #include <tuple>
 

@@ -1,7 +1,7 @@
 #include "lambertian_material_test.h"
 #include <material/lambertian_material.h>
 #include <texture/constant_texture.h>
-#include <rtc_core_test_assert.h>
+#include <rtc_test_assert.h>
 #include <vector>
 #include <tuple>
 

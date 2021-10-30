@@ -17,4 +17,5 @@ ENABLE_TESTING()
 
 # Include sub-projects.
 add_subdirectory ("ray-tracing-core")
-add_subdirectory ("ray-tracing-core-playground")
+add_subdirectory ("ray-tracing-utility")
+add_subdirectory ("ray-tracing-playground")

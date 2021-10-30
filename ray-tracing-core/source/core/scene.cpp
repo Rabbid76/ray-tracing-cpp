@@ -18,7 +18,7 @@ namespace ray_tracing_core
             Color color(0);
             auto ray = camera.ray_to(u, v);
             Color attenuation(1.0f);
-            for (int i = 0; i < configuration.maximum_depth; ++i)
+            for (uint32_t i = 0; i < configuration.maximum_depth; ++i)
             {
                 HitRecord hit_record;
                 if (world.hit(ray, { 0.001, std::numeric_limits<math::Distance>::max() }, hit_record))
@@ -52,7 +52,7 @@ namespace ray_tracing_core
                                 None => None,
                             };
                             */
-                            math::AlphaValue scattering_pdf;
+                            math::Distance scattering_pdf;
                             if (pdf)
                             {
                                 auto scattered = math::Ray::new_ray_with_attributes(hit_record.hit_point.position, pdf->generate(), ray);

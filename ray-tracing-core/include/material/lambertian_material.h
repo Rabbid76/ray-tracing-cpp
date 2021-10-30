@@ -50,6 +50,7 @@ namespace ray_tracing_core
 			auto direction = math::normalize(uvw.transform(math::RandomGenerator().random_cosine_direction()));
 			auto [albedo_color, alpha_value] = albedo_texture->channels(hit_record.texture_coordinate, hit_record.hit_point.position);
 			scatter_record.ray = math::Ray::new_ray_with_attributes(hit_record.hit_point.position, direction, ray);
+			scatter_record.is_specular = false;
 			scatter_record.attenuation = albedo_color;
 			scatter_record.alpha = alpha_value;
 			scatter_record.probability_density_function =

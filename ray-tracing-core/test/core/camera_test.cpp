@@ -1,6 +1,6 @@
 #include "camera_test.h"
 #include <core/camera.h>
-#include <rtc_core_test_assert.h>
+#include <rtc_test_assert.h>
 #include <vector>
 #include <tuple>
 #include <algorithm>

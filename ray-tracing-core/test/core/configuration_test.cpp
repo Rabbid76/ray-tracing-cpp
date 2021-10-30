@@ -1,6 +1,6 @@
 #include "configuration_test.h"
 #include <core/configuration.h>
-#include <rtc_core_test_assert.h>
+#include <rtc_test_assert.h>
 
 namespace ray_tracing_core_unit_test
 {

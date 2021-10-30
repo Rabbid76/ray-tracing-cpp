@@ -1,7 +1,7 @@
 #include "cosine_pdf_test.h"
 #include "pdf/cosine_pdf.h"
 #include <math/ortho_normal_base.h>
-#include <rtc_core_test_assert.h>
+#include <rtc_test_assert.h>
 #include <vector>
 #include <tuple>
 

@@ -1,6 +1,6 @@
 #include "texture_coordinate_test.h"
 #include <core/texture_coordinate.h>
-#include <rtc_core_test_assert.h>
+#include <rtc_test_assert.h>
 #include <tuple>
 #include <vector>
 
