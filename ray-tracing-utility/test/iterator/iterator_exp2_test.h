@@ -7,6 +7,8 @@ namespace ray_tracing_utility_unit_test
     {
         extern void iterator_exp2_tile_size_test();
         extern void iterator_exp2_no_of_tiles_test();
+        extern void iterator_exp2_distribute_indices_test();
+        extern void iterator_exp2_distribute_indices_reversed_test();
     }
 }
 
