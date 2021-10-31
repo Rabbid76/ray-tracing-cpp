@@ -8,6 +8,7 @@ namespace ray_tracing_utility_unit_test
         void iterator_unit_test()
         {
             iterator_exp2_tile_size_test();
+            iterator_exp2_no_of_tiles_test();
         }
     }
 }

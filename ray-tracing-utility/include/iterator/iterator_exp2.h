@@ -20,6 +20,7 @@ namespace ray_tracing_utility
             inline IteratorExp2(uint32_t width, uint32_t height);
 
             inline static uint32_t tile_size(uint32_t x, uint32_t y);
+            inline static uint32_t no_of_tilies(uint32_t size, uint32_t tile_size);
         };
 
         IteratorExp2::IteratorExp2(uint32_t width, uint32_t height)
@@ -37,6 +38,11 @@ namespace ray_tracing_utility
                 max_s >>= 1;
             }
             return 1 << p2 - 1;
+        }
+
+        uint32_t IteratorExp2::no_of_tilies(uint32_t size, uint32_t tile_size)
+        {
+            return (size - 1) / tile_size + 1;
         }
     }
 }
