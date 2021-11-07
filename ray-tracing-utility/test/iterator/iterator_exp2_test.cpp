@@ -39,7 +39,7 @@ namespace ray_tracing_utility_unit_test
 
             for (auto [expected_no_of_tiles, size, tile_size] : test_data)
             {
-                auto actual_no_of_tiles = IteratorExp2::no_of_tilies(size, tile_size);
+                auto actual_no_of_tiles = IteratorExp2::no_of_tiles(size, tile_size);
                 TEST_ASSERT_EQUAL(expected_no_of_tiles, actual_no_of_tiles);
             }
         }
@@ -79,6 +79,30 @@ namespace ray_tracing_utility_unit_test
                 TEST_ASSERT_EQUAL(expected_indices.size(), actual_indices.size());
                 for (uint32_t i = 0; i < expected_indices.size(); ++i)
                     TEST_ASSERT_EQUAL(expected_indices[i], actual_indices[i]);
+            }
+        }
+
+        void iterator_exp2_next_test()
+        {
+            std::vector<std::tuple<std::vector<std::tuple<uint32_t, uint32_t, uint32_t>>, uint32_t, uint32_t>> test_data
+            {
+                { {{0, 0, 2}, {0, 1, 1}, {1, 1, 1}, {1, 0, 1} }, 2, 2 },
+            };
+
+            for (auto [expected_indices, width, height] : test_data)
+            {
+                auto iterator = IteratorExp2(width, height);
+                for (auto [expected_ix, expected_iy, expected_size] : expected_indices)
+                {
+                    auto [actual_ix, actual_iy, actual_size] = iterator.next();
+                    TEST_ASSERT_EQUAL(expected_ix, actual_ix);
+                    TEST_ASSERT_EQUAL(expected_iy, actual_iy);
+                    TEST_ASSERT_EQUAL(expected_size, actual_size);
+                }
+                auto [actual_ix, actual_iy, actual_size] = iterator.next();
+                TEST_ASSERT_EQUAL(-1, actual_ix);
+                TEST_ASSERT_EQUAL(-1, actual_iy);
+                TEST_ASSERT_EQUAL(0, actual_size);
             }
         }
     }
