@@ -6,6 +6,10 @@ cmake_minimum_required (VERSION 3.12)
 #set_property(TARGET tgt PROPERTY CXX_STANDARD 20)
 set (CMAKE_CXX_STANDARD 20)
 
+add_compile_options(
+    -Wno-volatile
+)
+
 project ("ray-tracing-cpp")
 
 include_directories (
@@ -17,5 +21,5 @@ ENABLE_TESTING()
 
 # Include sub-projects.
 add_subdirectory ("ray-tracing-core")
-add_subdirectory ("ray-tracing-utility")
-add_subdirectory ("ray-tracing-playground")
+#add_subdirectory ("ray-tracing-utility")
+#add_subdirectory ("ray-tracing-playground")

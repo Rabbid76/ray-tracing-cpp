@@ -37,4 +37,4 @@ namespace ray_tracing_core
     }
 }
 
-#endif                                                                                                                                       enci
+#endif
