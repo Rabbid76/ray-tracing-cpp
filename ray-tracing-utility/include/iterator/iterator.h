@@ -2,6 +2,7 @@
 #define __RTU__ITERATOR__ITERATOR_H__
 
 #include <tuple> 
+#include <cstdint>
 #include <cctype>
 
 namespace ray_tracing_utility

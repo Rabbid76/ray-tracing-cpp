@@ -7,7 +7,7 @@
       "inheritEnvironments": [ "msvc_x64" ],
       "buildRoot": "${projectDir}\\out\\build\\${name}",
       "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeCommandArgs": "",
+      "cmakeCommandArgs": "-D MAKE_CONFIG=MSVC",
       "buildCommandArgs": "",
       "ctestCommandArgs": ""
     },
@@ -17,7 +17,7 @@
       "configurationType": "Debug",
       "buildRoot": "${projectDir}\\out\\build\\${name}",
       "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeCommandArgs": "",
+      "cmakeCommandArgs": "-D MAKE_CONFIG=MINGW",
       "buildCommandArgs": "-v",
       "ctestCommandArgs": "",
       "inheritEnvironments": [ "mingw_64" ],
@@ -52,7 +52,7 @@
       "configurationType": "Debug",
       "buildRoot": "${projectDir}\\out\\build\\${name}",
       "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeCommandArgs": "",
+      "cmakeCommandArgs": "-D MAKE_CONFIG=Clang",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
       "inheritEnvironments": [ "clang_cl_x64_x64" ]
