@@ -49,7 +49,7 @@ namespace ray_tracing_utility
                 p2 += 1;
                 max_s >>= 1;
             }
-            return 1 << p2 - 1;
+            return 1 << (p2 - 1);
         }
 
         uint32_t IteratorExp2::no_of_tiles(uint32_t size, uint32_t tile_size)

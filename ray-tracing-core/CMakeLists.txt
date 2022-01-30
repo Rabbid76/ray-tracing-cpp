@@ -6,7 +6,7 @@ set (CMAKE_CXX_STANDARD 20)
 project (ray-tracing-core)
 
 # Add include directories
-include_directories (
+include_directories(
     "./include")
 
 # Add source to this project's executable.
@@ -15,10 +15,10 @@ file(GLOB rtc_core_source
     "include/*/*.h"
     "source/*/*.cpp")
 
-add_library (ray-tracing-core STATIC 
+add_library(ray-tracing-core STATIC 
     ${rtc_core_source})
 
-add_subdirectory (test)
+add_subdirectory(test)
 
 #add_executable(ray-tracing-core-tests test/test.cpp)
 #target_link_libraries(ray-tracing-core-tests PRIVATE Catch2::Catch2WithMain)

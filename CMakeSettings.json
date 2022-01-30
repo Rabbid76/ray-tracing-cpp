@@ -52,10 +52,10 @@
       "configurationType": "Debug",
       "buildRoot": "${projectDir}\\out\\build\\${name}",
       "installRoot": "${projectDir}\\out\\install\\${name}",
-      "cmakeCommandArgs": "-D MAKE_CONFIG=Clang",
       "buildCommandArgs": "",
       "ctestCommandArgs": "",
-      "inheritEnvironments": [ "clang_cl_x64_x64" ]
+      "inheritEnvironments": [ "clang_cl_x64_x64" ],
+      "cmakeCommandArgs": "-D MAKE_CONFIG=Clang"
     }
   ]
 }
