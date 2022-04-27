@@ -14,6 +14,9 @@
 #include <texture/constant_texture.h>
 #include <vector>
 #include <cmath>
+#define STB_IMAGE_WRITE_IMPLEMENTATION 
+#define __STDC_LIB_EXT1__
+#include <stb/stb_image_write.h>
 
 using namespace ray_tracing_core;
 
@@ -50,11 +53,9 @@ int main()
     auto scene = core::Scene(configuration, camera, sky, world); 
 
     std::cout << "render" << std::endl;
-
     uint32_t cx = 400;
     uint32_t cy = 200;
     uint32_t samples = 10;
-
     std::vector<uint8_t> pixel_data(cx * cy * 4);
     math::RandomGenerator randomGenerator;
     for (uint32_t x = 0; x < cx; ++x) {
@@ -74,6 +75,9 @@ int main()
             pixel_data[i * 4 + 3] = 255;
         }   
     }
+
+    std::cout << "write" << std::endl;
+    stbi_write_png("playground.png", static_cast<int>(cx), static_cast<int>(cy), 4, pixel_data.data(), static_cast<int>(cy) * 4);
 
     std::cout << "end" << std::endl;
 	return 0;
