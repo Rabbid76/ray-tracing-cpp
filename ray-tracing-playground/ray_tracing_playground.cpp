@@ -39,7 +39,7 @@ int main()
 
     auto world = core::ShapeList({ &sphere_shape, &ground_shape });
 	auto camera = core::Camera::new_camera_from_look_at(
-        math::Point3D(0, 0, 1),
+        math::Point3D(0, 0, 5),
         math::Point3D(0),
         math::Vector3D(0, 0, 1),
         90, 2, 0, 1, math::TimeRange{ 0, 0 }
@@ -60,7 +60,7 @@ int main()
     math::RandomGenerator randomGenerator;
     for (uint32_t x = 0; x < cx; ++x) {
         for (uint32_t y = 0; y < cy; ++y) {
-            math::ColorRGB fragment_color;
+            math::ColorRGB fragment_color(0);
             for (uint32_t s = 0; s < samples; ++s) {
                 double u = (static_cast<double>(x) + randomGenerator.random_size()) / static_cast<double>(cx);
                 double v = (static_cast<double>(y) + randomGenerator.random_size()) / static_cast<double>(cy);
@@ -69,15 +69,15 @@ int main()
             fragment_color /= static_cast<double>(samples);
 
             uint32_t i = (y * cx) + x;
-            pixel_data[i * 4] = static_cast<uint8_t>(std::lround(std::sqrt(fragment_color[0] * 255.0)));
-            pixel_data[i * 4 + 1] = static_cast<uint8_t>(std::lround(std::sqrt(fragment_color[1] * 255.0)));
-            pixel_data[i * 4 + 2] = static_cast<uint8_t>(std::lround(std::sqrt(fragment_color[2] * 255.0)));
+            pixel_data[i * 4] = static_cast<uint8_t>(std::lround(std::sqrt(fragment_color[0]) * 255.0));
+            pixel_data[i * 4 + 1] = static_cast<uint8_t>(std::lround(std::sqrt(fragment_color[1]) * 255.0));
+            pixel_data[i * 4 + 2] = static_cast<uint8_t>(std::lround(std::sqrt(fragment_color[2]) * 255.0));
             pixel_data[i * 4 + 3] = 255;
         }   
     }
 
     std::cout << "write" << std::endl;
-    stbi_write_png("playground.png", static_cast<int>(cx), static_cast<int>(cy), 4, pixel_data.data(), static_cast<int>(cy) * 4);
+    stbi_write_png("c:/temp/playground.png", static_cast<int>(cx), static_cast<int>(cy), 4, pixel_data.data(), static_cast<int>(cy) * 4);
 
     std::cout << "end" << std::endl;
 	return 0;
