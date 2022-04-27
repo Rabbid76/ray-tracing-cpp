@@ -25,6 +25,11 @@ int main()
 {
 	std::cout << "start" << std::endl;
 
+    const uint32_t cx = 400;
+    const uint32_t cy = 200;
+    const uint32_t samples = 10;
+    const double aspect = static_cast<double>(cx) / static_cast<double>(cy);
+
 	// TODO TestSceneSimple
 
     auto sphere_texture = texture::ConstantTexture(math::ColorRGB(0.5f, 0.1f, 0.1f), 1);
@@ -34,15 +39,15 @@ int main()
 
     auto ground_texture = texture::ConstantTexture(math::ColorRGB(0.1f, 0.1f, 0.1f), 1);
     auto ground_material = material::LambertianMaterial(&ground_texture);
-    auto ground_geometry = geometry::Sphere(math::Point3D(0, -100.5, 0), 100.0);
+    auto ground_geometry = geometry::Sphere(math::Point3D(0, -1000.5, 0), 1000.0);
     auto ground_shape = core::Shape(&ground_geometry, &ground_material);
 
     auto world = core::ShapeList({ &sphere_shape, &ground_shape });
 	auto camera = core::Camera::new_camera_from_look_at(
-        math::Point3D(0, 0, 5),
+        math::Point3D(0, 0, 1),
         math::Point3D(0),
-        math::Vector3D(0, 0, 1),
-        90, 2, 0, 1, math::TimeRange{ 0, 0 }
+        math::Vector3D(0, 1, 0),
+        90, aspect, 0, 1, math::TimeRange{ 0, 0 }
     );
     auto sky = environment::Sky::new_sky(math::ColorRGB(1, 1, 1), math::ColorRGB(0.5, 0.7, 1));
 
@@ -53,9 +58,6 @@ int main()
     auto scene = core::Scene(configuration, camera, sky, world); 
 
     std::cout << "render" << std::endl;
-    uint32_t cx = 400;
-    uint32_t cy = 200;
-    uint32_t samples = 10;
     std::vector<uint8_t> pixel_data(cx * cy * 4);
     math::RandomGenerator randomGenerator;
     for (uint32_t x = 0; x < cx; ++x) {
@@ -68,7 +70,7 @@ int main()
             }
             fragment_color /= static_cast<double>(samples);
 
-            uint32_t i = (y * cx) + x;
+            uint32_t i = ((cy - y - 1) * cx) + x;
             pixel_data[i * 4] = static_cast<uint8_t>(std::lround(std::sqrt(fragment_color[0]) * 255.0));
             pixel_data[i * 4 + 1] = static_cast<uint8_t>(std::lround(std::sqrt(fragment_color[1]) * 255.0));
             pixel_data[i * 4 + 2] = static_cast<uint8_t>(std::lround(std::sqrt(fragment_color[2]) * 255.0));
@@ -77,7 +79,7 @@ int main()
     }
 
     std::cout << "write" << std::endl;
-    stbi_write_png("c:/temp/playground.png", static_cast<int>(cx), static_cast<int>(cy), 4, pixel_data.data(), static_cast<int>(cy) * 4);
+    stbi_write_png("playground.png", static_cast<int>(cx), static_cast<int>(cy), 4, pixel_data.data(), static_cast<int>(cx) * 4);
 
     std::cout << "end" << std::endl;
 	return 0;
