@@ -2,18 +2,13 @@
 //
 
 #include "ray_tracing_playground.h"
-#include <core/camera.h>
-#include <core/configuration.h>
-#include <core/scene.h>
-#include <core/shape.h>
-#include <core/shape_list.h>
-#include <environment/sky.h>
-#include <geometry/sphere.h>
-#include <material/lambertian_material.h>
+#include "core/configuration.h"
+#include "core/scene.h"
+#include "core/test_scene_factory.h"
 #include <math/random.h>
-#include <texture/constant_texture.h>
-#include <vector>
 #include <cmath>
+#include <memory>
+#include <vector>
 #define STB_IMAGE_WRITE_IMPLEMENTATION 
 #define __STDC_LIB_EXT1__
 #include <stb/stb_image_write.h>
@@ -29,33 +24,13 @@ int main()
     const uint32_t cy = 200;
     const uint32_t samples = 10;
     const double aspect = static_cast<double>(cx) / static_cast<double>(cy);
-
-	// TODO TestSceneSimple
-
-    auto sphere_texture = texture::ConstantTexture(math::ColorRGB(0.5f, 0.1f, 0.1f), 1);
-    auto sphere_material = material::LambertianMaterial(&sphere_texture);
-    auto sphere_geometry = geometry::Sphere(math::Point3D(0, 0, 0), 0.5);
-    auto sphere_shape = core::Shape(&sphere_geometry, &sphere_material);
-
-    auto ground_texture = texture::ConstantTexture(math::ColorRGB(0.1f, 0.1f, 0.1f), 1);
-    auto ground_material = material::LambertianMaterial(&ground_texture);
-    auto ground_geometry = geometry::Sphere(math::Point3D(0, -1000.5, 0), 1000.0);
-    auto ground_shape = core::Shape(&ground_geometry, &ground_material);
-
-    auto world = core::ShapeList({ &sphere_shape, &ground_shape });
-	auto camera = core::Camera::new_camera_from_look_at(
-        math::Point3D(0, 0, 1),
-        math::Point3D(0),
-        math::Vector3D(0, 1, 0),
-        90, aspect, 0, 1, math::TimeRange{ 0, 0 }
-    );
-    auto sky = environment::Sky::new_sky(math::ColorRGB(1, 1, 1), math::ColorRGB(0.5, 0.7, 1));
-
-    auto configuration = core::Configuration
-    {
-        .maximum_depth = 100
-    };
-    auto scene = core::Scene(configuration, camera, sky, world); 
+    auto scene = std::unique_ptr<core::Scene>(core::TestSceneFactory()
+        .set_configuration(core::Configuration
+            {
+                .maximum_depth = 100
+            })
+        .set_aspect(aspect)
+        .new_scene());
 
     std::cout << "render" << std::endl;
     std::vector<uint8_t> pixel_data(cx * cy * 4);
@@ -66,7 +41,7 @@ int main()
             for (uint32_t s = 0; s < samples; ++s) {
                 double u = (static_cast<double>(x) + randomGenerator.random_size()) / static_cast<double>(cx);
                 double v = (static_cast<double>(y) + randomGenerator.random_size()) / static_cast<double>(cy);
-                fragment_color += scene.ray_trace_color(u, v);
+                fragment_color += scene->ray_trace_color(u, v);
             }
             fragment_color /= static_cast<double>(samples);
 

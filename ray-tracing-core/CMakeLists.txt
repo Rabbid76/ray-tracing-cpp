@@ -16,7 +16,7 @@ file(GLOB rtc_core_source
     "source/*/*.cpp")
 
 add_library(ray-tracing-core STATIC 
-    ${rtc_core_source})
+    ${rtc_core_source} "include/core/test_scene_factory.h" "source/core/test_scene_factory.cpp")
 
 add_subdirectory(test)
 
