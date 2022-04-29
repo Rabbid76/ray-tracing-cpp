@@ -10,12 +10,10 @@ include_directories (
 	../ray-tracing-core/include
 )
 
-# Add source to this project's executable.
-add_executable(ray-tracing-core-plyaground
-	ray_tracing_playground.cpp
-	ray_tracing_playground.h
-)
-
+add_executable(ray-tracing-core-plyaground ray_tracing_playground.cpp)
 target_link_libraries(ray-tracing-core-plyaground ray-tracing-core)
+
+add_executable(ray-tracing-core-test-scene ray_tracing_test_scene.cpp)
+target_link_libraries(ray-tracing-core-test-scene ray-tracing-core)
 
 # TODO: Add tests and install targets if needed.

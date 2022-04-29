@@ -1,4 +1,4 @@
-﻿#include "core/configuration.h"
+#include "core/configuration.h"
 #include "core/scene.h"
 #include "core/test_scene_factory.h"
 #include <math/random.h>
@@ -7,14 +7,11 @@
 #include <vector>
 #include <iostream>
 #include <string>
-#include <thread>
 #define STB_IMAGE_WRITE_IMPLEMENTATION 
 #define __STDC_LIB_EXT1__
 #include <stb/stb_image_write.h>
 
 using namespace ray_tracing_core;
-
-void render(core::Scene *scene, uint32_t cx, uint32_t cy, uint32_t samples, uint8_t *buffer);
 
 int main()
 {
@@ -22,7 +19,7 @@ int main()
 
     const uint32_t cx = 400;
     const uint32_t cy = 200;
-    const uint32_t samples = 10;
+    const uint32_t samples = 100;
     const double aspect = static_cast<double>(cx) / static_cast<double>(cy);
     auto scene = std::unique_ptr<core::Scene>(core::TestSceneFactory()
         .set_configuration(core::Configuration
@@ -34,19 +31,6 @@ int main()
 
     std::cout << "render" << std::endl;
     std::vector<uint8_t> pixel_data(cx * cy * 4);
-    std::thread render_trhead(render, scene.get(), cx, cy, samples, pixel_data.data());
-    render_trhead.join();
-    std::cout << std::endl;
-
-    std::cout << "write" << std::endl;
-    stbi_write_png("playground.png", static_cast<int>(cx), static_cast<int>(cy), 4, pixel_data.data(), static_cast<int>(cx) * 4);
-
-    std::cout << "end" << std::endl;
-    return 0;
-}
-
-void render(core::Scene* scene, uint32_t cx, uint32_t cy, uint32_t samples, uint8_t* pixel_data)
-{
     math::RandomGenerator randomGenerator;
     const uint32_t one_percent = cx * cy / 100;
     for (uint32_t y = 0; y < cy; ++y) {
@@ -70,4 +54,11 @@ void render(core::Scene* scene, uint32_t cx, uint32_t cy, uint32_t samples, uint
                 std::cout << "\r" << n / one_percent << "% ";
         }
     }
+    std::cout << std::endl;
+
+    std::cout << "write" << std::endl;
+    stbi_write_png("test_scene.png", static_cast<int>(cx), static_cast<int>(cy), 4, pixel_data.data(), static_cast<int>(cx) * 4);
+
+    std::cout << "end" << std::endl;
+    return 0;
 }
