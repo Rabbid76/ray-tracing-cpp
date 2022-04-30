@@ -8,6 +8,7 @@ set (CMAKE_CXX_STANDARD 20)
 include_directories (
     include
 	../ray-tracing-core/include
+	../ray-tracing-utility/include
 )
 
 add_executable(ray-tracing-core-plyaground ray_tracing_playground.cpp)

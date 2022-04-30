@@ -10,7 +10,7 @@ namespace ray_tracing_utility
 {
     namespace iterator
     {
-        class IteratorExp2 : Iterator
+        class IteratorExp2 : public Iterator
         {
         private: 
 
@@ -31,7 +31,8 @@ namespace ray_tracing_utility
 
             inline IteratorExp2(uint32_t width, uint32_t height);
             virtual ~IteratorExp2() = default;
-            virtual std::tuple<uint32_t, uint32_t, uint32_t> next() override;
+            std::tuple<uint32_t, uint32_t> get_size() const override;
+            std::tuple<uint32_t, uint32_t, uint32_t> next() override;
         };
 
         IteratorExp2::IteratorExp2(uint32_t width, uint32_t height)
@@ -39,6 +40,10 @@ namespace ray_tracing_utility
             , height(height)
             , size(tile_size(width, height))
         {}
+
+        std::tuple<uint32_t, uint32_t> IteratorExp2::get_size() const {
+            return { width, height };
+        }
 
         uint32_t IteratorExp2::tile_size(uint32_t x, uint32_t y)
         {

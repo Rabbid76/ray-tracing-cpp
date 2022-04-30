@@ -1,6 +1,7 @@
 ﻿#include "core/configuration.h"
 #include "core/scene.h"
 #include "core/test_scene_factory.h"
+#include "iterator/iterator_exp2.h"
 #include <math/random.h>
 #include <cmath>
 #include <memory>
@@ -16,10 +17,11 @@
 #include <stb/stb_image_write.h>
 
 using namespace ray_tracing_core;
+using namespace ray_tracing_utility;
 using namespace cimg_library;
 using namespace std::chrono_literals;
 
-void render(core::Scene *scene, uint32_t cx, uint32_t cy, uint32_t samples, uint8_t *buffer);
+void render(core::Scene *scene, iterator::Iterator& iterator, uint32_t samples, uint8_t *buffer);
 void save(CImg<uint8_t> &image, const std::string& filename);
 
 int main()
@@ -41,46 +43,51 @@ int main()
     std::cout << "render" << std::endl;
     CImg<uint8_t> image(cx, cy, 1, 4, 0);
     //std::thread render_trhead(render, scene.get(), cx, cy, samples, image.data());
-    //render_trhead.jooin();
+    //render_trhead.join();
     auto render_future = std::async(std::launch::async, [&] {
-        render(scene.get(), cx, cy, samples, image.data());
+        auto iterator = iterator::IteratorExp2(cx, cy);
+        render(scene.get(), iterator, samples, image.data());
     });
 
     CImgDisplay image_display(image, "scene");
+    image_display.move(100, 100);
     while (!image_display.is_closed() && render_future.wait_for(0ms) == std::future_status::timeout)
     {
         image_display.wait(100);
         image_display.display(image);
     }
-
+    
     std::cout << "write" << std::endl;
     save(image, "playground.png");
     
     std::cout << "end" << std::endl;
-    image.display();
+    image.display(image_display, true, nullptr, false);
     return 0;
 }
 
-void render(core::Scene* scene, uint32_t cx, uint32_t cy, uint32_t samples, uint8_t* pixel_data)
+void render(core::Scene* scene, iterator::Iterator &iterator, uint32_t samples, uint8_t* pixel_data)
 {
+    auto [cx, cy] = iterator.get_size();
     math::RandomGenerator randomGenerator;
-    const uint32_t one_percent = cx * cy / 100;
-    for (uint32_t y = 0; y < cy; ++y) {
-        for (uint32_t x = 0; x < cx; ++x) {
-            math::ColorRGB fragment_color(0);
-            for (uint32_t s = 0; s < samples; ++s) {
-                double u = (static_cast<double>(x) + randomGenerator.random_size()) / static_cast<double>(cx);
-                double v = (static_cast<double>(y) + randomGenerator.random_size()) / static_cast<double>(cy);
-                fragment_color += scene->ray_trace_color(u, v);
-            }
-            fragment_color /= static_cast<double>(samples);
+    while (true)
+    {
+        auto [x, y, size] = iterator.next();
+        if (size == 0)
+            break;
 
-            uint32_t i = ((cy - y - 1) * cx) + x;
-            pixel_data[i] = static_cast<uint8_t>(std::lround(std::sqrt(fragment_color[0]) * 255.0));
-            pixel_data[cx * cy + i] = static_cast<uint8_t>(std::lround(std::sqrt(fragment_color[1]) * 255.0));
-            pixel_data[cx * cy * 2 + i] = static_cast<uint8_t>(std::lround(std::sqrt(fragment_color[2]) * 255.0));
-            pixel_data[cx * cy * 3 + i] = 255;
+        math::ColorRGB fragment_color(0);
+        for (uint32_t s = 0; s < samples; ++s) {
+            double u = (static_cast<double>(x) + randomGenerator.random_size()) / static_cast<double>(cx);
+            double v = (static_cast<double>(y) + randomGenerator.random_size()) / static_cast<double>(cy);
+            fragment_color += scene->ray_trace_color(u, v);
         }
+        fragment_color /= static_cast<double>(samples);
+
+        uint32_t i = ((cy - y - 1) * cx) + x;
+        pixel_data[i] = static_cast<uint8_t>(std::lround(std::sqrt(fragment_color[0]) * 255.0));
+        pixel_data[cx * cy + i] = static_cast<uint8_t>(std::lround(std::sqrt(fragment_color[1]) * 255.0));
+        pixel_data[cx * cy * 2 + i] = static_cast<uint8_t>(std::lround(std::sqrt(fragment_color[2]) * 255.0));
+        pixel_data[cx * cy * 3 + i] = 255;
     }
 }
 
@@ -98,5 +105,4 @@ void save(CImg<uint8_t> &image, const std::string& filename)
         pixel_data[i * 4 + 3] = image.data()[cx * cy * 3 + i];
     }
     stbi_write_png(filename.c_str(), static_cast<int>(cx), static_cast<int>(cy), 4, pixel_data.data(), static_cast<int>(cx) * 4);
-
 }

@@ -13,6 +13,7 @@ namespace ray_tracing_utility
         {
         public:
             virtual ~Iterator() = default;
+            virtual std::tuple<uint32_t, uint32_t> get_size() const = 0;
             virtual std::tuple<uint32_t, uint32_t, uint32_t> next() = 0;
         };
     }
