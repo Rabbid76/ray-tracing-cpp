@@ -15,6 +15,7 @@ namespace ray_tracing_utility
 		{
 		public:
 			using BufferData = std::pair<ray_tracing_core::math::ColorRGB, uint32_t>;
+			std::tuple<uint32_t, uint32_t> buffer_size{ 0, 0 };
 			using Buffer = std::vector<BufferData>;
 
 		protected:
@@ -22,7 +23,9 @@ namespace ray_tracing_utility
 
 		public:
 			virtual ~Renderer() = default;
-			const Buffer &render_buffer() const { return buffer; }
+			const std::tuple<uint32_t, uint32_t> get_buffer_size() const{ return buffer_size; };
+			const Buffer &get_render_buffer() const { return buffer; }
+			std::vector<uint8_t> get_rgba8() const;
 			virtual void render(ray_tracing_core::core::Scene& scene, std::tuple<uint32_t, uint32_t> size, uint32_t samples) = 0;
 			virtual bool is_finished() const = 0;
 			virtual double percentage_done() const = 0;
