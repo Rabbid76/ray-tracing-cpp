@@ -7,15 +7,19 @@ project (ray-tracing-utility)
 
 # Add include directories
 include_directories (
-    "./include")
+    "./include"
+    "../ray-tracing-core/include"
+)
 
 # Add source to this project's executable.
 
 file(GLOB rtc_utility_source
     "include/*/*.h"
-    "source/*/*.cpp")
+    "source/*/*.cpp"
+)
 
-#add_library (ray-tracing-utility STATIC 
-#    ${rtc_utility_source})
+add_library (ray-tracing-utility STATIC 
+    ${rtc_utility_source}
+)
 
 add_subdirectory (test)

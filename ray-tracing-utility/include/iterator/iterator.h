@@ -3,7 +3,7 @@
 
 #include <tuple> 
 #include <cstdint>
-#include <cctype>
+#include <cstdint>
 
 namespace ray_tracing_utility
 {

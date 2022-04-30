@@ -31,8 +31,8 @@ namespace ray_tracing_utility
 
             inline IteratorExp2(uint32_t width, uint32_t height);
             virtual ~IteratorExp2() = default;
-            std::tuple<uint32_t, uint32_t> get_size() const override;
-            std::tuple<uint32_t, uint32_t, uint32_t> next() override;
+            inline std::tuple<uint32_t, uint32_t> get_size() const override;
+            inline std::tuple<uint32_t, uint32_t, uint32_t> next() override;
         };
 
         IteratorExp2::IteratorExp2(uint32_t width, uint32_t height)
