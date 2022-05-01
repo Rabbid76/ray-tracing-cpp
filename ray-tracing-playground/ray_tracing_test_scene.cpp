@@ -2,9 +2,8 @@
 #include "core/test_scene_factory.h"
 #include "renderer/renderer_async.h"
 #include "viewer/viewer_cimg.h"
-#include <math/random.h>
-#include <memory>
 #include <iostream>
+#include <memory>
 #include <string>
 #define STB_IMAGE_WRITE_IMPLEMENTATION 
 #define __STDC_LIB_EXT1__
@@ -36,7 +35,7 @@ int main()
             {
                 if (!renderer.is_finished())
                     return;
-                std::string filename = "test_scene.png";
+                std::string filename = "rendering/test_scene.png";
                 auto [cx, cy] = renderer.get_buffer_size();
                 auto rgba8 = renderer.get_rgba8();
                 stbi_write_png(
