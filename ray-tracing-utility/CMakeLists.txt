@@ -9,6 +9,8 @@ project (ray-tracing-utility)
 include_directories (
     "./include"
     "../ray-tracing-core/include"
+    "../lib"
+    "../lib/boost/property_tree/include"
 )
 
 # Add source to this project's executable.
