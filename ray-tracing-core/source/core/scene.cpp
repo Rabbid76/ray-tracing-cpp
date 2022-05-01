@@ -8,20 +8,20 @@ namespace ray_tracing_core
     {
         Scene::Scene(const Configuration& configuration, const Camera& camera, const environment::Sky& sky, const ShapeNode& world)
             : configuration(configuration)
-            , camera(camera)
-            , sky(sky)
-            , world(world)
+            , camera(&camera)
+            , sky(&sky)
+            , world(&world)
         {}
 
         Color Scene::ray_trace_color(double u, double v) const
         {
             Color color(0);
-            auto ray = camera.ray_to(u, v);
+            auto ray = camera->ray_to(u, v);
             Color attenuation(1.0f);
             for (uint32_t i = 0; i < configuration.maximum_depth; ++i)
             {
                 HitRecord hit_record;
-                if (world.hit(ray, { 0.001, std::numeric_limits<math::Distance>::max() }, hit_record))
+                if (world->hit(ray, { 0.001, std::numeric_limits<math::Distance>::max() }, hit_record))
                 {
                     auto emitted = hit_record.material->emitt(ray, hit_record);
                     color += attenuation * emitted;
@@ -75,7 +75,7 @@ namespace ray_tracing_core
                 }
                 else
                 {
-                    color += attenuation * sky.color_at(ray);
+                    color += attenuation * sky->color_at(ray);
                     break;
                 }
             }

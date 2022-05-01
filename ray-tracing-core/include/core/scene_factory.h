@@ -1,5 +1,5 @@
 #ifndef __RTC__CORE__SCENE_FACTORY__H__
-#define __RTC__CORE__SCEJE_FACTORY__H__
+#define __RTC__CORE__SCENE_FACTORY__H__
 
 namespace ray_tracing_core
 {
