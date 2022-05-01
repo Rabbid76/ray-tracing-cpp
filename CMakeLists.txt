@@ -24,7 +24,6 @@ include_directories (
     "test-suite"
     "lib/glm"
     "lib"
-    "lib/boost/property_tree/include"
 )
 
 ENABLE_TESTING()
