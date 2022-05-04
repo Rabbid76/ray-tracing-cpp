@@ -8,7 +8,7 @@
 
 > OpenGL Mathematics (GLM) is a header only C++ mathematics library for graphics software based on the OpenGL Shading Language (GLSL) specifications.
 
-[g-truc/glm](https://github.com/g-truc/glm)
+[GitHub - g-truc/glm](https://github.com/g-truc/glm)
 
 ## STB
 
@@ -16,7 +16,15 @@
 
 > A portable public domain C/C++ utility library in one header file.
 
-[nothings/stb](https://github.com/nothings/stb)
+[GitHub - nothings/stb](https://github.com/nothings/stb)
+
+## RapidJSON
+
+[RapidJSON](https://rapidjson.org/)
+
+> A fast JSON parser/generator for C++ with both SAX/DOM style API
+
+[GitHub - Tencent/rapidjson](https://github.com/Tencent/rapidjson)
 
 ## Boost
 

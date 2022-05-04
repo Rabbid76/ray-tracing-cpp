@@ -7,3 +7,6 @@
 [submodule "lib/CImg"]
 	path = lib/CImg
 	url = https://github.com/dtschump/CImg
+[submodule "lib/rapidjson"]
+	path = lib/rapidjson
+	url = https://github.com/Tencent/rapidjson

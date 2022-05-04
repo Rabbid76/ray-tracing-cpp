@@ -24,11 +24,12 @@ include_directories (
     "test-suite"
     "lib/glm"
     "lib"
+    "lib/rapidjson/include"
 )
 
-ENABLE_TESTING()
+ENABLE_TESTING ()
 
-# Include sub-projects.
-add_subdirectory ("ray-tracing-core")
-add_subdirectory ("ray-tracing-utility")
-add_subdirectory ("ray-tracing-playground")
+add_subdirectory (lib)
+add_subdirectory (ray-tracing-core)
+add_subdirectory (ray-tracing-utility)
+add_subdirectory (ray-tracing-playground)

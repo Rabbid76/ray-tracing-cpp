@@ -10,6 +10,7 @@ include_directories (
     "./include"
     "../ray-tracing-core/include"
     "../lib"
+    "../lib/rapidjson/include"
 )
 
 # Add source to this project's executable.
