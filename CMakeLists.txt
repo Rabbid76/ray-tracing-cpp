@@ -29,7 +29,6 @@ include_directories (
 
 ENABLE_TESTING ()
 
-add_subdirectory (lib)
 add_subdirectory (ray-tracing-core)
 add_subdirectory (ray-tracing-utility)
 add_subdirectory (ray-tracing-playground)

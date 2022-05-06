@@ -1,20 +1,20 @@
 {
-    "configuration_id": 12,
-    "camera_id": 11,
-    "sky_id": 10,
-    "root_node_id": 9,
+    "configuration_id": "config",
+    "camera_id": "camera",
+    "sky_id": "sky",
+    "root_node_id": "root",
     "objects": [
-        { "type": "ConstantTexture", "id": 1, "color": [0.5, 0.1, 0.1, 1] },
-        { "type": "ConstantTexture", "id": 2, "color": [0.1, 0.1, 0.1, 1] },
-        { "type": "LambertianMaterial", "id": 3, "albedo": 1 },
-        { "type": "LambertianMaterial", "id": 4, "albedo": 2 },
-        { "type": "Sphere", "id": 5, "center": 0, "radius": 0.5 },
-        { "type": "Sphere", "id": 6, "center": [0, -1000.5, 0], "radius": 1000 },
-        { "type": "Shape", "id": 7, "geometry": 5, "material": 3 },
-        { "type": "Shape", "id": 8, "geometry": 6, "material": 4 },
-        { "type": "Collection", "id": 9, "shapes": [7, 8] },
-        { "type": "Sky", "id": 10, "nadir": [1, 1, 1], "zenith": [0.5, 0.7, 1] },
-        { "type": "CameraLookAt", "id": 11, "look_from": [ 0, 0, 1 ], "look_at": 0, "up": [ 0, 1, 0 ], "fov": 90 },
-        { "type": "Configuration", "id": 12, "maximum_depth": 50 }
+        { "type": "ConstantTexture", "id": "t1", "color": [0.5, 0.1, 0.1, 1] },
+        { "type": "ConstantTexture", "id": "t2", "color": [0.1, 0.1, 0.1, 1] },
+        { "type": "LambertianMaterial", "id": "m1", "albedo": "t1" },
+        { "type": "LambertianMaterial", "id": "m2", "albedo": "t2" },
+        { "type": "Sphere", "id": "g1", "center": 0, "radius": 0.5 },
+        { "type": "Sphere", "id": "g2", "center": [0, -1000.5, 0], "radius": 1000 },
+        { "type": "Shape", "id": "s1", "geometry": "g1", "material": "m1" },
+        { "type": "Shape", "id": "s2", "geometry": "g2", "material": "m2" },
+        { "type": "Collection", "id": "root", "shapes": ["s1", "s2"] },
+        { "type": "Sky", "id": "sky", "nadir": [1, 1, 1], "zenith": [0.5, 0.7, 1] },
+        { "type": "CameraLookAt", "id": "camera", "look_from": [ 0, 0, 1 ], "look_at": 0, "up": [ 0, 1, 0 ], "fov": 90 },
+        { "type": "Configuration", "id": "config", "maximum_depth": 50 }
     ]
 }

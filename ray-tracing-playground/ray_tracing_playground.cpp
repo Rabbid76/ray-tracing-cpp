@@ -10,6 +10,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
+#include <map>
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #define __STDC_LIB_EXT1__
 #include <stb/stb_image_write.h>
@@ -21,11 +22,39 @@ using namespace ray_tracing_utility;
 
 class SceneReader
 {
-private:
-    core::SceneObjectContainer scene_objects;
+public:
+    using ObjectDecoderMap = std::map<std::string, void (SceneReader::*)(const rapidjson::Document::ConstObject&)>;
 
+private:
+    static ObjectDecoderMap object_decoder_map;
+    core::SceneObjectContainer scene_objects;
+   
 public:
     void read_scene_from_json(const rapidjson::Document &doucment);
+
+private: 
+    void read_scene_objects_array(const rapidjson::Value &scene_objects);
+    void read_scene_object(const rapidjson::Value &scene_object);
+    void read_constant_texture(const rapidjson::Document::ConstObject &scene_object);
+    void read_lambertian_material(const rapidjson::Document::ConstObject& scene_object);
+    void read_sphere(const rapidjson::Document::ConstObject& scene_object);
+    void read_shape(const rapidjson::Document::ConstObject& scene_object);
+    void read_collection(const rapidjson::Document::ConstObject& scene_object);
+    void read_sky(const rapidjson::Document::ConstObject& scene_object);
+    void read_camera_look_at(const rapidjson::Document::ConstObject& scene_object);
+    void read_configuration(const rapidjson::Document::ConstObject& scene_object);
+};
+
+SceneReader::ObjectDecoderMap SceneReader::object_decoder_map =
+{
+    { "ConstantTexture", &SceneReader::read_constant_texture },
+    { "LambertianMaterial", &SceneReader::read_lambertian_material },
+    { "Sphere", &SceneReader::read_sphere },
+    { "Shape", &SceneReader::read_shape },
+    { "Collection", &SceneReader::read_collection },
+    { "Sky", &SceneReader::read_sky },
+    { "CameraLookAt", &SceneReader::read_camera_look_at },
+    { "Configuration", &SceneReader::read_configuration },
 };
 
 int main()
@@ -88,6 +117,61 @@ int main()
 
 void SceneReader::read_scene_from_json(const rapidjson::Document& doucment)
 {
-    if (!doucment.HasMember("objects"))
-        throw std::runtime_error(utility::formatter() << "\"objects\" not found");
+    read_scene_objects_array(doucment["objects"]);
+}
+
+void SceneReader::read_scene_objects_array(const rapidjson::Value &objects_value)
+{
+    for (auto &scene_object : objects_value.GetArray()) 
+        read_scene_object(scene_object);
+}
+
+void SceneReader::read_scene_object(const rapidjson::Value &object_value) {
+    auto scene_object = object_value.GetObject();
+    auto &type_value = scene_object["type"];
+    std::string type = type_value.GetString();
+    auto decoder_it = object_decoder_map.find(type);
+    if (decoder_it == object_decoder_map.end())
+        throw std::runtime_error(utility::formatter() << "Unknown \"type\": \"" << type << "\"");
+    (this->*decoder_it->second)(scene_object);
+}
+
+void SceneReader::read_constant_texture(const rapidjson::Document::ConstObject& scene_object)
+{
+    auto& id_value = scene_object["id"];
+}
+
+void SceneReader::read_lambertian_material(const rapidjson::Document::ConstObject& scene_object)
+{
+    auto& id_value = scene_object["id"];
+}
+
+void SceneReader::read_sphere(const rapidjson::Document::ConstObject& scene_object)
+{
+    auto& id_value = scene_object["id"];
+}
+
+void SceneReader::read_shape(const rapidjson::Document::ConstObject& scene_object)
+{
+    auto& id_value = scene_object["id"];
+}
+
+void SceneReader::read_collection(const rapidjson::Document::ConstObject& scene_object)
+{
+    auto& id_value = scene_object["id"];
+}
+
+void SceneReader::read_sky(const rapidjson::Document::ConstObject& scene_object)
+{
+    auto& id_value = scene_object["id"];
+}
+
+void SceneReader::read_camera_look_at(const rapidjson::Document::ConstObject& scene_object)
+{
+    auto& id_value = scene_object["id"];
+}
+
+void SceneReader::read_configuration(const rapidjson::Document::ConstObject& scene_object)
+{
+    auto& id_value = scene_object["id"];
 }

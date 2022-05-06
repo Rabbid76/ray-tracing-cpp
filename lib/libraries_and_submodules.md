@@ -22,7 +22,8 @@
 
 [RapidJSON](https://rapidjson.org/)
 
-> A fast JSON parser/generator for C++ with both SAX/DOM style API
+> A fast JSON parser/generator for C++ with both SAX/DOM style API  
+> RapidJSON is self-contained and header-only.
 
 [GitHub - Tencent/rapidjson](https://github.com/Tencent/rapidjson)
 
