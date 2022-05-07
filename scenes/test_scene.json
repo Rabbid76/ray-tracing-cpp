@@ -4,7 +4,7 @@
     "sky_id": "sky",
     "root_node_id": "root",
     "objects": [
-        { "type": "ConstantTexture", "id": "t1", "color": [0.5, 0.1, 0.1, 1] },
+        { "type": "ConstantTexture", "id": "t1", "color": [0.5, 0.1, 0.1], "opacity": 1 },
         { "type": "ConstantTexture", "id": "t2", "color": [0.1, 0.1, 0.1, 1] },
         { "type": "LambertianMaterial", "id": "m1", "albedo": "t1" },
         { "type": "LambertianMaterial", "id": "m2", "albedo": "t2" },
@@ -14,7 +14,7 @@
         { "type": "Shape", "id": "s2", "geometry": "g2", "material": "m2" },
         { "type": "Collection", "id": "root", "shapes": ["s1", "s2"] },
         { "type": "Sky", "id": "sky", "nadir": [1, 1, 1], "zenith": [0.5, 0.7, 1] },
-        { "type": "CameraLookAt", "id": "camera", "look_from": [ 0, 0, 1 ], "look_at": 0, "up": [ 0, 1, 0 ], "fov": 90 },
+        { "type": "CameraLookAt", "id": "camera", "look_from": [0, 0, 1], "look_at": 0, "up": [0, 1, 0], "fov": 90 },
         { "type": "Configuration", "id": "config", "maximum_depth": 50 }
     ]
 }

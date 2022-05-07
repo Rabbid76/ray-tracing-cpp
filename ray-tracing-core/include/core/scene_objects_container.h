@@ -2,6 +2,7 @@
 #define __RTC__CORE__SCENE_OBJECTS_CONTAINER__H__
 
 #include "core/camera.h"
+#include "core/configuration.h"
 #include "core/shape_node.h"
 #include "environment/sky.h"
 #include "geometry/geometry.h"
@@ -23,6 +24,7 @@ namespace ray_tracing_core
 			std::vector<std::shared_ptr<core::ShapeNode>> shape_nodes;
 			std::vector<std::shared_ptr<environment::Sky>> skys;
 			std::vector<std::shared_ptr<core::Camera>> cameras;
+			std::vector<std::shared_ptr<core::Configuration>> configurations;
 		};
 	}
 }

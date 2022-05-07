@@ -26,7 +26,6 @@ int main()
         .set_aspect(aspect)
         .new_scene());
 
-    std::cout << "render" << std::endl;
     renderer::RendererAsync renderer(2);
     renderer.render(*scene, { cx, cy }, samples);
 
