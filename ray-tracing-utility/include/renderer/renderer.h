@@ -2,7 +2,7 @@
 #define __RTU__RENDER__RENDERER_H__
 
 #include "math/types.h"
-#include "core/Scene.h"
+#include "core/scene.h"
 #include <cstdint>
 #include <tuple>
 #include <vector>

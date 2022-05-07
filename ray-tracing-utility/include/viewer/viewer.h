@@ -1,7 +1,7 @@
 #ifndef __RTU__VIEWER__VIEWER_H__
 #define __RTU__VIEWER__VIEWER_H__
 
-#include "renderer/Renderer.h"
+#include "renderer/renderer.h"
 #include <functional>
 
 namespace ray_tracing_utility

@@ -14,7 +14,6 @@
 #include <algorithm>
 #include <iterator>
 #define STB_IMAGE_WRITE_IMPLEMENTATION
-#define __STDC_LIB_EXT1__
 #include <stb/stb_image_write.h>
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"

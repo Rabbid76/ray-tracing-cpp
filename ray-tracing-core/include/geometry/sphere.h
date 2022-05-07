@@ -3,7 +3,7 @@
 
 #include "geometry.h"
 #include <math/types.h>
-#include <math/Sphere.h>
+#include <math/sphere.h>
 
 namespace ray_tracing_core
 {

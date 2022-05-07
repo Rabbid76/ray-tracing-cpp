@@ -1,7 +1,7 @@
 #include "scene_test.h"
 #include <core/scene.h>
 #include <core/shape.h>
-#include <geometry/Sphere.h>
+#include <geometry/sphere.h>
 #include <texture/constant_texture.h>
 #include <material/lambertian_material.h>
 #include <rtc_test_assert.h>

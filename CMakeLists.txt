@@ -20,6 +20,12 @@ endif()
 
 project ("ray-tracing-cpp")
 
+find_package(X11)
+if(X11_FOUND)
+    add_definitions(-DCMAKE_HAS_X)
+    include_directories(${X11_INCLUDE_DIR})
+endif()
+
 include_directories (
     "test-suite"
     "lib/glm"

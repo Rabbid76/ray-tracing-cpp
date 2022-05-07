@@ -2,11 +2,8 @@
 #include "core/test_scene_factory.h"
 #include "renderer/renderer_async.h"
 #include "viewer/viewer_cimg.h"
-#include <iostream>
 #include <memory>
-#include <string>
-#define STB_IMAGE_WRITE_IMPLEMENTATION 
-#define __STDC_LIB_EXT1__
+#define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb/stb_image_write.h>
 
 using namespace ray_tracing_core;
