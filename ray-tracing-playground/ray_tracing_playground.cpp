@@ -13,8 +13,6 @@
 #include <map>
 #include <algorithm>
 #include <iterator>
-#define STB_IMAGE_WRITE_IMPLEMENTATION
-#include <stb/stb_image_write.h>
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
@@ -26,6 +24,11 @@
 #include "geometry/sphere.h"
 #include "material/lambertian_material.h"
 #include "texture/constant_texture.h"
+#ifdef WIN32
+#define __STDC_LIB_EXT1__
+#endif
+#define STB_IMAGE_WRITE_IMPLEMENTATION
+#include <stb/stb_image_write.h>
 
 using namespace ray_tracing_core;
 using namespace ray_tracing_utility;

@@ -3,6 +3,9 @@
 #include "renderer/renderer_async.h"
 #include "viewer/viewer_cimg.h"
 #include <memory>
+#ifdef WIN32
+#define __STDC_LIB_EXT1__
+#endif
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb/stb_image_write.h>
 
