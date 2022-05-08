@@ -11,7 +11,7 @@ namespace ray_tracing_core
 			: public SceneFactory
 		{
 		public:
-			Scene* new_scene() const override;
+			Scene* new_scene(const std::string& argument = "") const override;
 		};
 	}
 }

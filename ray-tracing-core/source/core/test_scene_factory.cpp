@@ -47,7 +47,7 @@ namespace
     };
 }
 
-Scene* TestSceneFactory::new_scene() const
+Scene* TestSceneFactory::new_scene(const std::string& argument) const
 {
     return new TestScene(configuration, aspect);
 }

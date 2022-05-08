@@ -12,7 +12,7 @@ namespace ray_tracing_core
     {
         class Scene
         {
-        private:
+        protected:
             Configuration configuration;
             const Camera* camera = nullptr;
             const environment::Sky* sky = nullptr;
@@ -20,6 +20,7 @@ namespace ray_tracing_core
 
         public:
             Scene() = default;
+            Scene(const Scene&) = default;
             Scene(const Configuration& configuration, const Camera& camera, const environment::Sky& sky, const ShapeNode& world);
             Scene& operator=(const Scene&) = default;
             Color ray_trace_color(double u, double v) const;
@@ -27,6 +28,10 @@ namespace ray_tracing_core
             void set_camera(const Camera* new_camera) { camera = new_camera; }
             void set_sky(const environment::Sky* new_sky) { sky = new_sky; }
             void set_world(const ShapeNode* new_world) { world = new_world; }
+            const Configuration& get_configuration() const { return configuration; }
+            const Camera* get_camera() const { return camera; }
+            const environment::Sky* get_sky() const { return sky; }
+            const ShapeNode* get_world() const { return world; }
         };
     }
 }

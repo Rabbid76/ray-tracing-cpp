@@ -1,6 +1,9 @@
 #ifndef __RTC__CORE__SCENE_FACTORY__H__
 #define __RTC__CORE__SCENE_FACTORY__H__
 
+#include "core/configuration.h"
+#include <string>
+
 namespace ray_tracing_core
 {
 	namespace core
@@ -17,7 +20,7 @@ namespace ray_tracing_core
 			inline SceneFactory &set_configuration(const Configuration &new_configuration);
 			inline SceneFactory &set_aspect(double new_aspect);
 
-			virtual Scene *new_scene() const = 0;
+			virtual Scene *new_scene(const std::string &argument = "") const = 0;
 		};
 
 		SceneFactory &SceneFactory::set_configuration(const Configuration &new_configuration)
