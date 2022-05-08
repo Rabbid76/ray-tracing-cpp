@@ -18,6 +18,12 @@ if(X11_FOUND)
     target_link_libraries(ray-tracing-core-plyaground ${X11_LIBRARIES})
 endif()
 
+add_executable(ray-tracing-core-json-scene ray_tracing_json_scene.cpp)
+target_link_libraries(ray-tracing-core-json-scene ray-tracing-core ray-tracing-utility)
+if(X11_FOUND)
+	target_link_libraries(ray-tracing-core-json-scene ${X11_LIBRARIES})
+endif()
+
 add_executable(ray-tracing-core-test-scene ray_tracing_test_scene.cpp)
 target_link_libraries(ray-tracing-core-test-scene ray-tracing-core ray-tracing-utility)
 if(X11_FOUND)

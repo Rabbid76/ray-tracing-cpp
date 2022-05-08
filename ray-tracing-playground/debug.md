@@ -20,6 +20,13 @@ _launch.vs.json_
       "projectTarget": "ray-tracing-core-test-scene.exe (ray-tracing-playground\\ray-tracing-core-test-scene.exe)",
       "name": "ray-tracing-core-test-scene.exe (ray-tracing-playground\\ray-tracing-core-test-scene.exe)",
       "currentDir": "${workspaceRoot}"
+    },
+    {
+      "type": "default",
+      "project": "CMakeLists.txt",
+      "projectTarget": "ray-tracing-core-json-scene.exe (ray-tracing-playground\\ray-tracing-core-json-scene.exe)",
+      "name": "ray-tracing-core-json-scene.exe (ray-tracing-playground\\ray-tracing-core-json-scene.exe)",
+      "currentDir": "${workspaceRoot}"
     }
   ]
 }
