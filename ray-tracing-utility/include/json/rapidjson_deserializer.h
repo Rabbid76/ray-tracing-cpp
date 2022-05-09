@@ -71,6 +71,7 @@ namespace ray_tracing_utility::json
         void read_scene_object(const rapidjson::Value& scene_object);
         void read_constant_texture(const rapidjson::Document::ConstObject& scene_object);
         void read_lambertian_material(const rapidjson::Document::ConstObject& scene_object);
+        void read_metal_material(const rapidjson::Document::ConstObject& scene_object);
         void read_sphere(const rapidjson::Document::ConstObject& scene_object);
         void read_shape(const rapidjson::Document::ConstObject& scene_object);
         void read_collection(const rapidjson::Document::ConstObject& scene_object);

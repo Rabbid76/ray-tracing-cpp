@@ -10,6 +10,7 @@
 #include "environment/sky.h"
 #include "geometry/sphere.h"
 #include "material/lambertian_material.h"
+#include "material/metal_material_test.h"
 #include "texture/constant_texture.h"
 #include "utility/std_helper.h"
 #include <string>
@@ -22,6 +23,7 @@ RapidjsonSceneDeserializer::ObjectDecoderMap RapidjsonSceneDeserializer::object_
 {
     { "ConstantTexture", &RapidjsonSceneDeserializer::read_constant_texture },
     { "LambertianMaterial", &RapidjsonSceneDeserializer::read_lambertian_material },
+    { "MetalMaterial", &RapidjsonSceneDeserializer::read_metal_material },
     { "Sphere", &RapidjsonSceneDeserializer::read_sphere },
     { "Shape", &RapidjsonSceneDeserializer::read_shape },
     { "Collection", &RapidjsonSceneDeserializer::read_collection },
@@ -173,6 +175,14 @@ void RapidjsonSceneDeserializer::read_lambertian_material(const rapidjson::Docum
     auto id = read_id(scene_object["id"]);
     auto albedo = texture_map.get(read_id(scene_object["albedo"]));
     material_map.add(id, new material::LambertianMaterial(albedo));
+}
+
+void RapidjsonSceneDeserializer::read_metal_material(const rapidjson::Document::ConstObject& scene_object)
+{
+    auto id = read_id(scene_object["id"]);
+    auto fuzz = scene_object["fuzz"].GetDouble();
+    auto albedo = texture_map.get(read_id(scene_object["albedo"]));
+    material_map.add(id, new material::MetalMaterial(fuzz, albedo));
 }
 
 void RapidjsonSceneDeserializer::read_sphere(const rapidjson::Document::ConstObject& scene_object)
