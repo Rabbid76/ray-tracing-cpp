@@ -38,20 +38,13 @@ core::Scene* SceneDeserializer::new_scene(const std::string& serialized_json) co
 {
     auto json_scene = new JsonScene;
     RapidjsonSceneDeserializer reader(json_scene->get_scene_objects(), aspect);
-    rapidjson::Document scene_document;
     try
     {
-        scene_document.Parse(serialized_json.c_str(), serialized_json.size());
-        if (scene_document.HasParseError()) {
-            throw std::runtime_error(utility::formatter() <<
-                "json parse error" << scene_document.GetParseError() <<
-                "(" << scene_document.GetErrorOffset() << ")");
-        }
-        auto scene = reader.read_scene_from_json(scene_document);
+        auto scene = reader.read_scene_from_json(serialized_json);
         json_scene->set_from_scene(scene);
         delete scene;
     }
-    catch (std::exception e)
+    catch (const std::exception &e)
     {
         std::cout << "error reading scene: " << e.what() << std::endl;
         throw;

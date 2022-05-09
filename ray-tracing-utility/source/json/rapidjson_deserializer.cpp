@@ -43,16 +43,24 @@ RapidjsonSceneDeserializer::RapidjsonSceneDeserializer(
     , configuration_map(&scene_objects->configurations)
 {}
 
-core::Scene* RapidjsonSceneDeserializer::read_scene_from_json(const rapidjson::Document& doucment)
+core::Scene* RapidjsonSceneDeserializer::read_scene_from_json(const std::string &serialized_json)
 {
-    read_scene_objects_array(doucment["objects"]);
-    auto configuration = doucment.HasMember("configuration_id")
-        ? *configuration_map.get(read_id(doucment["configuration_id"]))
+    rapidjson::Document json_document;
+    json_document.Parse(serialized_json.c_str(), serialized_json.size());
+    if (json_document.HasParseError()) {
+        throw std::runtime_error(utility::formatter() <<
+              "json parse error" << json_document.GetParseError() <<
+              "(" << json_document.GetErrorOffset() << ")");
+    }
+
+    read_scene_objects_array(json_document["objects"]);
+    auto configuration = json_document.HasMember("configuration_id")
+        ? *configuration_map.get(read_id(json_document["configuration_id"]))
         : core::Configuration();
-    auto camera = camera_map.get(read_id(doucment["camera_id"]));
-    auto sky = environment_map.get(read_id(doucment["sky_id"]));
-    auto world = shape_map.get(read_id(doucment["root_node_id"]));
-    core::Scene *scene = new core::Scene(configuration, *camera, *sky, *world);
+    auto camera = camera_map.get(read_id(json_document["camera_id"]));
+    auto sky = environment_map.get(read_id(json_document["sky_id"]));
+    auto world = shape_map.get(read_id(json_document["root_node_id"]));
+    auto *scene = new core::Scene(configuration, *camera, *sky, *world);
     return scene;
 }
 
@@ -92,8 +100,8 @@ core::Color RapidjsonSceneDeserializer::read_color(const rapidjson::Value& color
         return core::Color(static_cast<float>(array_values[0]));
     if (array_values.size() != 3)
         throw std::runtime_error(utility::formatter() << "\"" << to_string(color_value) << "\"" << " is not a RGB color");
-    return core::Color(
-        static_cast<float>(array_values[0]), static_cast<float>(array_values[1]), static_cast<float>(array_values[2]));
+    return {
+        static_cast<float>(array_values[0]), static_cast<float>(array_values[1]), static_cast<float>(array_values[2])};
 }
 
 std::tuple<core::Color, math::AlphaValue> RapidjsonSceneDeserializer::read_color_and_opacity(
@@ -125,7 +133,7 @@ math::Vector3D RapidjsonSceneDeserializer::read_vector(const rapidjson::Value& c
         return math::Vector3D(array_values[0]);
     if (array_values.size() != 3)
         throw std::runtime_error(utility::formatter() << "\"" << to_string(color_value) << "\"" << " is not vector");
-    return math::Vector3D(array_values[0], array_values[1], array_values[2]);
+    return {array_values[0], array_values[1], array_values[2]};
 }
 
 math::Point3D RapidjsonSceneDeserializer::read_point(const rapidjson::Value& color_value) {
@@ -134,7 +142,7 @@ math::Point3D RapidjsonSceneDeserializer::read_point(const rapidjson::Value& col
         return math::Point3D(array_values[0]);
     if (array_values.size() != 3)
         throw std::runtime_error(utility::formatter() << "\"" << to_string(color_value) << "\"" << " is not point");
-    return math::Point3D(array_values[0], array_values[1], array_values[2]);
+    return {array_values[0], array_values[1], array_values[2]};
 }
 
 void RapidjsonSceneDeserializer::read_scene_objects_array(const rapidjson::Value& objects_value)
@@ -149,7 +157,7 @@ void RapidjsonSceneDeserializer::read_scene_object(const rapidjson::Value& objec
     std::string type = type_value.GetString();
     auto decoder_it = object_decoder_map.find(type);
     if (decoder_it == object_decoder_map.end())
-        throw std::runtime_error(utility::formatter() << "Unknown \"type\": \"" << type << "\"");
+        throw std::runtime_error(utility::formatter() << R"(Unknown "type": ")" << type << "\"");
     (this->*decoder_it->second)(scene_object);
 }
 

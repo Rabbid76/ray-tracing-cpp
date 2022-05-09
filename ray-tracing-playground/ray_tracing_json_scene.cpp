@@ -14,20 +14,23 @@
 #endif
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include <stb/stb_image_write.h>
+#include "rapidjson/document.h"
 
 using namespace ray_tracing_core;
 using namespace ray_tracing_utility;
 
+std::tuple<uint32_t, uint32_t, uint32_t> get_configuration(const std::string &configuration_filepath);
 
 int main(int argc, char *argv[])
 {
-    const char* scene_filepath = "scenes/test_scene.json";
+    std::string scene_filepath = "scenes/test_scene.json";
     if (argc > 1)
         scene_filepath = argv[1];
+    auto dot_pos = scene_filepath.find_last_of(".");
+    auto slash_pos = scene_filepath.find_last_of("/\\");
+    std::string scene_name = scene_filepath.substr(slash_pos+1, dot_pos-slash_pos-1);
+    auto [cx, cy, samples] = get_configuration(argc > 2 ? argv[2] : "");
 
-    const uint32_t cx = 400;
-    const uint32_t cy = 200;
-    const uint32_t samples = 200;
     const double aspect = static_cast<double>(cx) / static_cast<double>(cy);
     std::shared_ptr<core::Scene> scene;
     std::fstream scene_json;
@@ -40,7 +43,7 @@ int main(int argc, char *argv[])
             .set_aspect(aspect)
             .new_scene(json_source));
     }
-    catch (std::exception e)
+    catch (const std::exception &e)
     {
         std::cout << "error reading scene: " << e.what() << std::endl;
         throw;
@@ -50,11 +53,11 @@ int main(int argc, char *argv[])
     renderer.render(*scene, { cx, cy }, samples);
 
     viewer::ViewerCImg()
-        .set_image_store_callback([](const renderer::Renderer& renderer)
+        .set_image_store_callback([&](const renderer::Renderer& renderer)
             {
                 if (!renderer.is_finished())
                     return;
-                std::string filename = "rendering/json_scene.png";
+                std::string filename = "rendering/" + scene_name + ".png";
                 auto [cx, cy] = renderer.get_buffer_size();
                 auto rgba8 = renderer.get_rgba8();
                 stbi_write_png(
@@ -65,4 +68,38 @@ int main(int argc, char *argv[])
         .preview(renderer);
 
             return 0;
+}
+
+std::tuple<uint32_t, uint32_t, uint32_t> get_configuration(const std::string &configuration_filepath) {
+    uint32_t cx = 400;
+    uint32_t cy = 200;
+    uint32_t samples = 200;
+    if (!configuration_filepath.empty())
+    {
+        std::fstream configuration_json;
+        configuration_json.exceptions(std::ifstream::failbit | std::ifstream::badbit);
+        try
+        {
+            configuration_json.open(configuration_filepath);
+            auto json_source = std::string(std::istreambuf_iterator<char>(configuration_json), std::istreambuf_iterator<char>());
+            rapidjson::Document json_document;
+            json_document.Parse(json_source.c_str(), json_source.size());
+            if (json_document.HasParseError()) {
+                throw std::runtime_error(utility::formatter() <<
+                                                              "json parse error" << json_document.GetParseError() <<
+                                                              "(" << json_document.GetErrorOffset() << ")");
+            }
+            if (json_document.HasMember("width"))
+                cx = static_cast<uint32_t>(json_document["width"].GetInt());
+            if (json_document.HasMember("height"))
+                cy = static_cast<uint32_t>(json_document["height"].GetInt());
+            if (json_document.HasMember("samples"))
+                samples = static_cast<uint32_t>(json_document["samples"].GetInt());
+        }
+        catch (const std::exception &e)
+        {
+            std::cout << "error reading configuration: " << e.what() << std::endl;
+        }
+    }
+    return { cx, cy, samples };
 }

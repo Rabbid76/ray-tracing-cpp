@@ -7,6 +7,7 @@
 #include "rapidjson/document.h"
 #include <map>
 #include <memory>
+#include <string>
 #include <vector>
 
 namespace ray_tracing_utility::json
@@ -54,13 +55,13 @@ namespace ray_tracing_utility::json
 
     public:
         RapidjsonSceneDeserializer(ray_tracing_core::core::SceneObjectContainer *scene_objects, double aspect);
-        ray_tracing_core::core::Scene* read_scene_from_json(const rapidjson::Document& doucment);
+        ray_tracing_core::core::Scene* read_scene_from_json(const std::string &serialized_json);
 
     private:
         template<typename T>
         std::string to_string(const T& object);
-        std::string read_id(const rapidjson::Value& value);
-        std::vector<double> read_array_of_values(const rapidjson::Value& value);
+        static std::string read_id(const rapidjson::Value& value);
+        static std::vector<double> read_array_of_values(const rapidjson::Value& value);
         ray_tracing_core::core::Color read_color(const rapidjson::Value& color_value);
         std::tuple<ray_tracing_core::core::Color, ray_tracing_core::math::AlphaValue> read_color_and_opacity(
             const rapidjson::Document::ConstObject& object, const std::string& color_key, const std::string& opacity_key);
