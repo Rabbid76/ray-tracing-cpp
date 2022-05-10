@@ -19,7 +19,7 @@
 using namespace ray_tracing_core;
 using namespace ray_tracing_utility;
 
-std::tuple<uint32_t, uint32_t, uint32_t> get_configuration(const std::string &configuration_filepath);
+std::tuple<uint32_t, uint32_t, uint32_t, uint32_t> get_configuration(const std::string &configuration_filepath);
 
 int main(int argc, char *argv[])
 {
@@ -29,7 +29,7 @@ int main(int argc, char *argv[])
     auto dot_pos = scene_filepath.find_last_of(".");
     auto slash_pos = scene_filepath.find_last_of("/\\");
     std::string scene_name = scene_filepath.substr(slash_pos+1, dot_pos-slash_pos-1);
-    auto [cx, cy, samples] = get_configuration(argc > 2 ? argv[2] : "");
+    auto [cx, cy, samples, threads] = get_configuration(argc > 2 ? argv[2] : "");
 
     const double aspect = static_cast<double>(cx) / static_cast<double>(cy);
     std::shared_ptr<core::Scene> scene;
@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
         throw;
     }
 
-    renderer::RendererAsync renderer(2);
+    renderer::RendererAsync renderer(threads);
     renderer.render(*scene, { cx, cy }, samples);
 
     viewer::ViewerCImg()
@@ -70,10 +70,11 @@ int main(int argc, char *argv[])
             return 0;
 }
 
-std::tuple<uint32_t, uint32_t, uint32_t> get_configuration(const std::string &configuration_filepath) {
+std::tuple<uint32_t, uint32_t, uint32_t, uint32_t> get_configuration(const std::string &configuration_filepath) {
     uint32_t cx = 400;
     uint32_t cy = 200;
     uint32_t samples = 200;
+    uint32_t threads = 2;
     if (!configuration_filepath.empty())
     {
         std::fstream configuration_json;
@@ -95,11 +96,13 @@ std::tuple<uint32_t, uint32_t, uint32_t> get_configuration(const std::string &co
                 cy = static_cast<uint32_t>(json_document["height"].GetInt());
             if (json_document.HasMember("samples"))
                 samples = static_cast<uint32_t>(json_document["samples"].GetInt());
+            if (json_document.HasMember("threads"))
+                threads = static_cast<uint32_t>(json_document["threads"].GetInt());
         }
         catch (const std::exception &e)
         {
             std::cout << "error reading configuration: " << e.what() << std::endl;
         }
     }
-    return { cx, cy, samples };
+    return { cx, cy, samples, threads };
 }

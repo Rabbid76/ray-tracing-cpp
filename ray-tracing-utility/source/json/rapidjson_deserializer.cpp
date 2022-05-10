@@ -25,6 +25,7 @@ RapidjsonSceneDeserializer::ObjectDecoderMap RapidjsonSceneDeserializer::object_
     { "ConstantTexture", &RapidjsonSceneDeserializer::read_constant_texture },
     { "LambertianMaterial", &RapidjsonSceneDeserializer::read_lambertian_material },
     { "MetalMaterial", &RapidjsonSceneDeserializer::read_metal_material },
+    { "DielectricMaterial", &RapidjsonSceneDeserializer::read_dielectric_material },
     { "Sphere", &RapidjsonSceneDeserializer::read_sphere },
     { "Shape", &RapidjsonSceneDeserializer::read_shape },
     { "Collection", &RapidjsonSceneDeserializer::read_collection },
@@ -202,7 +203,7 @@ void RapidjsonSceneDeserializer::read_metal_material(const rapidjson::Document::
 void RapidjsonSceneDeserializer::read_dielectric_material(const rapidjson::Document::ConstObject& scene_object)
 {
     auto id = read_id(scene_object["id"]);
-    auto refraction_index = read_range(scene_object["refraction"]);
+    auto refraction_index = read_range(scene_object["refraction_index"]);
     auto albedo = texture_map.get(read_id(scene_object["albedo"]));
     material_map.add(id, new material::DielectricMaterial(refraction_index, albedo));
 }

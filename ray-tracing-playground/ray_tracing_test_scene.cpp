@@ -17,6 +17,7 @@ int main()
     const uint32_t cx = 400;
     const uint32_t cy = 200;
     const uint32_t samples = 200;
+    const uint32_t threads = 2;
     const double aspect = static_cast<double>(cx) / static_cast<double>(cy);
     auto scene = std::unique_ptr<core::Scene>(core::TestSceneFactory()
         .set_configuration(core::Configuration
@@ -26,7 +27,7 @@ int main()
         .set_aspect(aspect)
         .new_scene());
 
-    renderer::RendererAsync renderer(2);
+    renderer::RendererAsync renderer(threads);
     renderer.render(*scene, { cx, cy }, samples);
 
     viewer::ViewerCImg()

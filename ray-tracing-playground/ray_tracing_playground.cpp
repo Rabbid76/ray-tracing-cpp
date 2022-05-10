@@ -24,6 +24,7 @@ int main()
     const uint32_t cx = 400;
     const uint32_t cy = 200;
     const uint32_t samples = 10;
+    const uint32_t threads = 2;
     const double aspect = static_cast<double>(cx) / static_cast<double>(cy);
     std::shared_ptr<core::Scene> scene;
     std::fstream scene_json;
@@ -42,7 +43,7 @@ int main()
         throw;
     }
  
-    renderer::RendererAsync renderer(2);
+    renderer::RendererAsync renderer(threads);
     renderer.render(*scene, { cx, cy }, samples);
 
     viewer::ViewerCImg()

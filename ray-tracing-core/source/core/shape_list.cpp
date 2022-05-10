@@ -19,12 +19,20 @@ namespace ray_tracing_core
 
         bool ShapeList::hit(const math::Ray& ray_in, const math::DistanceRange& distance_range, HitRecord& hit_record) const
         {
+            bool hit = false;
             for (auto shape : shapes)
             {
-                if (shape->hit(ray_in, distance_range, hit_record))
-                    return true;
+                HitRecord current_hit_record;
+                bool current_hit = shape->hit(ray_in, distance_range, current_hit_record);
+                if (!current_hit)
+                    continue;
+                if (!hit || current_hit_record.hit_point.distance < hit_record.hit_point.distance)
+                {
+                    hit = true;
+                    hit_record = current_hit_record;
+                }
             }
-            return false;
+            return hit;
         }
 
         math::Distance ShapeList::probability_density_function_value(

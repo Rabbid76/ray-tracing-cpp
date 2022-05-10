@@ -1,5 +1,6 @@
 {
   "width": 400,
   "height": 200,
-  "samples": 200
+  "samples": 200,
+  "threads": 2
 }
