@@ -31,7 +31,7 @@ namespace ray_tracing_core::material
         inline bool has_mask() const override;
     };
 
-    inline MetalMaterial::MetalMaterial(double fuzz, const texture::Texture* albedo)
+    MetalMaterial::MetalMaterial(double fuzz, const texture::Texture* albedo)
             : albedo_texture(albedo)
     {}
 

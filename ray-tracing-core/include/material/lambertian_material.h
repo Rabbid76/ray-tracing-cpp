@@ -30,7 +30,7 @@ namespace ray_tracing_core::material
         inline bool has_mask() const override;
     };
 
-    inline LambertianMaterial::LambertianMaterial(const texture::Texture* albedo)
+    LambertianMaterial::LambertianMaterial(const texture::Texture* albedo)
         : albedo_texture(albedo)
     {}
 

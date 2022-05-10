@@ -9,8 +9,9 @@
 #include "core/shape_list.h"
 #include "environment/sky.h"
 #include "geometry/sphere.h"
+#include "material/dielectric_material.h"
 #include "material/lambertian_material.h"
-#include "material/metal_material_test.h"
+#include "material/metal_material.h"
 #include "texture/constant_texture.h"
 #include "utility/std_helper.h"
 #include <string>
