@@ -1,4 +1,5 @@
 #include "no_material_test.h"
+#include "dielectric_material_test.h"
 #include "lambertian_material_test.h"
 #include "metal_material_test.h"
 
@@ -19,5 +20,11 @@ namespace ray_tracing_core_unit_test::material
         metal_material_emit_test();
         metal_material_has_texture_test();
         metal_material_has_mask_test();
+        dielectric_material_hit_test();
+        dielectric_material_scatter_test();
+        dielectric_material_scattering_pfd_test();
+        dielectric_material_emit_test();
+        dielectric_material_has_texture_test();
+        dielectric_material_has_mask_test();
     }
 }

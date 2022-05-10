@@ -59,8 +59,9 @@ namespace ray_tracing_utility::json
 
     private:
         template<typename T>
-        std::string to_string(const T& object);
+        static std::string to_string(const T& object);
         static std::string read_id(const rapidjson::Value& value);
+        static std::tuple<double, double> read_range(const rapidjson::Value& range_value);
         static std::vector<double> read_array_of_values(const rapidjson::Value& value);
         ray_tracing_core::core::Color read_color(const rapidjson::Value& color_value);
         std::tuple<ray_tracing_core::core::Color, ray_tracing_core::math::AlphaValue> read_color_and_opacity(
@@ -72,6 +73,7 @@ namespace ray_tracing_utility::json
         void read_constant_texture(const rapidjson::Document::ConstObject& scene_object);
         void read_lambertian_material(const rapidjson::Document::ConstObject& scene_object);
         void read_metal_material(const rapidjson::Document::ConstObject& scene_object);
+        void read_dielectric_material(const rapidjson::Document::ConstObject& scene_object);
         void read_sphere(const rapidjson::Document::ConstObject& scene_object);
         void read_shape(const rapidjson::Document::ConstObject& scene_object);
         void read_collection(const rapidjson::Document::ConstObject& scene_object);

@@ -82,6 +82,19 @@ std::string RapidjsonSceneDeserializer::read_id(const rapidjson::Value& value) {
         : value.GetString();
 }
 
+std::tuple<double, double> RapidjsonSceneDeserializer::read_range(const rapidjson::Value& range_value)
+{
+    if (range_value.IsNumber())
+    {
+        auto decimal_value = range_value.GetDouble();
+        return {decimal_value, decimal_value};
+    }
+    auto array_values = read_array_of_values(range_value);
+    if (array_values.size() != 2)
+        throw std::runtime_error(utility::formatter() << "\"" << to_string(range_value) << "\"" << " is not a range");
+    return {array_values[0], array_values[1]};
+}
+
 std::vector<double> RapidjsonSceneDeserializer::read_array_of_values(const rapidjson::Value& value)
 {
     if (value.IsNumber())
@@ -184,6 +197,14 @@ void RapidjsonSceneDeserializer::read_metal_material(const rapidjson::Document::
     auto fuzz = scene_object["fuzz"].GetDouble();
     auto albedo = texture_map.get(read_id(scene_object["albedo"]));
     material_map.add(id, new material::MetalMaterial(fuzz, albedo));
+}
+
+void RapidjsonSceneDeserializer::read_dielectric_material(const rapidjson::Document::ConstObject& scene_object)
+{
+    auto id = read_id(scene_object["id"]);
+    auto refraction_index = read_range(scene_object["refraction"]);
+    auto albedo = texture_map.get(read_id(scene_object["albedo"]));
+    material_map.add(id, new material::DielectricMaterial(refraction_index, albedo));
 }
 
 void RapidjsonSceneDeserializer::read_sphere(const rapidjson::Document::ConstObject& scene_object)

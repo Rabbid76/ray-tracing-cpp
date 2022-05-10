@@ -17,12 +17,12 @@ namespace ray_tracing_core::material
     {
     private:
 
-        math::ColorChannelRange refraction_index;
+        math::DistanceRange refraction_index;
         const texture::Texture* albedo_texture;
 
     public:
 
-        inline explicit DielectricMaterial(const math::ColorChannelRange &refraction_index, const texture::Texture* albedo);
+        inline explicit DielectricMaterial(const math::DistanceRange &refraction_index, const texture::Texture* albedo);
         ~DielectricMaterial() override = default;
         inline bool hit(const core::HitRecord &hit_record) const override;
         inline bool scatter(const math::Ray &ray, core::HitRecord &hit_record, core::ScatterRecord &scatter_record) const override;
@@ -35,7 +35,7 @@ namespace ray_tracing_core::material
         core::Color hue_to_rgb(float h);
     };
 
-    DielectricMaterial::DielectricMaterial(const math::ColorChannelRange &refraction_index, const texture::Texture* albedo)
+    DielectricMaterial::DielectricMaterial(const math::DistanceRange &refraction_index, const texture::Texture* albedo)
             : refraction_index(refraction_index)
             , albedo_texture(albedo)
     {}
