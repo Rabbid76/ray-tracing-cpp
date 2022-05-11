@@ -9,6 +9,7 @@
 #include "core/shape_list.h"
 #include "environment/sky.h"
 #include "geometry/sphere.h"
+#include "material/blend_materials.h"
 #include "material/dielectric_material.h"
 #include "material/lambertian_material.h"
 #include "material/metal_material.h"
@@ -23,6 +24,7 @@ using namespace ray_tracing_utility::json;
 RapidjsonSceneDeserializer::ObjectDecoderMap RapidjsonSceneDeserializer::object_decoder_map =
 {
     { "ConstantTexture", &RapidjsonSceneDeserializer::read_constant_texture },
+    { "BlendMaterials", &RapidjsonSceneDeserializer::read_blend_materials },
     { "LambertianMaterial", &RapidjsonSceneDeserializer::read_lambertian_material },
     { "MetalMaterial", &RapidjsonSceneDeserializer::read_metal_material },
     { "DielectricMaterial", &RapidjsonSceneDeserializer::read_dielectric_material },
@@ -183,6 +185,19 @@ void RapidjsonSceneDeserializer::read_constant_texture(const rapidjson::Document
     auto id = read_id(scene_object["id"]);
     auto [color, opacity] = read_color_and_opacity(scene_object, "color", "opacity");
     texture_map.add(id, new texture::ConstantTexture(color, opacity));
+}
+
+void RapidjsonSceneDeserializer::read_blend_materials(const rapidjson::Document::ConstObject& scene_object)
+{
+    auto id = read_id(scene_object["id"]);
+    material::BlendMaterials::Materials materials;
+    for (auto &material_value : scene_object["materials"].GetArray())
+    {
+        auto weight = material_value["weight"].GetDouble();
+        auto material = material_map.get(read_id(material_value["id"]));
+        materials.emplace_back(weight, material);
+    }
+    material_map.add(id, new material::BlendMaterials(materials));
 }
 
 void RapidjsonSceneDeserializer::read_lambertian_material(const rapidjson::Document::ConstObject& scene_object)

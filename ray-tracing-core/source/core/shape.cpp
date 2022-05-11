@@ -11,11 +11,12 @@ namespace ray_tracing_core
 
         bool Shape::hit(const math::Ray& ray_in, const math::DistanceRange& distance_range, HitRecord& hit_record) const
         {
-            if (!geometry_node->hit(ray_in, distance_range, material_node->has_texture(), hit_record))
+            auto material = material_node->material();
+            if (!geometry_node->hit(ray_in, distance_range, material->has_texture(), hit_record))
                 return false;
-            if (material_node->has_mask() && !material_node->hit(hit_record))
+            if (material->has_mask() && !material->hit(hit_record))
                 return false;
-            hit_record.material = material_node;
+            hit_record.material = material;
             return true;
         }
 
