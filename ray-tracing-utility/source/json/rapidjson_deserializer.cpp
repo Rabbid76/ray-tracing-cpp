@@ -21,32 +21,11 @@ using namespace ray_tracing_core;
 using namespace ray_tracing_utility;
 using namespace ray_tracing_utility::json;
 
-RapidjsonSceneDeserializer::ObjectDecoderMap RapidjsonSceneDeserializer::object_decoder_map =
-{
-    { "ConstantTexture", &RapidjsonSceneDeserializer::read_constant_texture },
-    { "BlendMaterials", &RapidjsonSceneDeserializer::read_blend_materials },
-    { "LambertianMaterial", &RapidjsonSceneDeserializer::read_lambertian_material },
-    { "MetalMaterial", &RapidjsonSceneDeserializer::read_metal_material },
-    { "DielectricMaterial", &RapidjsonSceneDeserializer::read_dielectric_material },
-    { "Sphere", &RapidjsonSceneDeserializer::read_sphere },
-    { "Shape", &RapidjsonSceneDeserializer::read_shape },
-    { "Collection", &RapidjsonSceneDeserializer::read_collection },
-    { "Sky", &RapidjsonSceneDeserializer::read_sky },
-    { "CameraLookAt", &RapidjsonSceneDeserializer::read_camera_look_at },
-    { "Configuration", &RapidjsonSceneDeserializer::read_configuration },
-};
-
 RapidjsonSceneDeserializer::RapidjsonSceneDeserializer(
     core::SceneObjectContainer *scene_objects, 
     double aspect)
     : aspect(aspect)
-    , texture_map(&scene_objects->textures)
-    , material_map(&scene_objects->materials)
-    , geoemtry_map(&scene_objects->geometries)
-    , shape_map(&scene_objects->shape_nodes)
-    , environment_map(&scene_objects->skys)
-    , camera_map(&scene_objects->cameras)
-    , configuration_map(&scene_objects->configurations)
+    , scene_objects(scene_objects)
 {}
 
 core::Scene* RapidjsonSceneDeserializer::read_scene_from_json(const std::string &serialized_json)
@@ -59,13 +38,17 @@ core::Scene* RapidjsonSceneDeserializer::read_scene_from_json(const std::string 
               "(" << json_document.GetErrorOffset() << ")");
     }
 
-    read_scene_objects_array(json_document["objects"]);
+    if (json_document.HasMember("objects"))
+        read_scene_objects_array(json_document["objects"]);
     auto configuration = json_document.HasMember("configuration_id")
-        ? *configuration_map.get(read_id(json_document["configuration_id"]))
+        ? *read_configuration(json_document["configuration_id"])
         : core::Configuration();
-    auto camera = camera_map.get(read_id(json_document["camera_id"]));
-    auto sky = environment_map.get(read_id(json_document["sky_id"]));
-    auto world = shape_map.get(read_id(json_document["root_node_id"]));
+    auto camera = read_camera(json_document["camera_id"]);
+    auto sky = read_environment(json_document["sky_id"]);
+    const auto &root_ids_value = json_document["root_node_ids"];
+    core::ShapeNode* world = root_ids_value.IsArray()
+        ? read_collection(root_ids_value.GetArray())
+        : shape_map.get(read_id(root_ids_value));
     auto *scene = new core::Scene(configuration, *camera, *sky, *world);
     return scene;
 }
@@ -171,114 +154,312 @@ void RapidjsonSceneDeserializer::read_scene_objects_array(const rapidjson::Value
 }
 
 void RapidjsonSceneDeserializer::read_scene_object(const rapidjson::Value& object_value) {
+    if (auto texture = read_textrue(object_value))
+        return;
+    if (auto material = read_material(object_value))
+        return;
+    if (auto geometry = read_geometry(object_value))
+        return;
+    if (auto node = read_node(object_value))
+        return;
+    if (auto node = read_environment(object_value))
+        return;
+    if (auto node = read_camera(object_value))
+        return;
+    if (auto node = read_configuration(object_value))
+        return;
+
     auto scene_object = object_value.GetObject();
-    auto& type_value = scene_object["type"];
-    std::string type = type_value.GetString();
-    auto decoder_it = object_decoder_map.find(type);
-    if (decoder_it == object_decoder_map.end())
-        throw std::runtime_error(utility::formatter() << R"(Unknown "type": ")" << type << "\"");
-    (this->*decoder_it->second)(scene_object);
+    std::string type = scene_object["type"].GetString();
+    throw std::runtime_error(utility::formatter() << R"(Unknown "type": ")" << type << "\"");
 }
 
-void RapidjsonSceneDeserializer::read_constant_texture(const rapidjson::Document::ConstObject& scene_object)
+texture::Texture* RapidjsonSceneDeserializer::read_textrue(const rapidjson::Value& object_value)
 {
-    auto id = read_id(scene_object["id"]);
+    static std::map<std::string, texture::Texture* (RapidjsonSceneDeserializer::*)(const rapidjson::Document::ConstObject&)>
+        decoder_map =
+    {
+        { "ConstantTexture", &RapidjsonSceneDeserializer::read_constant_texture },
+    };
+
+    if (!object_value.IsObject())
+        return texture_map.get(read_id(object_value));
+
+    auto scene_object = object_value.GetObject();
+    auto decoder_it = decoder_map.find(scene_object["type"].GetString());
+    if (decoder_it == decoder_map.end())
+        return nullptr;
+
+    auto texture = (this->*decoder_it->second)(scene_object);
+    if (scene_objects)
+        scene_objects->textures.push_back(std::shared_ptr<texture::Texture>(texture));
+    if (scene_object.HasMember("id"))
+    {
+        auto id = read_id(scene_object["id"]);
+        texture_map.add(id, texture);
+    }
+    return texture;
+}
+
+material::Material* RapidjsonSceneDeserializer::read_material(const rapidjson::Value& object_value)
+{
+    static std::map<std::string, material::Material* (RapidjsonSceneDeserializer::*)(const rapidjson::Document::ConstObject&)>
+        decoder_map =
+    {
+        { "BlendMaterials", &RapidjsonSceneDeserializer::read_blend_materials },
+        { "LambertianMaterial", &RapidjsonSceneDeserializer::read_lambertian_material },
+        { "MetalMaterial", &RapidjsonSceneDeserializer::read_metal_material },
+        { "DielectricMaterial", &RapidjsonSceneDeserializer::read_dielectric_material },
+    };
+
+    if (!object_value.IsObject())
+        return material_map.get(read_id(object_value));
+
+    auto scene_object = object_value.GetObject();
+    auto decoder_it = decoder_map.find(scene_object["type"].GetString());
+    if (decoder_it == decoder_map.end())
+        return nullptr;
+
+    auto material = (this->*decoder_it->second)(scene_object);
+    if (scene_objects)
+        scene_objects->materials.push_back(std::shared_ptr<material::Material>(material));
+    if (scene_object.HasMember("id"))
+    {
+        auto id = read_id(scene_object["id"]);
+        material_map.add(id, material);
+    }
+    return material;
+}
+
+geometry::Geometry* RapidjsonSceneDeserializer::read_geometry(const rapidjson::Value& object_value)
+{
+    static std::map<std::string, geometry::Geometry* (RapidjsonSceneDeserializer::*)(const rapidjson::Document::ConstObject&)>
+        decoder_map =
+    {
+        { "Sphere", &RapidjsonSceneDeserializer::read_sphere },
+    };
+
+    if (!object_value.IsObject())
+        return geometry_map.get(read_id(object_value));
+
+    auto scene_object = object_value.GetObject();
+    auto decoder_it = decoder_map.find(scene_object["type"].GetString());
+    if (decoder_it == decoder_map.end())
+        return nullptr;
+
+    auto geometry = (this->*decoder_it->second)(scene_object);
+    if (scene_objects)
+        scene_objects->geometries.push_back(std::shared_ptr<geometry::Geometry>(geometry));
+    if (scene_object.HasMember("id"))
+    {
+        auto id = read_id(scene_object["id"]);
+        geometry_map.add(id, geometry);
+    }
+    return geometry;
+}
+
+core::ShapeNode* RapidjsonSceneDeserializer::read_node(const rapidjson::Value& object_value)
+{
+    static std::map<std::string, core::ShapeNode* (RapidjsonSceneDeserializer::*)(const rapidjson::Document::ConstObject&)>
+        decoder_map =
+    {
+        { "Shape", &RapidjsonSceneDeserializer::read_shape },
+        { "Collection", &RapidjsonSceneDeserializer::read_collection },
+    };
+
+    if (!object_value.IsObject())
+        return shape_map.get(read_id(object_value));
+
+    auto scene_object = object_value.GetObject();
+    auto decoder_it = decoder_map.find(scene_object["type"].GetString());
+    if (decoder_it == decoder_map.end())
+        return nullptr;
+
+    auto node = (this->*decoder_it->second)(scene_object);
+    if (scene_objects)
+        scene_objects->shape_nodes.push_back(std::shared_ptr<core::ShapeNode>(node));
+    if (scene_object.HasMember("id"))
+    {
+        auto id = read_id(scene_object["id"]);
+        shape_map.add(id, node);
+    }
+    return node;
+}
+
+environment::Sky* RapidjsonSceneDeserializer::read_environment(const rapidjson::Value& object_value)
+{
+    static std::map<std::string, environment::Sky* (RapidjsonSceneDeserializer::*)(const rapidjson::Document::ConstObject&)>
+        decoder_map =
+    {
+        { "Sky", &RapidjsonSceneDeserializer::read_sky },
+    };
+
+    if (!object_value.IsObject())
+        return environment_map.get(read_id(object_value));
+
+    auto scene_object = object_value.GetObject();
+    auto decoder_it = decoder_map.find(scene_object["type"].GetString());
+    if (decoder_it == decoder_map.end())
+        return nullptr;
+
+    auto node = (this->*decoder_it->second)(scene_object);
+    if (scene_objects)
+        scene_objects->skys.push_back(std::shared_ptr<environment::Sky>(node));
+    if (scene_object.HasMember("id"))
+    {
+        auto id = read_id(scene_object["id"]);
+        environment_map.add(id, node);
+    }
+    return node;
+}
+
+core::Camera* RapidjsonSceneDeserializer::read_camera(const rapidjson::Value& object_value)
+{
+    static std::map<std::string, core::Camera* (RapidjsonSceneDeserializer::*)(const rapidjson::Document::ConstObject&)>
+        decoder_map =
+    {
+        { "CameraLookAt", &RapidjsonSceneDeserializer::read_camera_look_at },
+    };
+
+    if (!object_value.IsObject())
+        return camera_map.get(read_id(object_value));
+
+    auto scene_object = object_value.GetObject();
+    auto decoder_it = decoder_map.find(scene_object["type"].GetString());
+    if (decoder_it == decoder_map.end())
+        return nullptr;
+
+    auto node = (this->*decoder_it->second)(scene_object);
+    if (scene_objects)
+        scene_objects->cameras.push_back(std::shared_ptr<core::Camera>(node));
+    if (scene_object.HasMember("id"))
+    {
+        auto id = read_id(scene_object["id"]);
+        camera_map.add(id, node);
+    }
+    return node;
+}
+
+core::Configuration* RapidjsonSceneDeserializer::read_configuration(const rapidjson::Value& object_value)
+{
+    static std::map<std::string, core::Configuration* (RapidjsonSceneDeserializer::*)(const rapidjson::Document::ConstObject&)>
+        decoder_map =
+    {
+        { "Configuration", &RapidjsonSceneDeserializer::read_configuration },
+    };
+
+    if (!object_value.IsObject())
+        return configuration_map.get(read_id(object_value));
+
+    auto scene_object = object_value.GetObject();
+    auto decoder_it = decoder_map.find(scene_object["type"].GetString());
+    if (decoder_it == decoder_map.end())
+        return nullptr;
+
+    auto node = (this->*decoder_it->second)(scene_object);
+    if (scene_objects)
+        scene_objects->configurations.push_back(std::shared_ptr<core::Configuration>(node));
+    if (scene_object.HasMember("id"))
+    {
+        auto id = read_id(scene_object["id"]);
+        configuration_map.add(id, node);
+    }
+    return node;
+}
+
+texture::Texture* RapidjsonSceneDeserializer::read_constant_texture(const rapidjson::Document::ConstObject& scene_object)
+{
     auto [color, opacity] = read_color_and_opacity(scene_object, "color", "opacity");
-    texture_map.add(id, new texture::ConstantTexture(color, opacity));
+    return new texture::ConstantTexture(color, opacity);
 }
 
-void RapidjsonSceneDeserializer::read_blend_materials(const rapidjson::Document::ConstObject& scene_object)
+material::Material* RapidjsonSceneDeserializer::read_blend_materials(const rapidjson::Document::ConstObject& scene_object)
 {
-    auto id = read_id(scene_object["id"]);
     material::BlendMaterials::Materials materials;
     for (auto &material_value : scene_object["materials"].GetArray())
     {
         auto weight = material_value["weight"].GetDouble();
-        auto material = material_map.get(read_id(material_value["id"]));
+        auto material = read_material(material_value["id"]);
         materials.emplace_back(weight, material);
     }
-    material_map.add(id, new material::BlendMaterials(materials));
+    return new material::BlendMaterials(materials);
 }
 
-void RapidjsonSceneDeserializer::read_lambertian_material(const rapidjson::Document::ConstObject& scene_object)
+material::Material* RapidjsonSceneDeserializer::read_lambertian_material(const rapidjson::Document::ConstObject& scene_object)
 {
-    auto id = read_id(scene_object["id"]);
-    auto albedo = texture_map.get(read_id(scene_object["albedo"]));
-    material_map.add(id, new material::LambertianMaterial(albedo));
+    auto albedo = read_textrue(scene_object["albedo"]);
+    return new material::LambertianMaterial(albedo);
 }
 
-void RapidjsonSceneDeserializer::read_metal_material(const rapidjson::Document::ConstObject& scene_object)
+material::Material* RapidjsonSceneDeserializer::read_metal_material(const rapidjson::Document::ConstObject& scene_object)
 {
-    auto id = read_id(scene_object["id"]);
     auto fuzz = scene_object["fuzz"].GetDouble();
-    auto albedo = texture_map.get(read_id(scene_object["albedo"]));
-    material_map.add(id, new material::MetalMaterial(fuzz, albedo));
+    auto albedo = read_textrue(scene_object["albedo"]);
+    return new material::MetalMaterial(fuzz, albedo);
 }
 
-void RapidjsonSceneDeserializer::read_dielectric_material(const rapidjson::Document::ConstObject& scene_object)
+material::Material* RapidjsonSceneDeserializer::read_dielectric_material(const rapidjson::Document::ConstObject& scene_object)
 {
-    auto id = read_id(scene_object["id"]);
     auto refraction_index = read_range(scene_object["refraction_index"]);
-    auto albedo = texture_map.get(read_id(scene_object["albedo"]));
-    material_map.add(id, new material::DielectricMaterial(refraction_index, albedo));
+    auto albedo = read_textrue(scene_object["albedo"]);
+    return new material::DielectricMaterial(refraction_index, albedo);
 }
 
-void RapidjsonSceneDeserializer::read_sphere(const rapidjson::Document::ConstObject& scene_object)
+geometry::Geometry* RapidjsonSceneDeserializer::read_sphere(const rapidjson::Document::ConstObject& scene_object)
 {
-    auto id = read_id(scene_object["id"]);
     auto center = read_point(scene_object["center"]);
     auto radius = scene_object["radius"].GetDouble();
-    geoemtry_map.add(id, new geometry::Sphere(center, radius));
+    return new geometry::Sphere(center, radius);
 }
 
-void RapidjsonSceneDeserializer::read_shape(const rapidjson::Document::ConstObject& scene_object)
+core::ShapeNode* RapidjsonSceneDeserializer::read_shape(const rapidjson::Document::ConstObject& scene_object)
 {
-    auto id = read_id(scene_object["id"]);
-    auto geometry = geoemtry_map.get(read_id(scene_object["geometry"]));
-    auto material = material_map.get(read_id(scene_object["material"]));
-    shape_map.add(id, new core::Shape(geometry, material));
+    auto geometry = read_geometry(scene_object["geometry"]);
+    auto material = read_material(scene_object["material"]);
+    return new core::Shape(geometry, material);
 }
 
-void RapidjsonSceneDeserializer::read_collection(const rapidjson::Document::ConstObject& scene_object)
+core::ShapeNode* RapidjsonSceneDeserializer::read_collection(const rapidjson::Document::ConstObject& scene_object)
 {
-    auto id = read_id(scene_object["id"]);
     const auto& array_of_shapes_ids = scene_object["shapes"].GetArray();
+    return read_collection(array_of_shapes_ids);
+}
+
+ray_tracing_core::core::ShapeNode* RapidjsonSceneDeserializer::read_collection(const rapidjson::Document::ConstArray& aray_object)
+{
     std::vector<const core::ShapeNode*> shapes;
-    std::transform(array_of_shapes_ids.begin(), array_of_shapes_ids.end(), std::back_inserter(shapes),
+    std::transform(aray_object.begin(), aray_object.end(), std::back_inserter(shapes),
         [&](const rapidjson::Value& array_value) -> const core::ShapeNode*
         {
-            return shape_map.get(read_id(array_value));
+            return read_node(array_value);
         });
-    shape_map.add(id, new core::ShapeList(shapes));
+    return new core::ShapeList(shapes);
 }
 
-void RapidjsonSceneDeserializer::read_sky(const rapidjson::Document::ConstObject& scene_object)
+environment::Sky* RapidjsonSceneDeserializer::read_sky(const rapidjson::Document::ConstObject& scene_object)
 {
-    auto id = read_id(scene_object["id"]);
     auto nadir = read_color(scene_object["nadir"]);
     auto zenith = read_color(scene_object["zenith"]);
-    environment_map.add(id, new environment::Sky(environment::Sky::new_sky(nadir, zenith)));
+    return new environment::Sky(environment::Sky::new_sky(nadir, zenith));
 }
 
-void RapidjsonSceneDeserializer::read_camera_look_at(const rapidjson::Document::ConstObject& scene_object)
+core::Camera* RapidjsonSceneDeserializer::read_camera_look_at(const rapidjson::Document::ConstObject& scene_object)
 {
     double adepture = 0;
     math::Distance focus_distance = 1;
     math::TimeRange time_range = math::TimeRange{ 0, 0 };
 
-    auto id = read_id(scene_object["id"]);
     math::Point3D look_from = read_point(scene_object["look_from"]);
     const math::Point3D look_at = read_point(scene_object["look_at"]);
     const math::Vector3D up_vector = read_vector(scene_object["up"]);
     double field_of_view_y = scene_object["fov"].GetDouble();
-    camera_map.add(id, new core::Camera(
+    return new core::Camera(
         core::Camera::new_camera_from_look_at(
-            look_from, look_at, up_vector, field_of_view_y, aspect, adepture, focus_distance, time_range)));
+            look_from, look_at, up_vector, field_of_view_y, aspect, adepture, focus_distance, time_range));
 }
 
-void RapidjsonSceneDeserializer::read_configuration(const rapidjson::Document::ConstObject& scene_object)
+core::Configuration* RapidjsonSceneDeserializer::read_configuration(const rapidjson::Document::ConstObject& scene_object)
 {
-    auto id = read_id(scene_object["id"]);
     auto maximum_depth = static_cast<uint32_t>(scene_object["maximum_depth"].GetInt());
-    configuration_map.add(id, new core::Configuration{ maximum_depth });
+    return new core::Configuration{ maximum_depth };
 }

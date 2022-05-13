@@ -2,7 +2,7 @@
     "configuration_id": "config",
     "camera_id": "camera",
     "sky_id": "sky",
-    "root_node_id": "root",
+    "root_node_ids": "root",
     "objects": [
         { "type": "ConstantTexture", "id": "t1", "color": [0.8, 0.8, 0.0], "opacity": 1 },
         { "type": "ConstantTexture", "id": "t2", "color": [0.1, 0.2, 0.5], "opacity": 1 },

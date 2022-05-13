@@ -17,16 +17,12 @@ namespace ray_tracing_utility::json
     {
     private:
         std::map<std::string, T*> object_map;
-        std::vector<std::shared_ptr<T>>* object_container;
     public:
-        SceneObjectMap(std::vector<std::shared_ptr<T>>* object_container)
-            : object_container(object_container)
+        SceneObjectMap()
         {}
 
         void add(const std::string& id, T* object)
         {
-            if (object_container)
-                object_container->push_back(std::shared_ptr<T>(object));
             object_map.emplace(id, object);
         }
 
@@ -43,11 +39,11 @@ namespace ray_tracing_utility::json
         using ObjectDecoderMap = std::map<std::string, void (RapidjsonSceneDeserializer::*)(const rapidjson::Document::ConstObject&)>;
 
     private:
-        static ObjectDecoderMap object_decoder_map;
         double aspect = 1.0;
+        ray_tracing_core::core::SceneObjectContainer* scene_objects;
         SceneObjectMap<ray_tracing_core::texture::Texture> texture_map;
         SceneObjectMap<ray_tracing_core::material::Material> material_map;
-        SceneObjectMap<ray_tracing_core::geometry::Geometry> geoemtry_map;
+        SceneObjectMap<ray_tracing_core::geometry::Geometry> geometry_map;
         SceneObjectMap<ray_tracing_core::core::ShapeNode> shape_map;
         SceneObjectMap<ray_tracing_core::environment::Sky> environment_map;
         SceneObjectMap<ray_tracing_core::core::Camera> camera_map;
@@ -70,17 +66,25 @@ namespace ray_tracing_utility::json
         ray_tracing_core::math::Point3D read_point(const rapidjson::Value& color_value);
         void read_scene_objects_array(const rapidjson::Value& scene_objects);
         void read_scene_object(const rapidjson::Value& scene_object);
-        void read_constant_texture(const rapidjson::Document::ConstObject& scene_object);
-        void read_blend_materials(const rapidjson::Document::ConstObject& scene_object);
-        void read_lambertian_material(const rapidjson::Document::ConstObject& scene_object);
-        void read_metal_material(const rapidjson::Document::ConstObject& scene_object);
-        void read_dielectric_material(const rapidjson::Document::ConstObject& scene_object);
-        void read_sphere(const rapidjson::Document::ConstObject& scene_object);
-        void read_shape(const rapidjson::Document::ConstObject& scene_object);
-        void read_collection(const rapidjson::Document::ConstObject& scene_object);
-        void read_sky(const rapidjson::Document::ConstObject& scene_object);
-        void read_camera_look_at(const rapidjson::Document::ConstObject& scene_object);
-        void read_configuration(const rapidjson::Document::ConstObject& scene_object);
+        ray_tracing_core::texture::Texture* read_textrue(const rapidjson::Value& object_value);
+        ray_tracing_core::material::Material* read_material(const rapidjson::Value& object_value);
+        ray_tracing_core::geometry::Geometry* read_geometry(const rapidjson::Value& object_value);
+        ray_tracing_core::core::ShapeNode* read_node(const rapidjson::Value& object_value);
+        ray_tracing_core::environment::Sky* read_environment(const rapidjson::Value& object_value);
+        ray_tracing_core::core::Camera* read_camera(const rapidjson::Value& object_value);
+        ray_tracing_core::core::Configuration* read_configuration(const rapidjson::Value& object_value);
+        ray_tracing_core::texture::Texture* read_constant_texture(const rapidjson::Document::ConstObject& scene_object);
+        ray_tracing_core::material::Material* read_blend_materials(const rapidjson::Document::ConstObject& scene_object);
+        ray_tracing_core::material::Material* read_lambertian_material(const rapidjson::Document::ConstObject& scene_object);
+        ray_tracing_core::material::Material* read_metal_material(const rapidjson::Document::ConstObject& scene_object);
+        ray_tracing_core::material::Material* read_dielectric_material(const rapidjson::Document::ConstObject& scene_object);
+        ray_tracing_core::geometry::Geometry* read_sphere(const rapidjson::Document::ConstObject& scene_object);
+        ray_tracing_core::core::ShapeNode* read_shape(const rapidjson::Document::ConstObject& scene_object);
+        ray_tracing_core::core::ShapeNode* read_collection(const rapidjson::Document::ConstObject& scene_object);
+        ray_tracing_core::core::ShapeNode* read_collection(const rapidjson::Document::ConstArray &aray_object);
+        ray_tracing_core::environment::Sky* read_sky(const rapidjson::Document::ConstObject& scene_object);
+        ray_tracing_core::core::Camera* read_camera_look_at(const rapidjson::Document::ConstObject& scene_object);
+        ray_tracing_core::core::Configuration* read_configuration(const rapidjson::Document::ConstObject& scene_object);
     };
 }
 
