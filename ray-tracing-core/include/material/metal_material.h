@@ -32,7 +32,8 @@ namespace ray_tracing_core::material
     };
 
     MetalMaterial::MetalMaterial(double fuzz, const texture::Texture* albedo)
-            : albedo_texture(albedo)
+            : fuzz(fuzz)
+            , albedo_texture(albedo)
     {}
 
     bool MetalMaterial::hit(const core::HitRecord &hit_record) const

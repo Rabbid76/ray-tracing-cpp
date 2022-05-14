@@ -2,6 +2,7 @@
 #include <math/constants.h>
 #include <cmath>
 
+
 namespace ray_tracing_core
 {
     namespace math
@@ -11,18 +12,25 @@ namespace ray_tracing_core
             std::uniform_real_distribution<Distance>(0.0, 1.0);
         std::uniform_real_distribution<Distance> RandomGenerator::distribution_unit =
             std::uniform_real_distribution<Distance>(-1.0, 1.0);
+        std::uniform_int_distribution<uint32_t> RandomGenerator::distribution_axis =
+            std::uniform_int_distribution<uint32_t>(0, 2);
 
-        Distance RandomGenerator::random_size(void) const
+        uint32_t RandomGenerator::random_axis() const
+        {
+            return distribution_axis(generator);
+        }
+
+        Distance RandomGenerator::random_size() const
         {
             return distribution_size(generator);
         }
 
-        Distance RandomGenerator::random_unit(void) const
+        Distance RandomGenerator::random_unit() const
         {
             return distribution_unit(generator);
         }
 
-        Vector3D RandomGenerator::random_in_unit_sphere(void) const
+        Vector3D RandomGenerator::random_in_unit_sphere() const
         {
             Vector3D random_vector;
             do
@@ -33,7 +41,7 @@ namespace ray_tracing_core
             return random_vector;
         }
 
-        Vector3D RandomGenerator::random_cosine_direction(void) const
+        Vector3D RandomGenerator::random_cosine_direction() const
         {
             auto r1 = random_size();
             auto r2 = random_size();

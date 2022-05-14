@@ -2,6 +2,7 @@
 #include "rapidjson/document.h"
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
+#include "core/bvh_node.h"
 #include "core/camera.h"
 #include "core/configuration.h"
 #include "core/scene.h"
@@ -425,7 +426,7 @@ core::ShapeNode* RapidjsonSceneDeserializer::read_collection(const rapidjson::Do
     return read_collection(array_of_shapes_ids);
 }
 
-ray_tracing_core::core::ShapeNode* RapidjsonSceneDeserializer::read_collection(const rapidjson::Document::ConstArray& aray_object)
+core::ShapeNode* RapidjsonSceneDeserializer::read_collection(const rapidjson::Document::ConstArray& aray_object)
 {
     std::vector<const core::ShapeNode*> shapes;
     std::transform(aray_object.begin(), aray_object.end(), std::back_inserter(shapes),
@@ -433,7 +434,9 @@ ray_tracing_core::core::ShapeNode* RapidjsonSceneDeserializer::read_collection(c
         {
             return read_node(array_value);
         });
-    return new core::ShapeList(shapes);
+    return shapes.size() > 1
+        ? static_cast<core::ShapeNode*>(new core::BvhNode(shapes))
+        : static_cast<core::ShapeNode*>(new core::ShapeList(shapes));
 }
 
 environment::Sky* RapidjsonSceneDeserializer::read_sky(const rapidjson::Document::ConstObject& scene_object)

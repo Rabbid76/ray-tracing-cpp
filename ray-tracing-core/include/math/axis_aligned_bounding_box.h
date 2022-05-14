@@ -22,7 +22,7 @@ namespace ray_tracing_core
 
             static inline AxisAlignedBoundingBox new_box(const Point3D& pt1, const Point3D& pt2);
 
-            inline bool hit(const Ray& ray, const DistanceRange& range);
+            inline bool hit(const Ray& ray, const DistanceRange& range) const;
             inline AxisAlignedBoundingBox& operator |= (const Point3D& point);
             inline AxisAlignedBoundingBox& operator |= (const AxisAlignedBoundingBox& other_box);
         };
@@ -36,7 +36,7 @@ namespace ray_tracing_core
             };
         }
 
-        bool AxisAlignedBoundingBox::hit(const Ray& ray, const DistanceRange& range)
+        bool AxisAlignedBoundingBox::hit(const Ray& ray, const DistanceRange& range) const
         {
             for (int axis = 0; axis < 3; axis++)
             {
