@@ -2,6 +2,8 @@
 #include "core/test_scene_factory.h"
 #include "renderer/renderer_async.h"
 #include "viewer/viewer_cimg.h"
+#include "duration_measurement.h"
+#include <iostream>
 #include <memory>
 #ifdef WIN32
 #define __STDC_LIB_EXT1__
@@ -28,13 +30,17 @@ int main()
         .new_scene());
 
     renderer::RendererAsync renderer(threads);
-    renderer.render(*scene, { cx, cy }, samples);
 
+    std::cout << "start rendering" << std::endl;
+    DurationMeasurement duration_measurement;
+    renderer.render(*scene, { cx, cy }, samples);
+    
     viewer::ViewerCImg()
-        .set_image_store_callback([](const renderer::Renderer& renderer)
+        .set_image_store_callback([&duration_measurement](const renderer::Renderer& renderer)
             {
                 if (!renderer.is_finished())
                     return;
+                std::cout << "duration: " << duration_measurement.storeTimePoint().getTotalDuration() << " s" << std::endl;
                 std::string filename = "rendering/test_scene.png";
                 auto [cx, cy] = renderer.get_buffer_size();
                 auto rgba8 = renderer.get_rgba8();
@@ -45,5 +51,5 @@ int main()
             })
         .preview(renderer);
 
-            return 0;
+    return 0;
 }

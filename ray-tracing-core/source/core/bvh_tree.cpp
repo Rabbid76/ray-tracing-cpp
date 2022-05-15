@@ -6,9 +6,53 @@
 using namespace ray_tracing_core;
 using namespace ray_tracing_core::core;
 
+namespace
+{
+    class HitDetector
+    {
+    public:
+        math::DistanceRange distance_range;
+        HitRecord& hit_record;
+
+        bool hit(BvhTree::Node* node, const math::Ray& ray_in)
+        {
+            if (!node->box.hit(ray_in, distance_range))
+                return false;
+
+            if (node->leaf)
+            {
+                if (node->leaf->hit(ray_in, distance_range, hit_record))
+                {
+                    distance_range = { std::get<0>(distance_range), hit_record.hit_point.distance };
+                    return true;
+                }
+                return false;
+            }
+
+            uint32_t i = ray_in.direction[node->sort_axis] >= 0.0 ? 0 : 1;
+            auto node1 = node->children[i];
+            auto node2 = node->children[(i + 1) % 2];
+            if (hit(node1, ray_in))
+            {
+                hit(node2, ray_in);
+                return true;
+            }
+            return hit(node2, ray_in);
+        }
+    };
+}
+
 BvhTree::BvhTree(const std::vector<const ShapeNode*>& shape_list)
     : root(construct_tree(shape_list))
-{}
+{
+    depth_of_tree = 1;
+    size_t power = 1;
+    while (power < shape_list.size())
+    {
+        power *= 2;
+        depth_of_tree++;
+    }
+}
 
 BvhTree::~BvhTree()
 {
@@ -49,21 +93,20 @@ math::AxisAlignedBoundingBox BvhTree::bounding_box(void) const
     return root->box;
 }
 
-//#define NON_RECURSIVE
+#define NON_RECURSIVE
 
 bool BvhTree::hit(const math::Ray& ray_in, const math::DistanceRange& distance_range, HitRecord& hit_record) const
 {
 #ifdef NON_RECURSIVE
-    std::vector<Node*> stack;
-    stack.reserve(10);
-    stack.push_back(root);
+    using NodePtr = Node*;
+    NodePtr stack[65]; // enugh for 32^2 nodes
+    auto stack_depht = 0;
+    stack[stack_depht++] = root;
     math::DistanceRange reduced_distance_range = distance_range;
     bool detected_hit = false;
-    while (!stack.empty())
+    while (stack_depht > 0)
     {
-        auto node = stack.back();
-        stack.pop_back();
-
+        auto node = stack[--stack_depht];
         if (!node->box.hit(ray_in, reduced_distance_range))
             continue;
 
@@ -78,37 +121,13 @@ bool BvhTree::hit(const math::Ray& ray_in, const math::DistanceRange& distance_r
         }
 
         uint32_t i = ray_in.direction[node->sort_axis] >= 0.0 ? 0 : 1;
-        stack.push_back(node->children[(i + 1) % 2]);
-        stack.push_back(node->children[i]);
+        stack[stack_depht++] = node->children[(i + 1) % 2];
+        stack[stack_depht++] = node->children[i];
     }
     return detected_hit;
 #else
-    return hit(root, ray_in, distance_range, hit_record);
+    return HitDetector{ distance_range, hit_record }.hit(root, ray_in);
 #endif
-}
-
-bool BvhTree::hit(Node* node, const math::Ray& ray_in, const math::DistanceRange& distance_range, HitRecord& hit_record) const
-{
-    if (!node->box.hit(ray_in, distance_range))
-        return false;
-    if (node->leaf)
-        return node->leaf->hit(ray_in, distance_range, hit_record);
-
-    bool detected_hit = false;
-    uint32_t i = ray_in.direction[node->sort_axis] >= 0.0 ? 0 : 1;
-    auto node1 = node->children[i];
-    auto node2 = node->children[(i + 1) % 2];
-    if (hit(node1, ray_in, distance_range, hit_record))
-    {
-        detected_hit = true;
-        math::DistanceRange reduced_range{ std::get<0>(distance_range), hit_record.hit_point.distance };
-        hit(node2, ray_in, reduced_range, hit_record);
-    }
-    else
-    {
-        detected_hit = hit(node2, ray_in, distance_range, hit_record);
-    }
-    return detected_hit;
 }
 
 math::Distance BvhTree::probability_density_function_value(

@@ -3,6 +3,7 @@
 #include "json/scene_deserializer.h"
 #include "renderer/renderer_async.h"
 #include "utility/std_helper.h"
+#include "duration_measurement.h"
 #include "viewer/viewer_cimg.h"
 #include <iostream>
 #include <fstream>
@@ -44,13 +45,16 @@ int main()
     }
  
     renderer::RendererAsync renderer(threads);
+    std::cout << "start rendering" << std::endl;
+    DurationMeasurement duration_measurement;
     renderer.render(*scene, { cx, cy }, samples);
 
     viewer::ViewerCImg()
-        .set_image_store_callback([](const renderer::Renderer &renderer)
+        .set_image_store_callback([&duration_measurement](const renderer::Renderer &renderer)
             {
                 if (!renderer.is_finished())
                     return;  
+                std::cout << "duration: " << duration_measurement.storeTimePoint().getTotalDuration() << " s" << std::endl;
                 std::string filename = "rendering/playground.png";
                 auto [cx, cy] = renderer.get_buffer_size();
                 auto rgba8 = renderer.get_rgba8();

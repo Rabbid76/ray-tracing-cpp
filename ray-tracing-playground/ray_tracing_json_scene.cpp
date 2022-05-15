@@ -4,6 +4,7 @@
 #include "renderer/renderer_async.h"
 #include "utility/std_helper.h"
 #include "viewer/viewer_cimg.h"
+#include "duration_measurement.h"
 #include <iostream>
 #include <fstream>
 #include <memory>
@@ -50,6 +51,8 @@ int main(int argc, char *argv[])
     }
 
     renderer::RendererAsync renderer(threads);
+    std::cout << "start rendering" << std::endl;
+    DurationMeasurement duration_measurement;
     renderer.render(*scene, { cx, cy }, samples);
 
     viewer::ViewerCImg()
@@ -57,6 +60,7 @@ int main(int argc, char *argv[])
             {
                 if (!renderer.is_finished())
                     return;
+                std::cout << "duration: " << duration_measurement.storeTimePoint().getTotalDuration() << " s" << std::endl;
                 std::string filename = "rendering/" + scene_name + ".png";
                 auto [cx, cy] = renderer.get_buffer_size();
                 auto rgba8 = renderer.get_rgba8();

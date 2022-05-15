@@ -28,6 +28,7 @@ namespace ray_tracing_core::core
 
     private:
         Node* root;
+        uint32_t depth_of_tree;
 
     public:
         BvhTree(const std::vector<const ShapeNode*>& shape_list);
@@ -40,7 +41,6 @@ namespace ray_tracing_core::core
     
     private:
         Node* construct_tree(std::vector<const ShapeNode*> shape_set);
-        bool hit(Node* node, const math::Ray& ray_in, const math::DistanceRange& distance_range, HitRecord& hit_record) const;
     };
 }
 
