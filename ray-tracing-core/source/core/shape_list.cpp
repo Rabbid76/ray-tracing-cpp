@@ -37,14 +37,12 @@ bool ShapeList::hit(const math::Ray& ray_in, const math::DistanceRange& distance
 math::Distance ShapeList::probability_density_function_value(
     const math::Point3D& origin, const math::Vector3D& direction) const
 {
-    // self.list.iter().map(|node| node.pdf_value(o, v)).sum()
     throw std::runtime_error("not implemented");
     return 0;
 }
 
 math::Vector3D ShapeList::random(const math::Point3D& origin) const
 {
-    // self.list[random::generate_from_range(0..self.list.len())].random(o)
     throw std::runtime_error("not implemented");
     return math::Vector3D(0);
 }
