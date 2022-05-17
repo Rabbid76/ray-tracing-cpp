@@ -93,13 +93,12 @@ math::AxisAlignedBoundingBox BvhTree::bounding_box(void) const
     return root->box;
 }
 
-#define NON_RECURSIVE
+//#define NON_RECURSIVE
 
 bool BvhTree::hit(const math::Ray& ray_in, const math::DistanceRange& distance_range, HitRecord& hit_record) const
 {
 #ifdef NON_RECURSIVE
-    using NodePtr = Node*;
-    NodePtr stack[65]; // enugh for 32^2 nodes
+    Node* stack[65]; // enugh for 32^2 nodes
     auto stack_depht = 0;
     stack[stack_depht++] = root;
     math::DistanceRange reduced_distance_range = distance_range;

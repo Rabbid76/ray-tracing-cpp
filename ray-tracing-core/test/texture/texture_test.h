@@ -1,12 +1,9 @@
 #ifndef __RTC_UT__TEXTURE__TEXTURE_TEST_H__
 #define __RTC_UT__TEXTURE__TEXTURE_TEST_H__
 
-namespace ray_tracing_core_unit_test
+namespace ray_tracing_core_unit_test::texture
 {
-    namespace texture
-    {
-        extern void texture_unit_test(void);
-    }
+    extern void texture_unit_test();
 }
 
 #endif

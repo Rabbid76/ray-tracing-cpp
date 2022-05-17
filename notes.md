@@ -1,5 +1,16 @@
 # Notes
 
+## TODO
+
+- Refraction index range
+
+## Utility
+
+### Texture generators
+
+- Voronoi generator
+- Perlin noise generator
+
 ## Libraries that could possibly be used
 
 ### Boost

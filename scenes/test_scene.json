@@ -5,20 +5,20 @@
     "root_node_ids": [
         {
             "type": "Shape",
-            "id": "s1",
-            "geometry": { "type": "Sphere", "center": 0, "radius": 0.5 },
-            "material": {
-                "type": "LambertianMaterial",
-                "albedo": { "type": "ConstantTexture", "color": [ 0.5, 0.1, 0.1 ], "opacity": 1 }
-            }
-        },
-        {
-            "type": "Shape",
             "id": "s2",
             "geometry": { "type": "Sphere", "center": [0, -1000.5, 0], "radius": 1000 },
             "material":  {
                 "type": "LambertianMaterial",
                 "albedo": { "type": "ConstantTexture", "color": [0.1, 0.1, 0.1, 1] }
+            }
+        },
+        {
+            "type": "Shape",
+            "id": "s1",
+            "geometry": { "type": "Sphere", "center": 0, "radius": 0.5 },
+            "material": {
+                "type": "LambertianMaterial",
+                "albedo": { "type": "ConstantTexture", "color": [ 0.5, 0.1, 0.1 ], "opacity": 1 }
             }
         }
     ]

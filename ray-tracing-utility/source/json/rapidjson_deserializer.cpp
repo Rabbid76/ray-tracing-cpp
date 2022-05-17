@@ -14,6 +14,7 @@
 #include "material/dielectric_material.h"
 #include "material/lambertian_material.h"
 #include "material/metal_material.h"
+#include "texture/checker_texture.h"
 #include "texture/constant_texture.h"
 #include "utility/std_helper.h"
 #include <string>
@@ -155,7 +156,7 @@ void RapidjsonSceneDeserializer::read_scene_objects_array(const rapidjson::Value
 }
 
 void RapidjsonSceneDeserializer::read_scene_object(const rapidjson::Value& object_value) {
-    if (auto texture = read_textrue(object_value))
+    if (auto texture = read_texture(object_value))
         return;
     if (auto material = read_material(object_value))
         return;
@@ -175,12 +176,13 @@ void RapidjsonSceneDeserializer::read_scene_object(const rapidjson::Value& objec
     throw std::runtime_error(utility::formatter() << R"(Unknown "type": ")" << type << "\"");
 }
 
-texture::Texture* RapidjsonSceneDeserializer::read_textrue(const rapidjson::Value& object_value)
+texture::Texture* RapidjsonSceneDeserializer::read_texture(const rapidjson::Value& object_value)
 {
     static std::map<std::string, texture::Texture* (RapidjsonSceneDeserializer::*)(const rapidjson::Document::ConstObject&)>
         decoder_map =
     {
         { "ConstantTexture", &RapidjsonSceneDeserializer::read_constant_texture },
+        { "CheckerTexture", &RapidjsonSceneDeserializer::read_checker_texture },
     };
 
     if (!object_value.IsObject())
@@ -374,6 +376,14 @@ texture::Texture* RapidjsonSceneDeserializer::read_constant_texture(const rapidj
     return new texture::ConstantTexture(color, opacity);
 }
 
+texture::Texture* RapidjsonSceneDeserializer::read_checker_texture(const rapidjson::Document::ConstObject& scene_object)
+{
+    auto scale = read_vector(scene_object["scale"]);
+    auto odd_texture = read_texture(scene_object["odd_texture"]);
+    auto even_texture = read_texture(scene_object["even_texture"]);
+    return new texture::CheckerTexture(scale, odd_texture, even_texture);
+}
+
 material::Material* RapidjsonSceneDeserializer::read_blend_materials(const rapidjson::Document::ConstObject& scene_object)
 {
     material::BlendMaterials::Materials materials;
@@ -388,21 +398,21 @@ material::Material* RapidjsonSceneDeserializer::read_blend_materials(const rapid
 
 material::Material* RapidjsonSceneDeserializer::read_lambertian_material(const rapidjson::Document::ConstObject& scene_object)
 {
-    auto albedo = read_textrue(scene_object["albedo"]);
+    auto albedo = read_texture(scene_object["albedo"]);
     return new material::LambertianMaterial(albedo);
 }
 
 material::Material* RapidjsonSceneDeserializer::read_metal_material(const rapidjson::Document::ConstObject& scene_object)
 {
     auto fuzz = scene_object["fuzz"].GetDouble();
-    auto albedo = read_textrue(scene_object["albedo"]);
+    auto albedo = read_texture(scene_object["albedo"]);
     return new material::MetalMaterial(fuzz, albedo);
 }
 
 material::Material* RapidjsonSceneDeserializer::read_dielectric_material(const rapidjson::Document::ConstObject& scene_object)
 {
     auto refraction_index = read_range(scene_object["refraction_index"]);
-    auto albedo = read_textrue(scene_object["albedo"]);
+    auto albedo = read_texture(scene_object["albedo"]);
     return new material::DielectricMaterial(refraction_index, albedo);
 }
 
