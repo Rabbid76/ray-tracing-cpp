@@ -1,5 +1,6 @@
-#include "checker_texture_test.h"
-#include "texture/checker_texture.h"
+#include "blend_textures_test.h"
+#include "math/checker_blend_function.h"
+#include "texture/blend_textures.h"
 #include "texture/constant_texture.h"
 #include <rtc_test_assert.h>
 #include <vector>
@@ -10,7 +11,7 @@ namespace ray_tracing_core_unit_test::texture
     using namespace ray_tracing_core::texture;
     using namespace ray_tracing_core;
 
-    void checker_texture_channels_test()
+    void blend_textures_channels_test()
     {
         std::vector<std::tuple<core::Color, math::AlphaValue, bool, bool, math::Point3D, math::Vector3D, ConstantTexture, ConstantTexture>> test_data
         {
@@ -36,7 +37,8 @@ namespace ray_tracing_core_unit_test::texture
 
         for (auto [expected_color, expected_alpha_value, expected_depends_on_texture, expected_has_alpha, point, scale, texture1, texture2] : test_data)
         {
-            CheckerTexture texture(scale, &texture1, &texture2);
+            math::CheckerBlendFunction blend_function(scale);
+            BlendTextures texture(&blend_function, &texture1, &texture2);
             auto [actual_color, actual_alpha] = texture.channels(core::TextureCoordinate::null(), point);
             auto actual_depends_on_texture = texture.depends_on_texture_coordinates();
             auto actual_has_alpha = texture.has_alpha_channel();

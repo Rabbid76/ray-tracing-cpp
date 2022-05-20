@@ -6,6 +6,7 @@
 #include "core/shape_node.h"
 #include "environment/sky.h"
 #include "geometry/geometry.h"
+#include "math/blend_function.h"
 #include "material/material.h"
 #include "texture/texture.h"
 #include <memory>
@@ -18,6 +19,7 @@ namespace ray_tracing_core
 		class SceneObjectContainer
 		{
 		public:
+			std::vector<std::shared_ptr<math::BlendFunction>> blend_functions;
 			std::vector<std::shared_ptr<texture::Texture>> textures;
 			std::vector<std::shared_ptr<material::Material>> materials;
 			std::vector<std::shared_ptr<geometry::Geometry>> geometries;

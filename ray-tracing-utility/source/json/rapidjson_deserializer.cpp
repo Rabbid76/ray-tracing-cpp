@@ -14,7 +14,8 @@
 #include "material/dielectric_material.h"
 #include "material/lambertian_material.h"
 #include "material/metal_material.h"
-#include "texture/checker_texture.h"
+#include "math/checker_blend_function.h"
+#include "texture/blend_textures.h"
 #include "texture/constant_texture.h"
 #include "utility/std_helper.h"
 #include <string>
@@ -176,13 +177,40 @@ void RapidjsonSceneDeserializer::read_scene_object(const rapidjson::Value& objec
     throw std::runtime_error(utility::formatter() << R"(Unknown "type": ")" << type << "\"");
 }
 
+ray_tracing_core::math::BlendFunction* RapidjsonSceneDeserializer::read_blend_function(const rapidjson::Value& object_value)
+{
+    static std::map<std::string, ray_tracing_core::math::BlendFunction* (RapidjsonSceneDeserializer::*)(const rapidjson::Document::ConstObject&)>
+        decoder_map =
+    {
+        { "CheckerBlendFunction", &RapidjsonSceneDeserializer::read_checker_blend_function },
+    };
+
+    if (!object_value.IsObject())
+        return blend_function_map.get(read_id(object_value));
+
+    auto scene_object = object_value.GetObject();
+    auto decoder_it = decoder_map.find(scene_object["type"].GetString());
+    if (decoder_it == decoder_map.end())
+        return nullptr;
+
+    auto blend_function = (this->*decoder_it->second)(scene_object);
+    if (scene_objects)
+        scene_objects->blend_functions.push_back(std::shared_ptr<math::BlendFunction>(blend_function));
+    if (scene_object.HasMember("id"))
+    {
+        auto id = read_id(scene_object["id"]);
+        blend_function_map.add(id, blend_function);
+    }
+    return blend_function;
+}
+
 texture::Texture* RapidjsonSceneDeserializer::read_texture(const rapidjson::Value& object_value)
 {
     static std::map<std::string, texture::Texture* (RapidjsonSceneDeserializer::*)(const rapidjson::Document::ConstObject&)>
         decoder_map =
     {
         { "ConstantTexture", &RapidjsonSceneDeserializer::read_constant_texture },
-        { "CheckerTexture", &RapidjsonSceneDeserializer::read_checker_texture },
+        { "BlendTextures", &RapidjsonSceneDeserializer::read_blend_textures },
     };
 
     if (!object_value.IsObject())
@@ -370,18 +398,24 @@ core::Configuration* RapidjsonSceneDeserializer::read_configuration(const rapidj
     return node;
 }
 
+ray_tracing_core::math::BlendFunction* RapidjsonSceneDeserializer::read_checker_blend_function(const rapidjson::Document::ConstObject& scene_object)
+{
+    auto scale = read_vector(scene_object["scale"]);
+    return new math::CheckerBlendFunction(scale);
+}
+
 texture::Texture* RapidjsonSceneDeserializer::read_constant_texture(const rapidjson::Document::ConstObject& scene_object)
 {
     auto [color, opacity] = read_color_and_opacity(scene_object, "color", "opacity");
     return new texture::ConstantTexture(color, opacity);
 }
 
-texture::Texture* RapidjsonSceneDeserializer::read_checker_texture(const rapidjson::Document::ConstObject& scene_object)
+texture::Texture* RapidjsonSceneDeserializer::read_blend_textures(const rapidjson::Document::ConstObject& scene_object)
 {
-    auto scale = read_vector(scene_object["scale"]);
+    auto blend_function = read_blend_function(scene_object["blend_function"]);
     auto odd_texture = read_texture(scene_object["odd_texture"]);
     auto even_texture = read_texture(scene_object["even_texture"]);
-    return new texture::CheckerTexture(scale, odd_texture, even_texture);
+    return new texture::BlendTextures(blend_function, odd_texture, even_texture);
 }
 
 material::Material* RapidjsonSceneDeserializer::read_blend_materials(const rapidjson::Document::ConstObject& scene_object)

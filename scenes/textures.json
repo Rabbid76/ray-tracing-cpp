@@ -10,7 +10,8 @@
       "material":  {
         "type": "LambertianMaterial",
         "albedo": {
-          "type": "CheckerTexture", "scale": [5, 0, 5],
+          "type": "BlendTextures", 
+          "blend_function": { "type": "CheckerBlendFunction", "scale": [5, 0, 5] },
           "odd_texture": { "type": "ConstantTexture", "color": [0.3, 0.3, 0.4, 1] },
           "even_texture": { "type": "ConstantTexture", "color": [0.6, 0.6, 0.1, 1] }
         }

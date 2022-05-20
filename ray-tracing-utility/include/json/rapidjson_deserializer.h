@@ -3,6 +3,7 @@
 
 #include "core/scene.h"
 #include "core/scene_objects_container.h"
+#include "math/blend_function.h"
 #include "math/types.h"
 #include "rapidjson/document.h"
 #include <map>
@@ -41,6 +42,7 @@ namespace ray_tracing_utility::json
     private:
         double aspect = 1.0;
         ray_tracing_core::core::SceneObjectContainer* scene_objects;
+        SceneObjectMap<ray_tracing_core::math::BlendFunction> blend_function_map;
         SceneObjectMap<ray_tracing_core::texture::Texture> texture_map;
         SceneObjectMap<ray_tracing_core::material::Material> material_map;
         SceneObjectMap<ray_tracing_core::geometry::Geometry> geometry_map;
@@ -66,6 +68,7 @@ namespace ray_tracing_utility::json
         ray_tracing_core::math::Point3D read_point(const rapidjson::Value& color_value);
         void read_scene_objects_array(const rapidjson::Value& scene_objects);
         void read_scene_object(const rapidjson::Value& scene_object);
+        ray_tracing_core::math::BlendFunction* read_blend_function(const rapidjson::Value& object_value);
         ray_tracing_core::texture::Texture* read_texture(const rapidjson::Value& object_value);
         ray_tracing_core::material::Material* read_material(const rapidjson::Value& object_value);
         ray_tracing_core::geometry::Geometry* read_geometry(const rapidjson::Value& object_value);
@@ -73,8 +76,9 @@ namespace ray_tracing_utility::json
         ray_tracing_core::environment::Sky* read_environment(const rapidjson::Value& object_value);
         ray_tracing_core::core::Camera* read_camera(const rapidjson::Value& object_value);
         ray_tracing_core::core::Configuration* read_configuration(const rapidjson::Value& object_value);
+        ray_tracing_core::math::BlendFunction* read_checker_blend_function(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::texture::Texture* read_constant_texture(const rapidjson::Document::ConstObject& scene_object);
-        ray_tracing_core::texture::Texture* read_checker_texture(const rapidjson::Document::ConstObject& scene_object);
+        ray_tracing_core::texture::Texture* read_blend_textures(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::material::Material* read_blend_materials(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::material::Material* read_lambertian_material(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::material::Material* read_metal_material(const rapidjson::Document::ConstObject& scene_object);
