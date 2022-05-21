@@ -15,6 +15,7 @@
 #include "material/lambertian_material.h"
 #include "material/metal_material.h"
 #include "math/checker_blend_function.h"
+#include "math/perlin_noise_blend_function.h"
 #include "texture/blend_textures.h"
 #include "texture/constant_texture.h"
 #include "utility/std_helper.h"
@@ -183,6 +184,7 @@ ray_tracing_core::math::BlendFunction* RapidjsonSceneDeserializer::read_blend_fu
         decoder_map =
     {
         { "CheckerBlendFunction", &RapidjsonSceneDeserializer::read_checker_blend_function },
+        { "PerlinNoiseBlendFunction", &RapidjsonSceneDeserializer::read_perlin_noise_blend_function },
     };
 
     if (!object_value.IsObject())
@@ -402,6 +404,28 @@ ray_tracing_core::math::BlendFunction* RapidjsonSceneDeserializer::read_checker_
 {
     auto scale = read_vector(scene_object["scale"]);
     return new math::CheckerBlendFunction(scale);
+}
+
+ray_tracing_core::math::BlendFunction* RapidjsonSceneDeserializer::read_perlin_noise_blend_function(const rapidjson::Document::ConstObject& scene_object)
+{
+    static std::map<std::string, math::PerlinNoiseBlendFunction::Type>
+        decoder_map =
+    {
+        { "Turb", math::PerlinNoiseBlendFunction::Type::Turb },
+        { "SinX", math::PerlinNoiseBlendFunction::Type::SinX },
+        { "SinY", math::PerlinNoiseBlendFunction::Type::SinY },
+        { "SinZ", math::PerlinNoiseBlendFunction::Type::SinZ },
+    };
+
+    auto scale = read_vector(scene_object["scale"]);
+    auto noise_type = math::PerlinNoiseBlendFunction::Type::Default;
+    if (scene_object.HasMember("noise_type"))
+    {
+        auto it = decoder_map.find(scene_object["noise_type"].GetString());
+        if (it != decoder_map.end())
+            noise_type = it->second;
+    }
+    return new math::PerlinNoiseBlendFunction(noise_type, scale);
 }
 
 texture::Texture* RapidjsonSceneDeserializer::read_constant_texture(const rapidjson::Document::ConstObject& scene_object)

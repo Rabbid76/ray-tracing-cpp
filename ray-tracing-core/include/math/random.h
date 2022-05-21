@@ -23,6 +23,8 @@ namespace ray_tracing_core
 			uint32_t random_axis() const;
 	  	    Distance random_size() const;
 	  	    Distance random_unit() const;
+			Vector3D random_unit_vector() const;
+			Vector3D random_in_unit_cube() const;
 			Vector3D random_in_unit_sphere() const;
 	  	    Vector3D random_cosine_direction() const;
 	  	    Vector3D random_vector_to_sphere(Distance radius, Distance distance_squared) const;

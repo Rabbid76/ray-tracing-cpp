@@ -1,6 +1,7 @@
 #include <math/random.h>
 #include <math/constants.h>
 #include <cmath>
+#include <random>
 
 
 namespace ray_tracing_core
@@ -28,6 +29,22 @@ namespace ray_tracing_core
         Distance RandomGenerator::random_unit() const
         {
             return distribution_unit(generator);
+        }
+
+        Vector3D RandomGenerator::random_unit_vector() const
+        {
+            Vector3D random_vector;
+            do
+            {
+                random_vector = Vector3D(random_unit(), random_unit(), random_unit());
+            } 
+            while (math::dot(random_vector, random_vector) == 0.0);
+            return normalize(random_vector);
+        }
+
+        Vector3D RandomGenerator::random_in_unit_cube() const
+        {
+            return Vector3D(random_unit(), random_unit(), random_unit());
         }
 
         Vector3D RandomGenerator::random_in_unit_sphere() const
