@@ -4,6 +4,34 @@
 
 - Refraction index range
 
+## Core
+
+- Light
+- Texture filter
+- Shapes
+
+### Texture
+
+- wood texture, add scene with wooden cube/sphere?
+  https://shaderfrog.com/app/view/123 Procedural Wood
+
+### Materials
+
+- Dielectric with attenuation by distance in the volume
+- Correct color mapping of dielectric with refraction dependent on the wavelength of the light
+
+### Shapes
+
+- [Inigo Quilez::articles::distance functions](https://www.iquilezles.org/www/articles/distfunctions/distfunctions.htm)
+- [Raymarching - Primitives](https://www.shadertoy.com/view/Xds3zN)
+- Matrix44
+- Tetraeder, Hexaeder, Oktaeder, Dodekaeder, Ikosaeder 
+- Sphere with thickness, use with (Ornament)
+- Ray marching bodies
+- AND, OR, MINUS
+- 2 Sight, 3 sight body
+- curvature of triangle projected on a sphere
+
 ## Utility
 
 ### Texture generators

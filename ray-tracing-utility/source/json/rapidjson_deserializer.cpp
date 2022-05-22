@@ -18,7 +18,10 @@
 #include "math/perlin_noise_blend_function.h"
 #include "texture/blend_textures.h"
 #include "texture/constant_texture.h"
+#include "texture/image_texture.h"
 #include "utility/std_helper.h"
+#define STB_IMAGE_IMPLEMENTATION
+#include <stb/stb_image.h>
 #include <string>
 
 using namespace ray_tracing_core;
@@ -213,6 +216,7 @@ texture::Texture* RapidjsonSceneDeserializer::read_texture(const rapidjson::Valu
     {
         { "ConstantTexture", &RapidjsonSceneDeserializer::read_constant_texture },
         { "BlendTextures", &RapidjsonSceneDeserializer::read_blend_textures },
+        { "ImageTextures", &RapidjsonSceneDeserializer::read_image_texture },
     };
 
     if (!object_value.IsObject())
@@ -428,18 +432,42 @@ ray_tracing_core::math::BlendFunction* RapidjsonSceneDeserializer::read_perlin_n
     return new math::PerlinNoiseBlendFunction(noise_type, scale);
 }
 
+texture::Texture* RapidjsonSceneDeserializer::read_blend_textures(const rapidjson::Document::ConstObject& scene_object)
+{
+    auto blend_function = read_blend_function(scene_object["blend_function"]);
+    texture::Texture* texture0 = scene_object.HasMember("texture0")
+        ? read_texture(scene_object["texture0"])
+        : nullptr;
+    texture::Texture* texture1 = scene_object.HasMember("texture1")
+        ? read_texture(scene_object["texture1"])
+        : nullptr;
+    return new texture::BlendTextures(blend_function, texture0, texture1);
+}
+
 texture::Texture* RapidjsonSceneDeserializer::read_constant_texture(const rapidjson::Document::ConstObject& scene_object)
 {
     auto [color, opacity] = read_color_and_opacity(scene_object, "color", "opacity");
     return new texture::ConstantTexture(color, opacity);
 }
 
-texture::Texture* RapidjsonSceneDeserializer::read_blend_textures(const rapidjson::Document::ConstObject& scene_object)
+texture::Texture* RapidjsonSceneDeserializer::read_image_texture(const rapidjson::Document::ConstObject& scene_object)
 {
-    auto blend_function = read_blend_function(scene_object["blend_function"]);
-    auto odd_texture = read_texture(scene_object["odd_texture"]);
-    auto even_texture = read_texture(scene_object["even_texture"]);
-    return new texture::BlendTextures(blend_function, odd_texture, even_texture);
+    texture::ImageTexture::Type type = texture::ImageTexture::Type::RGBA;
+    if (scene_object.HasMember("image_type"))
+    {
+        auto image_type = scene_object["image_type"].GetString();
+        type = std::string(image_type) == "RGB" ? texture::ImageTexture::Type::RGB : texture::ImageTexture::Type::RGBA;
+    }
+    
+    auto filename = scene_object["filename"].GetString();
+    int cx, cy, ch;
+    stbi_uc* image_data = stbi_load(filename, &cx, &cy, &ch, type == texture::ImageTexture::Type::RGB ? 3 : 4);
+    if (image_data == nullptr)
+        throw std::runtime_error(utility::formatter() << "error laoding texture: " << filename);
+
+    auto texture = new texture::ImageTexture(type, (uint32_t)cx, (uint32_t)cy, (const uint8_t*)image_data);
+    stbi_image_free(image_data);
+    return texture;
 }
 
 material::Material* RapidjsonSceneDeserializer::read_blend_materials(const rapidjson::Document::ConstObject& scene_object)

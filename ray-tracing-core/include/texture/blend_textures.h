@@ -15,7 +15,7 @@ namespace ray_tracing_core::texture
         const Texture *textures[2];
 
     public:
-        inline BlendTextures(const math::BlendFunction* blend_function, const Texture *odd_texture, const Texture *even_texture);
+        inline BlendTextures(const math::BlendFunction* blend_function, const Texture * texture0, const Texture * texture1);
         ~BlendTextures() override = default;
         inline std::tuple<core::Color, math::AlphaValue> channels(
                 const core::TextureCoordinate& texture_coordinate, const math::Point3D& position) const override;
@@ -23,15 +23,26 @@ namespace ray_tracing_core::texture
         inline bool has_alpha_channel() const override;
     };
 
-    BlendTextures::BlendTextures(const math::BlendFunction* blend_function, const Texture *odd_texture, const Texture *even_texture)
+    BlendTextures::BlendTextures(const math::BlendFunction* blend_function, const Texture * texture0, const Texture * texture1)
         : blend_function(blend_function)
-        , textures{odd_texture, even_texture}
+        , textures{ texture0, texture1 }
     {}
 
     std::tuple<core::Color, math::AlphaValue> BlendTextures::channels(
             const core::TextureCoordinate& texture_coordinate, const math::Point3D& position) const
     {
         auto blend_weight = blend_function->evaluate(texture_coordinate, position);
+        if (textures[1] == nullptr) 
+        {
+            auto [color0, alpha0] = textures[0]->channels(texture_coordinate, position);
+            return { color0, alpha0 * (1.0f - blend_weight) };
+        }
+        if (textures[0] == nullptr)
+        {
+            auto [color1, alpha1] = textures[1]->channels(texture_coordinate, position);
+            return { color1, alpha1 * blend_weight };
+        }
+
         if (blend_weight <= 0.0f)
             return textures[0]->channels(texture_coordinate, position);
         else if (blend_weight >= 1.0f)
@@ -53,7 +64,9 @@ namespace ray_tracing_core::texture
 
     bool BlendTextures::has_alpha_channel() const
     {
-        return textures[0]->has_alpha_channel() || textures[1]->has_alpha_channel();
+        return 
+            textures[0] == nullptr || textures[1] == nullptr ||
+            textures[0]->has_alpha_channel() || textures[1]->has_alpha_channel();
     }
 }
 

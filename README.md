@@ -7,6 +7,6 @@
 
 Ray tracing with C++
 
-![materials](rendering/materials_800x400_1000.png)
-
 ![blend materials](rendering/materials_blend_800x400_1000.png)
+
+![materials](rendering/materials_800x400_1000.png)
