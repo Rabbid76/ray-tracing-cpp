@@ -19,6 +19,7 @@ namespace ray_tracing_core
 			inline static TextureCoordinate null(void);
 			inline static TextureCoordinate constant(math::TextureDistance textue_u, math::TextureDistance texture_v);
 			inline static TextureCoordinate from_sphere(const math::Vector3D &vector_form_center);
+			inline static math::Vector3D to_sphere(const TextureCoordinate& texture_coordiante);
 		};
 
 		TextureCoordinate TextureCoordinate::null(void)
@@ -41,6 +42,18 @@ namespace ray_tracing_core
 				.u = static_cast<math::TextureDistance>(1.0 - (phi + pi) / (2.0 * pi)),
 				.v = static_cast<math::TextureDistance>((theta + pi/2.0) / pi)
 			};
+		}
+
+		math::Vector3D TextureCoordinate::to_sphere(const TextureCoordinate& texture_coordiante)
+		{
+			const float pi = math::pi<math::TextureDistance>;
+			auto phi = (texture_coordiante.u * 2.0 - 1.0) * pi;
+			auto theta = (texture_coordiante.v * 2.0 - 1.0) * pi / 2.0;
+			auto y = std::sin(theta);
+			auto xy_scale = std::sqrt(1.0 - y*y);
+			auto x = xy_scale * std::sin(phi);
+			auto z = xy_scale * std::cos(phi);
+			return math::Vector3D{ x, y, z };
 		}
 	}
 }

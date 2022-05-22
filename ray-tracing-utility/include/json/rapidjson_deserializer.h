@@ -79,6 +79,7 @@ namespace ray_tracing_utility::json
         ray_tracing_core::math::BlendFunction* read_checker_blend_function(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::math::BlendFunction* read_image_channel_blend_function(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::math::BlendFunction* read_perlin_noise_blend_function(const rapidjson::Document::ConstObject& scene_object);
+        ray_tracing_core::math::BlendFunction* read_test_blend_function(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::texture::Texture* read_constant_texture(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::texture::Texture* read_blend_textures(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::texture::Texture* read_image_texture(const rapidjson::Document::ConstObject& scene_object);

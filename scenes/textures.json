@@ -18,19 +18,6 @@
     },
     {
       "type": "Shape",
-      "geometry": { "type": "Sphere", "center": 0, "radius": 0.5 },
-      "material": {
-        "type": "LambertianMaterial",
-        "albedo": {
-          "type": "BlendTextures", 
-          "blend_function": { "type": "PerlinNoiseBlendFunction", "noise_type" : "SinX", "scale": [2, 2, 2] },
-          "texture0": { "type": "ConstantTexture", "color": [0.7, 0.7, 0.4, 1] },
-          "texture1": { "type": "ConstantTexture", "color": [0.8, 0.1, 0.2, 1] }
-        }
-      }
-    },
-    {
-      "type": "Shape",
       "geometry": { "type": "Sphere", "center": [0, 0, -1], "radius": 0.5 },
       "material": {
         "type": "LambertianMaterial",
@@ -49,6 +36,32 @@
             "blend_texture": { "type": "ImageTextures", "image_type": "RGBA", "filename": "./resource/texture/BackgroundPatternWhite512x512.png" }
           },
           "texture1": { "type": "ConstantTexture", "color": [0.8, 0.1, 0.2, 1] }
+        }
+      }
+    },
+    {
+      "type": "Shape",
+      "geometry": { "type": "Sphere", "center": 0, "radius": 0.5 },
+      "material": {
+        "type": "LambertianMaterial",
+        "albedo": {
+          "type": "BlendTextures", 
+          "blend_function": { "type": "PerlinNoiseBlendFunction", "noise_type" : "SinX", "scale": [2, 2, 2] },
+          "texture0": { "type": "ConstantTexture", "color": [0.7, 0.7, 0.4, 1] },
+          "texture1": { "type": "ConstantTexture", "color": [0.8, 0.1, 0.2, 1] }
+        }
+      }
+    },
+    {
+      "type": "Shape",
+      "geometry": { "type": "Sphere", "center": [0, 0, 1], "radius": 0.5 },
+      "material": {
+        "type": "MetalMaterial",
+        "fuzz": 0.3,
+        "albedo": {
+          "type": "BlendTextures",
+          "blend_function": { "type": "TestBlendFunction", "blend_type": "Default"},
+          "texture1": { "type": "ConstantTexture", "color": [0.7, 0.2, 0.9, 1] }
         }
       }
     }

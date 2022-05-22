@@ -17,6 +17,7 @@
 #include "math/checker_blend_function.h"
 #include "math/image_channel_blend_function.h"
 #include "math/perlin_noise_blend_function.h"
+#include "math/test_blend_function.h"
 #include "texture/blend_textures.h"
 #include "texture/constant_texture.h"
 #include "texture/image_texture.h"
@@ -190,6 +191,7 @@ ray_tracing_core::math::BlendFunction* RapidjsonSceneDeserializer::read_blend_fu
         { "CheckerBlendFunction", &RapidjsonSceneDeserializer::read_checker_blend_function },
         { "ImageChannelBlendFunction", &RapidjsonSceneDeserializer::read_image_channel_blend_function },
         { "PerlinNoiseBlendFunction", &RapidjsonSceneDeserializer::read_perlin_noise_blend_function },
+        { "TestBlendFunction", &RapidjsonSceneDeserializer::read_test_blend_function },
     };
 
     if (!object_value.IsObject())
@@ -454,6 +456,25 @@ ray_tracing_core::math::BlendFunction* RapidjsonSceneDeserializer::read_perlin_n
             noise_type = it->second;
     }
     return new math::PerlinNoiseBlendFunction(noise_type, scale);
+}
+
+ray_tracing_core::math::BlendFunction* RapidjsonSceneDeserializer::read_test_blend_function(const rapidjson::Document::ConstObject& scene_object)
+{
+    static std::map<std::string, math::TestBlendFunction::Type>
+        decoder_map =
+    {
+        { "Default", math::TestBlendFunction::Type::Default },
+        { "IcosahedronHoles", math::TestBlendFunction::Type::IcosahedronHoles },
+    };
+
+    auto blend_type = math::TestBlendFunction::Type::Default;
+    if (scene_object.HasMember("blend_type"))
+    {
+        auto it = decoder_map.find(scene_object["blend_type"].GetString());
+        if (it != decoder_map.end())
+            blend_type = it->second;
+    }
+    return new math::TestBlendFunction(blend_type);
 }
 
 texture::Texture* RapidjsonSceneDeserializer::read_blend_textures(const rapidjson::Document::ConstObject& scene_object)
