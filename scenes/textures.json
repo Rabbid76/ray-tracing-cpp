@@ -1,6 +1,6 @@
 {
   "configuration_id": { "type": "Configuration", "maximum_depth": 60 },
-  "camera_id": { "type": "CameraLookAt", "look_from": [-2, 0.5, 1], "look_at": 0, "up": [0, 1, 0], "fov": 45 },
+  "camera_id": { "type": "CameraLookAt", "look_from": [-3, 1.0, 1.2], "look_at": 0, "up": [0, 1, 0], "fov": 45 },
   "sky_id": { "type": "Sky", "nadir": [1, 1, 1], "zenith": [0.5, 0.7, 1] },
   "root_node_ids": [
     {
@@ -25,7 +25,7 @@
           "type": "BlendTextures", 
           "blend_function": { "type": "PerlinNoiseBlendFunction", "noise_type" : "SinX", "scale": [2, 2, 2] },
           "texture0": { "type": "ConstantTexture", "color": [0.7, 0.7, 0.4, 1] },
-          "texture1":{ "type": "ConstantTexture", "color": [0.8, 0.1, 0.2, 1] }
+          "texture1": { "type": "ConstantTexture", "color": [0.8, 0.1, 0.2, 1] }
         }
       }
     },
@@ -35,6 +35,21 @@
       "material": {
         "type": "LambertianMaterial",
         "albedo": { "type": "ImageTextures", "image_type": "RGB", "filename": "./resource/texture/physical-free-world-map-b1.jpg" }
+      }
+    },
+    {
+      "type": "Shape",
+      "geometry": { "type": "Sphere", "center": [0, 0, -2], "radius": 0.5 },
+      "material": {
+        "type": "LambertianMaterial",
+        "albedo": {
+          "type": "BlendTextures",
+          "blend_function": {
+            "type": "ImageChannelBlendFunction",
+            "blend_texture": { "type": "ImageTextures", "image_type": "RGBA", "filename": "./resource/texture/BackgroundPatternWhite512x512.png" }
+          },
+          "texture1": { "type": "ConstantTexture", "color": [0.8, 0.1, 0.2, 1] }
+        }
       }
     }
   ]

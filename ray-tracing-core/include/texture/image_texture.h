@@ -50,7 +50,7 @@ namespace ray_tracing_core::texture
 		double y = cy * (1.0f - texture_coordinate.v);
 		auto ix = ((uint32_t)x + ((x - (uint32_t)x) < generator.random_size() ? 1 : 0)) % cx;
 		auto iy = ((uint32_t)y + ((y - (uint32_t)y) < generator.random_size() ? 1 : 0)) % cy;
-		auto i = cy * iy + ix;
+		auto i = cx * iy + ix;
 		if (type == Type::RGB)
 		{
 			core::Color color

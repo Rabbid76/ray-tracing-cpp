@@ -15,7 +15,13 @@ namespace ray_tracing_core
             if (!geometry_node->hit(ray_in, distance_range, material->has_texture(), hit_record))
                 return false;
             if (material->has_mask() && !material->hit(hit_record))
-                return false;
+            {
+                auto start_from_inner = math::DistanceRange{ hit_record.hit_point.distance + 0.0001f, std::get<1>(distance_range) };
+                if (!geometry_node->hit(ray_in, start_from_inner, material->has_texture(), hit_record))
+                    return false;
+                if (!material->hit(hit_record))
+                    return false;
+            }
             hit_record.material = material;
             return true;
         }

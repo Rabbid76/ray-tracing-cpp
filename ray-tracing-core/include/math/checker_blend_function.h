@@ -25,7 +25,6 @@ namespace ray_tracing_core::math
 	math::AlphaValue CheckerBlendFunction::evaluate(
 		const core::TextureCoordinate& texture_coordinate, const math::Point3D& position) const
 	{
-		// cos(0) == 1
 		auto cosines = std::cos(scale.x * position.x) * std::cos(scale.y * position.y) * std::cos(scale.z * position.z);
 		return cosines >= 0.0 ? 0.0f : 1.0f;
 	}

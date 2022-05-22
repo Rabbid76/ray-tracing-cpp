@@ -15,6 +15,7 @@
 #include "material/lambertian_material.h"
 #include "material/metal_material.h"
 #include "math/checker_blend_function.h"
+#include "math/image_channel_blend_function.h"
 #include "math/perlin_noise_blend_function.h"
 #include "texture/blend_textures.h"
 #include "texture/constant_texture.h"
@@ -187,6 +188,7 @@ ray_tracing_core::math::BlendFunction* RapidjsonSceneDeserializer::read_blend_fu
         decoder_map =
     {
         { "CheckerBlendFunction", &RapidjsonSceneDeserializer::read_checker_blend_function },
+        { "ImageChannelBlendFunction", &RapidjsonSceneDeserializer::read_image_channel_blend_function },
         { "PerlinNoiseBlendFunction", &RapidjsonSceneDeserializer::read_perlin_noise_blend_function },
     };
 
@@ -408,6 +410,28 @@ ray_tracing_core::math::BlendFunction* RapidjsonSceneDeserializer::read_checker_
 {
     auto scale = read_vector(scene_object["scale"]);
     return new math::CheckerBlendFunction(scale);
+}
+
+ray_tracing_core::math::BlendFunction* RapidjsonSceneDeserializer::read_image_channel_blend_function(const rapidjson::Document::ConstObject& scene_object)
+{
+    static std::map<std::string, math::ImageChannelBlendFunction::Channel>
+        decoder_map =
+    {
+        { "Red", math::ImageChannelBlendFunction::Channel::Red },
+        { "Green", math::ImageChannelBlendFunction::Channel::Green },
+        { "Blue", math::ImageChannelBlendFunction::Channel::Blue },
+        { "Alpha", math::ImageChannelBlendFunction::Channel::Alpha },
+    };
+
+    math::ImageChannelBlendFunction::Channel channel = math::ImageChannelBlendFunction::Channel::Alpha;
+    if (scene_object.HasMember("channle"))
+    {
+        auto it = decoder_map.find(scene_object["channle"].GetString());
+        if (it != decoder_map.end())
+            channel = it->second;
+    }
+    texture::Texture* blend_texture = read_texture(scene_object["blend_texture"]);
+    return new math::ImageChannelBlendFunction(channel, blend_texture);
 }
 
 ray_tracing_core::math::BlendFunction* RapidjsonSceneDeserializer::read_perlin_noise_blend_function(const rapidjson::Document::ConstObject& scene_object)

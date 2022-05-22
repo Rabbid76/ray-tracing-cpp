@@ -39,7 +39,7 @@ namespace ray_tracing_core
 			return TextureCoordinate
 			{
 				.u = static_cast<math::TextureDistance>(1.0 - (phi + pi) / (2.0 * pi)),
-				.v = static_cast<math::TextureDistance>((theta + pi / 2.0) / pi)
+				.v = static_cast<math::TextureDistance>((theta + pi/2.0) / pi)
 			};
 		}
 	}
