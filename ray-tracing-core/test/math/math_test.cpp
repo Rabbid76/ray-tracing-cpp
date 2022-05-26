@@ -2,6 +2,7 @@
 #include "ray_test.h"
 #include "hit_point_test.h"
 #include "axis_aligned_bounding_box_test.h"
+#include "rectangle_test.h"
 #include "sphere_test.h"
 #include "ortho_normal_base_test.h"
 #include "random_test.h"
@@ -21,6 +22,8 @@ namespace ray_tracing_core_unit_test
             aabb_or_box_test();
             sphere_bounding_box_test();
             sphere_hit_test();
+            rectangle_bounding_box_test();
+            rectangle_hit_test();
             ortho_normal_base_form_normal_test();
             ortho_normal_base_taransform_test();
             random_size_test();

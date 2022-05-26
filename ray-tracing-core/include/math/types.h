@@ -19,6 +19,7 @@ namespace ray_tracing_core
 	{
 		using Distance = double;
 		using DistanceRange = std::tuple<Distance, Distance>;
+		using Point2D = glm::dvec2;
 		using Point3D = glm::dvec3;
 		using Vector3D = glm::dvec3;
 		using ColorRGB = glm::vec3;

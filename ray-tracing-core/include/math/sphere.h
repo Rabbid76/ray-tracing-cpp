@@ -1,10 +1,10 @@
 #ifndef __RTC__MATH__SPHERE_H__
 #define __RTC__MATH__SPHERE_H__
 
-#include "types.h"
-#include "axis_aligned_bounding_box.h"
-#include "ray.h"
-#include "hit_point.h"
+#include "math/axis_aligned_bounding_box.h"
+#include "math/hit_point.h"
+#include "math/ray.h"
+#include "math/types.h"
 #include <cmath>
 
 namespace ray_tracing_core

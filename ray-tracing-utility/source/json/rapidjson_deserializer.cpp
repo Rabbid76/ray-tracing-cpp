@@ -9,6 +9,7 @@
 #include "core/shape.h"
 #include "core/shape_list.h"
 #include "environment/sky.h"
+#include "geometry/rectangle.h"
 #include "geometry/sphere.h"
 #include "material/blend_materials.h"
 #include "material/dielectric_material.h"
