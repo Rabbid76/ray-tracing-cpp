@@ -139,12 +139,21 @@ std::tuple<core::Color, math::AlphaValue> RapidjsonSceneDeserializer::read_color
     return { color, opacity };
 }
 
-math::Vector3D RapidjsonSceneDeserializer::read_vector(const rapidjson::Value& color_value) {
+math::Vector2D RapidjsonSceneDeserializer::read_vector_2d(const rapidjson::Value& color_value) {
+    auto array_values = read_array_of_values(color_value);
+    if (array_values.size() == 1)
+        return math::Vector2D(array_values[0]);
+    if (array_values.size() != 2)
+        throw std::runtime_error(utility::formatter() << "\"" << to_string(color_value) << "\"" << " is not 2D vector");
+    return { array_values[0], array_values[1] };
+}
+
+math::Vector3D RapidjsonSceneDeserializer::read_vector_3d(const rapidjson::Value& color_value) {
     auto array_values = read_array_of_values(color_value);
     if (array_values.size() == 1)
         return math::Vector3D(array_values[0]);
     if (array_values.size() != 3)
-        throw std::runtime_error(utility::formatter() << "\"" << to_string(color_value) << "\"" << " is not vector");
+        throw std::runtime_error(utility::formatter() << "\"" << to_string(color_value) << "\"" << " is not 3D vector");
     return {array_values[0], array_values[1], array_values[2]};
 }
 
@@ -278,6 +287,7 @@ geometry::Geometry* RapidjsonSceneDeserializer::read_geometry(const rapidjson::V
     static std::map<std::string, geometry::Geometry* (RapidjsonSceneDeserializer::*)(const rapidjson::Document::ConstObject&)>
         decoder_map =
     {
+        { "Rectangle", &RapidjsonSceneDeserializer::read_rectangle },
         { "Sphere", &RapidjsonSceneDeserializer::read_sphere },
     };
 
@@ -411,7 +421,7 @@ core::Configuration* RapidjsonSceneDeserializer::read_configuration(const rapidj
 
 ray_tracing_core::math::BlendFunction* RapidjsonSceneDeserializer::read_checker_blend_function(const rapidjson::Document::ConstObject& scene_object)
 {
-    auto scale = read_vector(scene_object["scale"]);
+    auto scale = read_vector_3d(scene_object["scale"]);
     return new math::CheckerBlendFunction(scale);
 }
 
@@ -448,7 +458,7 @@ ray_tracing_core::math::BlendFunction* RapidjsonSceneDeserializer::read_perlin_n
         { "SinZ", math::PerlinNoiseBlendFunction::Type::SinZ },
     };
 
-    auto scale = read_vector(scene_object["scale"]);
+    auto scale = read_vector_3d(scene_object["scale"]);
     auto noise_type = math::PerlinNoiseBlendFunction::Type::Default;
     if (scene_object.HasMember("noise_type"))
     {
@@ -548,6 +558,35 @@ material::Material* RapidjsonSceneDeserializer::read_dielectric_material(const r
     return new material::DielectricMaterial(refraction_index, albedo);
 }
 
+geometry::Geometry* RapidjsonSceneDeserializer::read_rectangle(const rapidjson::Document::ConstObject& scene_object)
+{
+    static std::map<std::string, math::Rectangle::Orientation>
+        decoder_map =
+    {
+        { "XY", math::Rectangle::Orientation::XY },
+        { "XZ", math::Rectangle::Orientation::XZ },
+        { "YZ", math::Rectangle::Orientation::YZ },
+    };
+
+    math::Rectangle::Orientation orientation = math::Rectangle::Orientation::XY;
+    if (scene_object.HasMember("orientation"))
+    {
+        auto it = decoder_map.find(scene_object["orientation"].GetString());
+        if (it != decoder_map.end())
+            orientation = it->second;
+    }
+    auto k = scene_object.HasMember("k")
+        ? scene_object["k"].GetDouble()
+        : 0;
+    auto minimum = scene_object.HasMember("minimum")
+        ? read_vector_2d(scene_object["minimum"])
+        : math::Vector2D(-1, -1);
+    auto maximum = scene_object.HasMember("maximum")
+        ? read_vector_2d(scene_object["maximum"])
+        : math::Vector2D(1, 1);
+    return new geometry::Rectangle(orientation, k, minimum, maximum);
+}
+
 geometry::Geometry* RapidjsonSceneDeserializer::read_sphere(const rapidjson::Document::ConstObject& scene_object)
 {
     auto center = read_point(scene_object["center"]);
@@ -594,7 +633,7 @@ core::Camera* RapidjsonSceneDeserializer::read_camera_look_at(const rapidjson::D
 
     math::Point3D look_from = read_point(scene_object["look_from"]);
     const math::Point3D look_at = read_point(scene_object["look_at"]);
-    const math::Vector3D up_vector = read_vector(scene_object["up"]);
+    const math::Vector3D up_vector = read_vector_3d(scene_object["up"]);
     double field_of_view_y = scene_object["fov"].GetDouble();
     return new core::Camera(
         core::Camera::new_camera_from_look_at(

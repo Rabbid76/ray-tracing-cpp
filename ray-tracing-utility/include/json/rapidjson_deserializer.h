@@ -64,7 +64,8 @@ namespace ray_tracing_utility::json
         ray_tracing_core::core::Color read_color(const rapidjson::Value& color_value);
         std::tuple<ray_tracing_core::core::Color, ray_tracing_core::math::AlphaValue> read_color_and_opacity(
             const rapidjson::Document::ConstObject& object, const std::string& color_key, const std::string& opacity_key);
-        ray_tracing_core::math::Vector3D read_vector(const rapidjson::Value& color_value);
+        ray_tracing_core::math::Vector2D read_vector_2d(const rapidjson::Value& color_value);
+        ray_tracing_core::math::Vector3D read_vector_3d(const rapidjson::Value& color_value);
         ray_tracing_core::math::Point3D read_point(const rapidjson::Value& color_value);
         void read_scene_objects_array(const rapidjson::Value& scene_objects);
         void read_scene_object(const rapidjson::Value& scene_object);
@@ -88,6 +89,7 @@ namespace ray_tracing_utility::json
         ray_tracing_core::material::Material* read_metal_material(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::material::Material* read_dielectric_material(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::geometry::Geometry* read_sphere(const rapidjson::Document::ConstObject& scene_object);
+        ray_tracing_core::geometry::Geometry* read_rectangle(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::core::ShapeNode* read_shape(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::core::ShapeNode* read_collection(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::core::ShapeNode* read_collection(const rapidjson::Document::ConstArray &aray_object);
