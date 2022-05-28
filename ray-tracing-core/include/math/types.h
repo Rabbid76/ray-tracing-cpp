@@ -28,6 +28,7 @@ namespace ray_tracing_core
 		using Time = double;
 		using TimeRange = std::tuple<Time, Time>;
 		using TextureDistance = float;
+		using TransformationMatrix = glm::dmat4;
 		using NormalMatrix = glm::dmat3;
 
 		template<typename T> T minimum(T first_term, T second_term)
@@ -58,6 +59,16 @@ namespace ray_tracing_core
 		template<typename T> T cross(const T &first_vector, const T &second_vector)
 		{
 			return glm::cross(first_vector, second_vector);
+		}
+
+		inline Point3D transform(const Point3D& p, const TransformationMatrix& transformation)
+		{
+			return Point3D(transformation * glm::dvec4(p, 1.0));
+		}
+
+		inline Vector3D transform(const Vector3D& v, const NormalMatrix& transformation)
+		{
+			return transformation * v;
 		}
 	}
 }

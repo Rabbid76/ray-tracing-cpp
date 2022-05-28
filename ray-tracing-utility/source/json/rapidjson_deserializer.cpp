@@ -11,6 +11,7 @@
 #include "environment/sky.h"
 #include "geometry/rectangle.h"
 #include "geometry/sphere.h"
+#include "geometry/transform.h"
 #include "material/blend_materials.h"
 #include "material/dielectric_material.h"
 #include "material/lambertian_material.h"
@@ -289,6 +290,7 @@ geometry::Geometry* RapidjsonSceneDeserializer::read_geometry(const rapidjson::V
     {
         { "Rectangle", &RapidjsonSceneDeserializer::read_rectangle },
         { "Sphere", &RapidjsonSceneDeserializer::read_sphere },
+        { "Transform", &RapidjsonSceneDeserializer::read_transform },
     };
 
     if (!object_value.IsObject())
@@ -585,6 +587,24 @@ geometry::Geometry* RapidjsonSceneDeserializer::read_rectangle(const rapidjson::
         ? read_vector_2d(scene_object["maximum"])
         : math::Vector2D(1, 1);
     return new geometry::Rectangle(orientation, k, minimum, maximum);
+}
+
+geometry::Geometry* RapidjsonSceneDeserializer::read_transform(const rapidjson::Document::ConstObject& scene_object)
+{
+    auto geometry = read_geometry(scene_object["geometry"]);
+    auto translate = scene_object.HasMember("translate")
+        ? read_vector_3d(scene_object["translate"])
+        : math::Vector3D(0);
+    auto angle = scene_object.HasMember("angle")
+        ? scene_object["angle"].GetDouble()
+        : 0;
+    auto axis = scene_object.HasMember("axis")
+        ? read_vector_3d(scene_object["axis"])
+        : math::Vector3D(1, 0, 0);
+    auto scale = scene_object.HasMember("scale")
+        ? read_vector_3d(scene_object["scale"])
+        : math::Vector3D(1);
+    return new geometry::Transform(geometry, translate, angle, axis, scale);
 }
 
 geometry::Geometry* RapidjsonSceneDeserializer::read_sphere(const rapidjson::Document::ConstObject& scene_object)

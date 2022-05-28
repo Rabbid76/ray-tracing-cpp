@@ -15,7 +15,11 @@
         {
             "type": "Shape",
             "id": "s1",
-            "geometry": { "type": "Sphere", "center": [-0.6, 0, 0], "radius": 0.5 },
+            "geometry": {
+                "type": "Transform", 
+                "geometry": { "type": "Sphere", "center": [0], "radius": 0.5 },
+                "translate": [-0.6, 0, 0]
+            },
             "material": {
                 "type": "LambertianMaterial",
                 "albedo": { "type": "ConstantTexture", "color": [ 0.5, 0.1, 0.1 ], "opacity": 1 }
@@ -24,9 +28,15 @@
         {
             "type": "Shape",
             "id": "s1",
-            "geometry": { "type": "Rectangle", "orientation": "XY", "k": -0.5, "minimum": [0.1, -0.5],  "maximum": [1.1, 0.5] },
+            "geometry": {
+                "type": "Transform", 
+                "geometry":  { "type": "Rectangle", "orientation": "XY", "k": 0, "minimum": [-0.5, -0.5],  "maximum": [0.5, 0.5] },
+                "translate": [0.6, 0, -0.5],
+                "angle": -30,
+                "axis": [0, 1, 0]
+            },
             "material": {
-                "type": "LambertianMaterial",
+                "type": "MetalMaterial", "fuzz": 0.25,
                 "albedo": { "type": "ConstantTexture", "color": [ 0.1, 0.5, 0.1 ], "opacity": 1 }
             }
         }

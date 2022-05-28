@@ -15,8 +15,11 @@ namespace ray_tracing_core::geometry
 		return sphere_geometry.bounding_box();
 	}
 
-	bool Sphere::hit(const math::Ray &ray, const math::DistanceRange &distance_range, bool set_texture_coordinatne,
-			core::HitRecord &hit_record) const
+	bool Sphere::hit(
+		const math::Ray &ray, 
+		const math::DistanceRange &distance_range, 
+		bool set_texture_coordinatne,
+		core::HitRecord &hit_record) const
 	{
 		if (!sphere_geometry.hit(ray, distance_range, hit_record.hit_point))
 			return false;

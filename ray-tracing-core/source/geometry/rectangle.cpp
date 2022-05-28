@@ -13,7 +13,10 @@ namespace ray_tracing_core::geometry
 		return rectangle_geometry.bounding_box();
 	}
 
-	bool Rectangle::hit(const math::Ray& ray, const math::DistanceRange& distance_range, bool set_texture_coordinatne,
+	bool Rectangle::hit(
+		const math::Ray& ray, 
+		const math::DistanceRange& distance_range, 
+		bool set_texture_coordinatne,
 		core::HitRecord& hit_record) const
 	{
 		if (!rectangle_geometry.hit(ray, distance_range, hit_record.hit_point))
