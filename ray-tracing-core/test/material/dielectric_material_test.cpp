@@ -83,7 +83,7 @@ namespace ray_tracing_core_unit_test::material
     {
         auto albedo = texture::ConstantTexture(core::Color(0), 0.0f);
         auto actual_emit = DielectricMaterial({1.0f, 1.0f}, &albedo)
-                .emitt(
+                .emit(
                         math::Ray::new_ray(math::Point3D(0), math::Vector3D(0)),
                         core::HitRecord::empty());
         assert_equal_color(core::Color(0), actual_emit, false);

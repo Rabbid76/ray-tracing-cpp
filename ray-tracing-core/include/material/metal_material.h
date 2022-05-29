@@ -26,7 +26,7 @@ namespace ray_tracing_core::material
         inline bool hit(const core::HitRecord &hit_record) const override;
         inline bool scatter(const math::Ray &ray, core::HitRecord &hit_record, core::ScatterRecord &scatter_record) const override;
         inline math::Distance scattering_pdf(const math::Ray &ray_in, const core::HitRecord &hit_recocrd, const math::Ray &scattered) const override;
-        inline core::Color emitt(const math::Ray &ray_in, const core::HitRecord &hit_record) const override;
+        inline core::Color emit(const math::Ray &ray_in, const core::HitRecord &hit_record) const override;
         inline bool has_texture() const override;
         inline bool has_mask() const override;
     };
@@ -70,7 +70,7 @@ namespace ray_tracing_core::material
         return 1.0;
     }
 
-    core::Color MetalMaterial::emitt(const math::Ray &ray_in, const core::HitRecord &hit_record) const
+    core::Color MetalMaterial::emit(const math::Ray &ray_in, const core::HitRecord &hit_record) const
     {
         return core::Color(0);
     }

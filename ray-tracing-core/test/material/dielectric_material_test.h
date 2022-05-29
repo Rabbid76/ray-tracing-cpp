@@ -1,5 +1,5 @@
-#ifndef __RTC_UT__DIELECTRIC__METAL_MATERIAL_TEST_H__
-#define __RTC_UT__DIELECTRIC__METAL_MATERIAL_TEST_H__
+#ifndef __RTC_UT__MATERIAL__DIELECTRIC_MATERIAL_TEST_H__
+#define __RTC_UT__MATERIAL__DIELECTRIC_MATERIAL_TEST_H__
 
 namespace ray_tracing_core_unit_test::material
 {

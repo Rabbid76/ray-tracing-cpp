@@ -1,5 +1,5 @@
 #ifndef __RTC__MATH__CHECKER_BLEND_FUNCTION_H__
-#define __RTC__MATH__CHECKER_BLENF_FUNCITON_H__
+#define __RTC__MATH__CHECKER_BLEND_FUNCTION_H__
 
 #include "blend_function.h"
 

@@ -16,7 +16,7 @@ namespace ray_tracing_core
             virtual inline bool hit(const core::HitRecord& hit_record) const override;
             virtual inline bool scatter(const math::Ray& ray, core::HitRecord& hit_record, core::ScatterRecord& scatter_record) const override;
             virtual inline math::Distance scattering_pdf(const math::Ray& ray_in, const core::HitRecord& hit_recocrd, const math::Ray& scattered) const override;
-            virtual inline core::Color emitt(const math::Ray& ray_in, const core::HitRecord& hit_record) const override;
+            virtual inline core::Color emit(const math::Ray& ray_in, const core::HitRecord& hit_record) const override;
             virtual inline bool has_texture(void) const override;
             virtual inline bool has_mask(void) const override;
         };
@@ -36,7 +36,7 @@ namespace ray_tracing_core
             return 1.0;
         }
 
-        core::Color NoMaterial::emitt(const math::Ray& ray_in, const core::HitRecord& hit_record) const
+        core::Color NoMaterial::emit(const math::Ray& ray_in, const core::HitRecord& hit_record) const
         {
             return core::Color(0);
         }

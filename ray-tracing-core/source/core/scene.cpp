@@ -23,7 +23,7 @@ namespace ray_tracing_core
                 HitRecord hit_record;
                 if (world->hit(ray, { 0.001, std::numeric_limits<math::Distance>::max() }, hit_record))
                 {
-                    auto emitted = hit_record.material->emitt(ray, hit_record);
+                    auto emitted = hit_record.material->emit(ray, hit_record);
                     color += attenuation * emitted;
                     ScatterRecord scatter_record;
                     if (hit_record.material->scatter(ray, hit_record, scatter_record))

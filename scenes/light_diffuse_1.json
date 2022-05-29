@@ -1,0 +1,59 @@
+{
+  "configuration_id": { "type": "Configuration", "maximum_depth": 50 },
+  "camera_id": { "type": "CameraLookAt", "look_from": [25, 4, 5], "look_at": [0, 2, 0], "up": [0, 1, 0], "fov": 20, "focus_distance": 10 },
+  "sky_id": { "type": "Sky", "nadir": 0, "zenith": 0 },
+  "root_node_ids": [
+    {
+      "type": "Shape",
+      "id": "s2",
+      "geometry": { "type": "Sphere", "center": [0, -1000, 0], "radius": 1000 },
+      "material":  {
+        "type": "LambertianMaterial",
+        "albedo": {
+          "type": "BlendTextures",
+          "blend_function": { "type": "PerlinNoiseBlendFunction", "noise_type" : "SinY", "scale": 0.25 },
+          "texture0": { "type": "ConstantTexture", "color": [1, 1, 1, 1] },
+          "texture1": { "type": "ConstantTexture", "color": [0, 0, 0, 1] }
+        }
+      }
+    },
+    {
+      "type": "Shape",
+      "id": "s1",
+      "geometry": { "type": "Sphere", "center": [0, 2, 0], "radius": 2 },
+      "material": {
+        "type": "LambertianMaterial",
+        "albedo": {
+          "type": "BlendTextures",
+          "blend_function": { "type": "PerlinNoiseBlendFunction", "noise_type" : "SinZ", "scale": 1 },
+          "texture0": { "type": "ConstantTexture", "color": [1, 1, 1, 1] },
+          "texture1": { "type": "ConstantTexture", "color": [0, 0, 0, 1] }
+        }
+      }
+    },
+    {
+      "type": "Shape",
+      "id": "s1",
+      "geometry": { "type": "Sphere", "center": [0, 7, 0], "radius": 2 },
+      "material": {
+        "type": "DiffuseLight",
+        "emit": { "type": "ConstantTexture", "color": 4, "opacity": 1 }
+      }
+    },
+    {
+      "type": "Shape",
+      "id": "s1",
+      "geometry": {
+        "type": "Transform",
+        "geometry":  { "type": "Rectangle", "orientation": "XY", "k": 0, "minimum": [-1, -1],  "maximum": [1, 1] },
+        "translate": [4, 2, -2],
+        "angle": 180,
+        "axis": [0, 1, 0]
+      },
+      "material": {
+        "type": "DiffuseLight",
+        "emit": { "type": "ConstantTexture", "color": 4, "opacity": 1 }
+      }
+    }
+  ]
+}

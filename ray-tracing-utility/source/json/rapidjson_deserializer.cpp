@@ -14,6 +14,7 @@
 #include "geometry/transform.h"
 #include "material/blend_materials.h"
 #include "material/dielectric_material.h"
+#include "material/diffuse_light.h"
 #include "material/lambertian_material.h"
 #include "material/metal_material.h"
 #include "math/checker_blend_function.h"
@@ -262,6 +263,7 @@ material::Material* RapidjsonSceneDeserializer::read_material(const rapidjson::V
         { "LambertianMaterial", &RapidjsonSceneDeserializer::read_lambertian_material },
         { "MetalMaterial", &RapidjsonSceneDeserializer::read_metal_material },
         { "DielectricMaterial", &RapidjsonSceneDeserializer::read_dielectric_material },
+        { "DiffuseLight", &RapidjsonSceneDeserializer::read_diffuse_light },
     };
 
     if (!object_value.IsObject())
@@ -560,6 +562,12 @@ material::Material* RapidjsonSceneDeserializer::read_dielectric_material(const r
     return new material::DielectricMaterial(refraction_index, albedo);
 }
 
+material::Material* RapidjsonSceneDeserializer::read_diffuse_light(const rapidjson::Document::ConstObject& scene_object)
+{
+    auto emit = read_texture(scene_object["emit"]);
+    return new material::DiffuseLight(emit);
+}
+
 geometry::Geometry* RapidjsonSceneDeserializer::read_rectangle(const rapidjson::Document::ConstObject& scene_object)
 {
     static std::map<std::string, math::Rectangle::Orientation>
@@ -647,14 +655,18 @@ environment::Sky* RapidjsonSceneDeserializer::read_sky(const rapidjson::Document
 
 core::Camera* RapidjsonSceneDeserializer::read_camera_look_at(const rapidjson::Document::ConstObject& scene_object)
 {
-    double adepture = 0;
-    math::Distance focus_distance = 1;
     math::TimeRange time_range = math::TimeRange{ 0, 0 };
 
     math::Point3D look_from = read_point(scene_object["look_from"]);
     const math::Point3D look_at = read_point(scene_object["look_at"]);
     const math::Vector3D up_vector = read_vector_3d(scene_object["up"]);
     double field_of_view_y = scene_object["fov"].GetDouble();
+    math::Distance focus_distance = 1;
+    if (scene_object.HasMember("focus_distance"))
+        focus_distance = scene_object["focus_distance"].GetDouble();
+    double adepture = 0;
+    if (scene_object.HasMember("adepture"))
+        adepture = scene_object["adepture"].GetDouble();
     return new core::Camera(
         core::Camera::new_camera_from_look_at(
             look_from, look_at, up_vector, field_of_view_y, aspect, adepture, focus_distance, time_range));

@@ -1,5 +1,6 @@
 #include "no_material_test.h"
 #include "dielectric_material_test.h"
+#include "diffuse_light_test.h"
 #include "lambertian_material_test.h"
 #include "metal_material_test.h"
 
@@ -26,5 +27,11 @@ namespace ray_tracing_core_unit_test::material
         dielectric_material_emit_test();
         dielectric_material_has_texture_test();
         dielectric_material_has_mask_test();
+        diffuse_light_hit_test();
+        diffuse_light_scatter_test();
+        diffuse_light_scattering_pfd_test();
+        diffuse_light_emit_test();
+        diffuse_light_has_texture_test();
+        diffuse_light_has_mask_test();
     }
 }

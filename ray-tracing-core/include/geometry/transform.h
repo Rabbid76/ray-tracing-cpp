@@ -1,5 +1,5 @@
 #ifndef __RTC__GEOMETRY__TRANSFORM_H__
-#define __RTC__GEOMETRY__TARNAFORM_H__
+#define __RTC__GEOMETRY__TRANSFORM_H__
 
 #include "geometry/geometry.h"
 #include "math/sphere.h"

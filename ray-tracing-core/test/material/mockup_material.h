@@ -18,7 +18,7 @@ namespace ray_tracing_core_unit_test
             bool hit_result = false;
             bool scatter_result = false;
             math::Distance scattering_pdf_result = 0;
-            ray_tracing_core::core::Color emitt_result = ray_tracing_core::core::Color(0);
+            ray_tracing_core::core::Color emit_result = ray_tracing_core::core::Color(0);
             bool has_texture_result = false;
             bool has_mask_result = false;
 
@@ -39,9 +39,9 @@ namespace ray_tracing_core_unit_test
                 return scattering_pdf_result;
             }
 
-            virtual ray_tracing_core::core::Color emitt(const math::Ray& ray_in, const ray_tracing_core::core::HitRecord& hit_record) const override
+            virtual ray_tracing_core::core::Color emit(const math::Ray& ray_in, const ray_tracing_core::core::HitRecord& hit_record) const override
             {
-                return emitt_result;
+                return emit_result;
             }
 
             virtual bool has_texture(void) const override
