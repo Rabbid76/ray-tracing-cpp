@@ -2,5 +2,5 @@
   "width": 800,
   "height": 400,
   "samples": 1000,
-  "threads": 8
+  "threads": 1
 }

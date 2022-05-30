@@ -48,16 +48,13 @@ namespace ray_tracing_core::geometry
 
     math::Distance Transform::probability_density_function_value(const math::Point3D& origin, const math::Vector3D& direction) const
     {
-        //return geometry->probability_density_function_value(
-        //        math::transform(origin, inverse_model_matrix),
-        //        math::transform(direction, inverse_normal_matrix));
         return geometry->probability_density_function_value(
                 math::transform(origin, inverse_model_matrix),
-                direction);
+                math::transform(direction, inverse_normal_matrix));
     }
 
     math::Vector3D Transform::random(const math::Point3D& origin) const
     {
-        return geometry->random(math::transform(origin, inverse_model_matrix));
+        return math::transform(geometry->random(math::transform(origin, inverse_model_matrix)), normal_matrix);
     }
 }
