@@ -62,6 +62,11 @@ core::Scene* RapidjsonSceneDeserializer::read_scene_from_json(const std::string 
         ? read_collection(root_ids_value.GetArray())
         : shape_map.get(read_id(root_ids_value));
     auto *scene = new core::Scene(configuration, *camera, *sky, *world);
+    if (json_document.HasMember("lights"))
+    {
+        auto &lights_value = json_document["lights"];
+        scene->set_lights(read_geometries(lights_value));
+    }
     return scene;
 }
 
@@ -622,6 +627,24 @@ geometry::Geometry* RapidjsonSceneDeserializer::read_sphere(const rapidjson::Doc
     return new geometry::Sphere(center, radius);
 }
 
+std::vector<const geometry::Geometry*> RapidjsonSceneDeserializer::read_geometries(const rapidjson::Value& object_value)
+{
+    std::vector<const geometry::Geometry*> geometries;
+    if (object_value.IsArray())
+    {
+        const auto &array_object = object_value.GetArray();
+        std::transform(array_object.begin(), array_object.end(), std::back_inserter(geometries),
+                       [&](const rapidjson::Value &array_value) -> geometry::Geometry * {
+                           return read_geometry(array_value);
+                       });
+    }
+    else
+    {
+        geometries.push_back(read_geometry(object_value));
+    }
+    return geometries;
+}
+
 core::ShapeNode* RapidjsonSceneDeserializer::read_shape(const rapidjson::Document::ConstObject& scene_object)
 {
     auto geometry = read_geometry(scene_object["geometry"]);
@@ -635,10 +658,10 @@ core::ShapeNode* RapidjsonSceneDeserializer::read_collection(const rapidjson::Do
     return read_collection(array_of_shapes_ids);
 }
 
-core::ShapeNode* RapidjsonSceneDeserializer::read_collection(const rapidjson::Document::ConstArray& aray_object)
+core::ShapeNode* RapidjsonSceneDeserializer::read_collection(const rapidjson::Document::ConstArray& array_object)
 {
     std::vector<const core::ShapeNode*> shapes;
-    std::transform(aray_object.begin(), aray_object.end(), std::back_inserter(shapes),
+    std::transform(array_object.begin(), array_object.end(), std::back_inserter(shapes),
         [&](const rapidjson::Value& array_value) -> const core::ShapeNode*
         {
             return read_node(array_value);

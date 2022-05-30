@@ -1,13 +1,12 @@
 #include "probability_density_function_test.h"
 #include "cosine_pdf_test.h"
+#include "geometry_pdf_test.h"
 
-namespace ray_tracing_core_unit_test
+namespace ray_tracing_core_unit_test::pdf
 {
-    namespace pdf
+    void probability_density_function_unit_test(void)
     {
-        void probability_density_function_unit_test(void)
-        {
-            cosine_pdf_test();
-        }
+        cosine_pdf_test();
+        geometry_pdf_test();
     }
 }

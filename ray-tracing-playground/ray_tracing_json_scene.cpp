@@ -27,7 +27,7 @@ int main(int argc, char *argv[])
     std::string scene_filepath = "scenes/test_scene.json";
     if (argc > 1)
         scene_filepath = argv[1];
-    auto dot_pos = scene_filepath.find_last_of(".");
+    auto dot_pos = scene_filepath.find_last_of('.');
     auto slash_pos = scene_filepath.find_last_of("/\\");
     std::string scene_name = scene_filepath.substr(slash_pos+1, dot_pos-slash_pos-1);
     auto [cx, cy, samples, threads] = get_configuration(argc > 2 ? argv[2] : "");
@@ -62,12 +62,12 @@ int main(int argc, char *argv[])
                     return;
                 std::cout << "duration: " << duration_measurement.storeTimePoint().getTotalDuration() << " s" << std::endl;
                 std::string filename = "rendering/" + scene_name + ".png";
-                auto [cx, cy] = renderer.get_buffer_size();
+                auto [ix, iy] = renderer.get_buffer_size();
                 auto rgba8 = renderer.get_rgba8();
                 stbi_write_png(
                     filename.c_str(),
-                    static_cast<int>(cx), static_cast<int>(cy), 4,
-                    rgba8.data(), static_cast<int>(cx) * 4);
+                    static_cast<int>(ix), static_cast<int>(iy), 4,
+                    rgba8.data(), static_cast<int>(ix) * 4);
             })
         .preview(renderer);
 

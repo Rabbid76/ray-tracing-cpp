@@ -1,5 +1,7 @@
-#include <core/scene.h>
-#include <material/material.h>
+#include "core/scene.h"
+#include "material/material.h"
+#include "math/random.h"
+#include "pdf/geometry_pdf.h"
 #include <limits>
 
 namespace ray_tracing_core
@@ -18,6 +20,10 @@ namespace ray_tracing_core
             Color color(0);
             auto ray = camera->ray_to(u, v);
             Color attenuation(1.0f);
+            pdf::GeometryPDF geometry_pdf;
+            if (lights.size() == 1)
+                geometry_pdf.set_geometry(lights[0]);
+            math::RandomGenerator generator;
             for (uint32_t i = 0; i < configuration.maximum_depth; ++i)
             {
                 HitRecord hit_record;
@@ -36,22 +42,16 @@ namespace ray_tracing_core
                         else 
                         {
                             auto pdf = scatter_record.probability_density_function.get();
-                        /*
-                        let pdf: Option<Arc<dyn ProbabilityDensityFunction>> =
-                            match scatter_record.pdf {
-                                Some(pdf) => match light_shape {
-                                    Some(ref light_shape) => Some(Arc::new(MixturePdf::new(
-                                        pdf.clone(),
-                                        Arc::new(HitAblePdf::new(
-                                            &hit_record.position,
-                                            light_shape.clone(),
-                                        )),
-                                    ))),
-                                    None => Some(pdf.clone()),
-                                },
-                                None => None,
-                            };
-                            */
+                            if (!lights.empty() && generator.random_size() > 0.5)
+                            {
+                                if (lights.size() > 1)
+                                {
+                                    std::uniform_int_distribution<uint32_t> light_distribution(0, lights.size()-1);
+                                    geometry_pdf.set_geometry(lights[light_distribution(generator.get_generator())]);
+                                }
+                                geometry_pdf.set_origin(hit_record.hit_point.position);
+                                pdf = &geometry_pdf;
+                            }
                             math::Distance scattering_pdf;
                             if (pdf)
                             {

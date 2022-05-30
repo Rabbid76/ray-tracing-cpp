@@ -12,7 +12,7 @@ std::vector<uint8_t> Renderer::get_rgba8() const
     for (uint32_t i = 0; i < cx * cy; ++i)
     {
         auto fragment_color = render_buffer[i].first / static_cast<float>(render_buffer[i].second);
-        fragment_color = glm::clamp(fragment_color, 0.0f, 1.0f);
+        //fragment_color = glm::clamp(fragment_color, 0.0f, 1.0f);
         pixel_data[i * 4] = static_cast<uint8_t>(std::lround(std::sqrt(fragment_color[0]) * 255.0));
         pixel_data[i * 4 + 1] = static_cast<uint8_t>(std::lround(std::sqrt(fragment_color[1]) * 255.0));
         pixel_data[i * 4 + 2] = static_cast<uint8_t>(std::lround(std::sqrt(fragment_color[2]) * 255.0));

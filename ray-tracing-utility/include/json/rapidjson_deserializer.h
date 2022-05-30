@@ -92,9 +92,10 @@ namespace ray_tracing_utility::json
         ray_tracing_core::geometry::Geometry* read_sphere(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::geometry::Geometry* read_rectangle(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::geometry::Geometry* read_transform(const rapidjson::Document::ConstObject& scene_object);
+        std::vector<const ray_tracing_core::geometry::Geometry*> read_geometries(const rapidjson::Value& object_value);
         ray_tracing_core::core::ShapeNode* read_shape(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::core::ShapeNode* read_collection(const rapidjson::Document::ConstObject& scene_object);
-        ray_tracing_core::core::ShapeNode* read_collection(const rapidjson::Document::ConstArray &aray_object);
+        ray_tracing_core::core::ShapeNode* read_collection(const rapidjson::Document::ConstArray &array_object);
         ray_tracing_core::environment::Sky* read_sky(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::core::Camera* read_camera_look_at(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::core::Configuration* read_configuration(const rapidjson::Document::ConstObject& scene_object);

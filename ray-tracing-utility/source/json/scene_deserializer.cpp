@@ -29,6 +29,7 @@ namespace
             camera = scene->get_camera();
             sky = scene->get_sky();
             world = scene->get_world();
+            lights = scene->get_lights();
         }
     };
 }

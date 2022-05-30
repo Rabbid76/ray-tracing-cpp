@@ -5,6 +5,7 @@
 #include "camera.h"
 #include "environment/sky.h"
 #include "shape_node.h"
+#include "geometry/geometry.h"
 
 namespace ray_tracing_core
 {
@@ -17,6 +18,7 @@ namespace ray_tracing_core
             const Camera* camera = nullptr;
             const environment::Sky* sky = nullptr;
             const ShapeNode* world = nullptr;
+            std::vector<const geometry::Geometry*> lights;
 
         public:
             Scene() = default;
@@ -28,10 +30,12 @@ namespace ray_tracing_core
             void set_camera(const Camera* new_camera) { camera = new_camera; }
             void set_sky(const environment::Sky* new_sky) { sky = new_sky; }
             void set_world(const ShapeNode* new_world) { world = new_world; }
+            void set_lights(const std::vector<const geometry::Geometry*> &new_lights) { lights = new_lights; }
             const Configuration& get_configuration() const { return configuration; }
             const Camera* get_camera() const { return camera; }
             const environment::Sky* get_sky() const { return sky; }
             const ShapeNode* get_world() const { return world; }
+            const std::vector<const geometry::Geometry*> get_lights() { return lights; }
         };
     }
 }
