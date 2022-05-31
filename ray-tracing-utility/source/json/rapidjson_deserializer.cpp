@@ -12,6 +12,7 @@
 #include "geometry/rectangle.h"
 #include "geometry/sphere.h"
 #include "geometry/transform.h"
+#include "geometry/constant_medium.h"
 #include "material/blend_materials.h"
 #include "material/dielectric_material.h"
 #include "material/diffuse_light.h"
@@ -270,6 +271,7 @@ material::Material* RapidjsonSceneDeserializer::read_material(const rapidjson::V
         { "MetalMaterial", &RapidjsonSceneDeserializer::read_metal_material },
         { "DielectricMaterial", &RapidjsonSceneDeserializer::read_dielectric_material },
         { "DiffuseLight", &RapidjsonSceneDeserializer::read_diffuse_light },
+        { "IsotropicMaterial", &RapidjsonSceneDeserializer::read_isotropic_material },
     };
 
     if (!object_value.IsObject())
@@ -299,6 +301,7 @@ geometry::Geometry* RapidjsonSceneDeserializer::read_geometry(const rapidjson::V
         { "Rectangle", &RapidjsonSceneDeserializer::read_rectangle },
         { "Sphere", &RapidjsonSceneDeserializer::read_sphere },
         { "Transform", &RapidjsonSceneDeserializer::read_transform },
+        { "ConstantMedium", &RapidjsonSceneDeserializer::read_constant_medium },
     };
 
     if (!object_value.IsObject())
@@ -580,6 +583,12 @@ material::Material* RapidjsonSceneDeserializer::read_diffuse_light(const rapidjs
     return new material::DiffuseLight(emit);
 }
 
+material::Material* RapidjsonSceneDeserializer::read_isotropic_material(const rapidjson::Document::ConstObject& scene_object)
+{
+    auto albedo = read_texture(scene_object["albedo"]);
+    return new material::IsotropicMaterial(albedo);
+}
+
 geometry::Geometry* RapidjsonSceneDeserializer::read_rectangle(const rapidjson::Document::ConstObject& scene_object)
 {
     static std::map<std::string, math::Rectangle::Orientation>
@@ -625,6 +634,15 @@ geometry::Geometry* RapidjsonSceneDeserializer::read_transform(const rapidjson::
         ? read_vector_3d(scene_object["scale"])
         : math::Vector3D(1);
     return new geometry::Transform(geometry, translate, angle, axis, scale);
+}
+
+geometry::Geometry* RapidjsonSceneDeserializer::read_constant_medium(const rapidjson::Document::ConstObject& scene_object)
+{
+    auto density = scene_object.HasMember("angle")
+        ? scene_object["angle"].GetDouble()
+        : 0;
+    auto boundary = read_geometry(scene_object["boundary"]);
+    return new geometry::ConstantMedium(density, boundary);
 }
 
 geometry::Geometry* RapidjsonSceneDeserializer::read_sphere(const rapidjson::Document::ConstObject& scene_object)

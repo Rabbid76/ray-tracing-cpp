@@ -89,9 +89,11 @@ namespace ray_tracing_utility::json
         ray_tracing_core::material::Material* read_metal_material(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::material::Material* read_dielectric_material(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::material::Material* read_diffuse_light(const rapidjson::Document::ConstObject& scene_object);
+        ray_tracing_core::material::Material* read_isotropic_material(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::geometry::Geometry* read_sphere(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::geometry::Geometry* read_rectangle(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::geometry::Geometry* read_transform(const rapidjson::Document::ConstObject& scene_object);
+        ray_tracing_core::geometry::Geometry* read_constant_medium(const rapidjson::Document::ConstObject& scene_object);
         std::vector<const ray_tracing_core::geometry::Geometry*> read_geometries(const rapidjson::Value& object_value);
         ray_tracing_core::core::ShapeNode* read_shape(const rapidjson::Document::ConstObject& scene_object);
         ray_tracing_core::core::ShapeNode* read_collection(const rapidjson::Document::ConstObject& scene_object);
