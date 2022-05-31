@@ -17,6 +17,7 @@
 #include "material/diffuse_light.h"
 #include "material/lambertian_material.h"
 #include "material/metal_material.h"
+#include "material/isotropic_material.h"
 #include "math/checker_blend_function.h"
 #include "math/image_channel_blend_function.h"
 #include "math/perlin_noise_blend_function.h"
@@ -494,7 +495,13 @@ ray_tracing_core::math::BlendFunction* RapidjsonSceneDeserializer::read_test_ble
         if (it != decoder_map.end())
             blend_type = it->second;
     }
-    return new math::TestBlendFunction(blend_type);
+    math::Distance cosine = scene_object.HasMember("cosine")
+            ? scene_object["cosine"].GetDouble()
+            : 0;
+    auto direction = scene_object.HasMember("direction")
+            ? read_vector_3d(scene_object["direction"])
+            : math::Vector3D(0);
+    return new math::TestBlendFunction(blend_type, cosine, direction);
 }
 
 texture::Texture* RapidjsonSceneDeserializer::read_blend_textures(const rapidjson::Document::ConstObject& scene_object)

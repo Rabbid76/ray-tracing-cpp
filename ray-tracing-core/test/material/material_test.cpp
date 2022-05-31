@@ -3,6 +3,7 @@
 #include "diffuse_light_test.h"
 #include "lambertian_material_test.h"
 #include "metal_material_test.h"
+#include "isotropic_material_test.h"
 
 namespace ray_tracing_core_unit_test::material
 {
@@ -33,5 +34,11 @@ namespace ray_tracing_core_unit_test::material
         diffuse_light_emit_test();
         diffuse_light_has_texture_test();
         diffuse_light_has_mask_test();
+        isotropic_material_hit_test();
+        isotropic_material_scatter_test();
+        isotropic_material_scattering_pfd_test();
+        isotropic_material_emit_test();
+        isotropic_material_has_texture_test();
+        isotropic_material_has_mask_test();
     }
 }

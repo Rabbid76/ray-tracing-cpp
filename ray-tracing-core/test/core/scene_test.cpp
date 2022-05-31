@@ -31,7 +31,7 @@ namespace ray_tracing_core_unit_test
 
             std::vector<std::tuple<Color, math::AlphaValue, double, double>> test_data
             {
-                { Color(0.7f, 0, 0), 0.25f, 0.5, 0.5 },
+                { Color(0.7f, 0, 0), 0.3f, 0.5, 0.5 },
                 { Color(0.5f, 0.7f, 1.0f), 0.2f, 0.5, 1.0 },
                 { Color(1.0f), 0.2f, 0.5, 0 },
             };

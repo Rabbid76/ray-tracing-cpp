@@ -60,7 +60,7 @@
         "fuzz": 0.3,
         "albedo": {
           "type": "BlendTextures",
-          "blend_function": { "type": "TestBlendFunction", "blend_type": "Default"},
+          "blend_function": { "type": "TestBlendFunction", "blend_type": "IcosahedronHoles", "cosine": 0.9 },
           "texture1": { "type": "ConstantTexture", "color": [0.7, 0.2, 0.9, 1] }
         }
       }
