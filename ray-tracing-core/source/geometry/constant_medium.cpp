@@ -25,17 +25,17 @@ namespace ray_tracing_core::geometry
             core::HitRecord &hit_record) const
     {
         core::HitRecord hit_record_1;
-        math::DistanceRange maximum_range = {std::numeric_limits<math::Distance>::min(), std::numeric_limits<math::Distance>::max()};
+        math::DistanceRange maximum_range = {std::numeric_limits<math::Distance>::lowest(), std::numeric_limits<math::Distance>::max()};
         if (!boundary->hit(ray, maximum_range, false, hit_record_1))
             return false;
 
-        math::DistanceRange range2 = {hit_record.hit_point.distance + 0.0001, std::numeric_limits<math::Distance>::max()};
+        math::DistanceRange range2 = { hit_record_1.hit_point.distance + 0.0001, std::numeric_limits<math::Distance>::max()};
         core::HitRecord hit_record_2;
         if (!boundary->hit(ray, range2, false, hit_record_2))
             return false;
 
         hit_record_1.hit_point.distance = std::max(hit_record_1.hit_point.distance, std::get<0>(distance_range));
-        hit_record_2.hit_point.distance = std::min(hit_record_1.hit_point.distance, std::get<1>(distance_range));
+        hit_record_2.hit_point.distance = std::min(hit_record_2.hit_point.distance, std::get<1>(distance_range));
         if (hit_record_1.hit_point.distance >= hit_record_2.hit_point.distance)
             return false;
         hit_record_1.hit_point.distance = std::max(hit_record_1.hit_point.distance, 0.0);

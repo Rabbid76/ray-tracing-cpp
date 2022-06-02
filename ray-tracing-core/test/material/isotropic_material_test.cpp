@@ -47,7 +47,7 @@ namespace ray_tracing_core_unit_test::material
 
             TEST_ASSERT_EQUAL(true, actual_scatter);
             assert_equal_point(hit_point.position, scatter_record.ray.origin, 0);
-            assert_equal_point(hit_point.normal, scatter_record.ray.direction, 1.0f);
+            assert_equal_point(hit_point.normal, scatter_record.ray.direction, 2.0f);
             TEST_ASSERT_EQUAL(ray_in.time, scatter_record.ray.time);
             assert_equal_color(color, scatter_record.attenuation, 0);
             TEST_ASSERT_EQUAL(alpha_value, scatter_record.alpha);

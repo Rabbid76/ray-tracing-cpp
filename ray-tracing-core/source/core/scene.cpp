@@ -46,7 +46,7 @@ namespace ray_tracing_core
                             {
                                 if (lights.size() > 1)
                                 {
-                                    std::uniform_int_distribution<uint32_t> light_distribution(0, lights.size()-1);
+                                    std::uniform_int_distribution<uint32_t> light_distribution(0, (uint32_t)(lights.size()-1));
                                     geometry_pdf.set_geometry(lights[light_distribution(generator.get_generator())]);
                                 }
                                 geometry_pdf.set_origin(hit_record.hit_point.position);

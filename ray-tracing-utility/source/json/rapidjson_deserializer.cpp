@@ -488,6 +488,7 @@ ray_tracing_core::math::BlendFunction* RapidjsonSceneDeserializer::read_test_ble
         decoder_map =
     {
         { "Default", math::TestBlendFunction::Type::Default },
+        { "CosineHole", math::TestBlendFunction::Type::CosineHole },
         { "IcosahedronHoles", math::TestBlendFunction::Type::IcosahedronHoles },
     };
 
@@ -638,8 +639,8 @@ geometry::Geometry* RapidjsonSceneDeserializer::read_transform(const rapidjson::
 
 geometry::Geometry* RapidjsonSceneDeserializer::read_constant_medium(const rapidjson::Document::ConstObject& scene_object)
 {
-    auto density = scene_object.HasMember("angle")
-        ? scene_object["angle"].GetDouble()
+    auto density = scene_object.HasMember("density")
+        ? scene_object["density"].GetDouble()
         : 0;
     auto boundary = read_geometry(scene_object["boundary"]);
     return new geometry::ConstantMedium(density, boundary);

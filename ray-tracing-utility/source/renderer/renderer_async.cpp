@@ -75,6 +75,7 @@ void RendererAsync::render()
             double u = (static_cast<double>(x) + randomGenerator.random_size()) / static_cast<double>(cx);
             double v = (static_cast<double>(y) + randomGenerator.random_size()) / static_cast<double>(cy);
             auto fragment_color = render_scene->ray_trace_color(u, v);
+            fragment_color = glm::clamp(fragment_color, 0.0f, 1.0f);
             uint32_t i = ((cy - y - 1) * cx) + x;
             buffer[i].first += fragment_color;
             buffer[i].second += 1;
