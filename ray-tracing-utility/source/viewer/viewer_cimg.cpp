@@ -30,19 +30,22 @@ void ViewerCImg::preview(const renderer::Renderer &renderer)
     CImg<uint8_t> image(cx, cy, 1, 3, 0);
     CImgDisplay image_display(image, "scene");
     image_display.move(100, 100);
+    size_t count = 0;
     while (!image_display.is_closed() && !renderer.is_finished())
     {
+        count++;
         transfer_image_data(renderer.get_render_buffer(), image);
         auto iamge_data = image.data();
         image_display.wait(100);
         image_display.set_title("%s", std::to_string(renderer.percentage_done()).c_str());
         image_display.display(image);
-        if (image_store_callback && (image_display.key(cimg::keyS) || image_display.key(cimg::keyF1)))
-            image_store_callback(renderer);
+        bool store = image_display.key(cimg::keyS) || image_display.key(cimg::keyF1);
+        if (image_store_callback && (store || (count % 10 == 0)))
+            image_store_callback(renderer, store);
     }
     transfer_image_data(renderer.get_render_buffer(), image);
     if (image_store_callback)
-        image_store_callback(renderer);
+        image_store_callback(renderer, true);
     image_display.set_title("%s", "finished");
     image.display(image_display, true, nullptr, false);
 }

@@ -50,9 +50,9 @@ int main()
     renderer.render(*scene, { cx, cy }, samples);
 
     viewer::ViewerCImg()
-        .set_image_store_callback([&duration_measurement](const renderer::Renderer &renderer)
+        .set_image_store_callback([&duration_measurement](const renderer::Renderer &renderer, bool store)
             {
-                if (!renderer.is_finished())
+                if (!renderer.is_finished() && !store)
                     return;  
                 std::cout << "duration: " << duration_measurement.storeTimePoint().getTotalDuration() << " s" << std::endl;
                 std::string filename = "rendering/playground.png";

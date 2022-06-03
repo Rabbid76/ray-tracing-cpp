@@ -11,7 +11,7 @@ namespace ray_tracing_utility
 		class Viewer
 		{
 		protected:
-			std::function<void(const renderer::Renderer&)> image_store_callback;
+			std::function<void(const renderer::Renderer&, bool)> image_store_callback;
 
 		public:
 			template<typename T>

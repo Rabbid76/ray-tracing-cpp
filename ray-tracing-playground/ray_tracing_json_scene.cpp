@@ -56,14 +56,21 @@ int main(int argc, char *argv[])
     renderer.render(*scene, { cx, cy }, samples);
 
     viewer::ViewerCImg()
-        .set_image_store_callback([&](const renderer::Renderer& renderer)
+        .set_image_store_callback([&](const renderer::Renderer& renderer, bool store)
             {
-                if (!renderer.is_finished())
-                    return;
-                std::cout << "duration: " << duration_measurement.storeTimePoint().getTotalDuration() << " s" << std::endl;
-                std::string filename = "rendering/" + scene_name + ".png";
                 auto [ix, iy] = renderer.get_buffer_size();
                 auto rgba8 = renderer.get_rgba8();
+                if (!renderer.is_finished() && !store)
+                {
+                    std::string temp_filename = "rendering/temp_" + scene_name + ".png";
+                    stbi_write_png(
+                        temp_filename.c_str(),
+                        static_cast<int>(ix), static_cast<int>(iy), 4,
+                        rgba8.data(), static_cast<int>(ix) * 4);
+                    return;
+                }
+                std::cout << "duration: " << duration_measurement.storeTimePoint().getTotalDuration() << " s" << std::endl;
+                std::string filename = "rendering/" + scene_name + ".png";
                 stbi_write_png(
                     filename.c_str(),
                     static_cast<int>(ix), static_cast<int>(iy), 4,
