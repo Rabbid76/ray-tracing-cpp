@@ -40,17 +40,18 @@ namespace ray_tracing_core::geometry
             return false;
         hit_record_1.hit_point.distance = std::max(hit_record_1.hit_point.distance, 0.0);
 
+        math::RandomGenerator genrator;
         auto ray_length = glm::length(ray.direction);
         auto distance_inside_boundary = (hit_record_2.hit_point.distance - hit_record_1.hit_point.distance) * ray_length;
         // Very fast approximate Logarithm (natural log) function in C++?
         // https://stackoverflow.com/questions/39821367/very-fast-approximate-logarithm-natural-log-function-in-c
-        auto hit_distance = negative_inverse_density * std::log(math::RandomGenerator().random_size());
+        auto hit_distance = negative_inverse_density * std::log(genrator.random_size());
         if (hit_distance >= distance_inside_boundary)
             return false;
 
         hit_record.hit_point.distance = hit_record_1.hit_point.distance + hit_distance / ray_length;
         hit_record.hit_point.position = ray.point_at(hit_record.hit_point.distance);
-        hit_record.hit_point.normal = math::Vector3D(1.0, 0.0, 0.0); // arbitrary
+        hit_record.hit_point.normal = math::Vector3D(0); // arbitrary genrator.random_in_unit_sphere();
         hit_record.texture_coordinate = core::TextureCoordinate{0.0f, 0.0f};
         return true;
     }

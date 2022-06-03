@@ -11,6 +11,8 @@ Ray tracing with C++
 
 ![blend materials](rendering/materials_blend_800x400_1000.png)
 
+![diffuse light and fog](rendering/light_diffuse_2_400x400_10000.png)
+
 ![diffuse light](rendering/light_diffuse_1_800x400_1000.png)
 
 ![materials](rendering/materials_800x400_1000.png)

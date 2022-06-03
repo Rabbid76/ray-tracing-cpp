@@ -16,10 +16,11 @@ namespace
         auto image_data = image.data();
         for (uint32_t i = 0; i < cx * cy; ++i)
         {
-            auto fragment_color = render_buffer[i].first / static_cast<float>(render_buffer[i].second);
-            image_data[i] = static_cast<uint8_t>(std::lround(std::sqrt(fragment_color[0]) * 255.0));
-            image_data[cx * cy + i] = static_cast<uint8_t>(std::lround(std::sqrt(fragment_color[1]) * 255.0));
-            image_data[cx * cy * 2 + i] = static_cast<uint8_t>(std::lround(std::sqrt(fragment_color[2]) * 255.0));
+            auto fragment_color = render_buffer[i].first / static_cast<double>(render_buffer[i].second);
+            auto color = glm::clamp(fragment_color, 0.0, 1.0);
+            image_data[i] = static_cast<uint8_t>(std::lround(std::sqrt(color[0]) * 255.0));
+            image_data[cx * cy + i] = static_cast<uint8_t>(std::lround(std::sqrt(color[1]) * 255.0));
+            image_data[cx * cy * 2 + i] = static_cast<uint8_t>(std::lround(std::sqrt(color[2]) * 255.0));
         }
     }
 }

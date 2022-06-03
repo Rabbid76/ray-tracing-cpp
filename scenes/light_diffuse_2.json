@@ -1,7 +1,7 @@
 {
     "configuration_id": { "type": "Configuration", "maximum_depth": 50 },
     "camera_id": { "type": "CameraLookAt", "look_from": [7.0, 6.0, -14.0], "look_at": [0.0, 4.0, 0.0], "up": [0, 1, 0], "fov": 40, "adepture": 0.0, "focus_distance": 10 },
-    "sky_id": { "type": "Sky", "nadir": [0.02, 0.04, 0.08], "zenith": 0 },
+    "sky_id": { "type": "Sky", "nadir": [0.01, 0.02, 0.04], "zenith": 0 },
     "lights": ["l1"],
     "root_node_ids": [
         {
@@ -9,7 +9,7 @@
             "geometry": { "type": "Sphere", "center": [0, -1000, 0], "radius": 1000 },
             "material":  {
                 "type": "LambertianMaterial",
-                "albedo": { "type": "ConstantTexture", "color": [0.1, 0.1, 0.1, 1] }
+                "albedo": { "type": "ConstantTexture", "color": [0.8, 0.8, 0.8, 1] }
             }
         },
         {
@@ -34,7 +34,7 @@
             "geometry": { "type": "Sphere", "id": "l1", "center": [0.0, 8.0, 0.0], "radius": 0.5 },
             "material": {
               "type": "DiffuseLight",
-              "emit": { "type": "ConstantTexture", "color": [10, 10, 10], "opacity": 1 }
+              "emit": { "type": "ConstantTexture", "color": [10, 10, 12], "opacity": 1 }
             }
         },
         {
@@ -54,7 +54,7 @@
             "type": "Shape",
             "geometry": {
                 "type": "ConstantMedium",
-                "density": 0.01,
+                "density": 0.001,
                 "boundary": { "type": "Sphere", "center": 0, "radius": 5000 }
             },
             "material": {

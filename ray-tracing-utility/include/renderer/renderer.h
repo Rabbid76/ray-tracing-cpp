@@ -13,7 +13,7 @@ namespace ray_tracing_utility::renderer
     {
     public:
         // TODO: "double" buffer
-        using BufferData = std::pair<ray_tracing_core::math::ColorRGB, uint32_t>;
+        using BufferData = std::pair<glm::dvec3, uint32_t>;
         std::tuple<uint32_t, uint32_t> buffer_size{ 0, 0 };
         using Buffer = std::vector<BufferData>;
 

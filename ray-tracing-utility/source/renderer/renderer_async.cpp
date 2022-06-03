@@ -23,7 +23,7 @@ void RendererAsync::render(core::Scene& scene, std::tuple<uint32_t, uint32_t> si
     buffer_size = size;
     render_samples = samples;
     auto [cx, cy] = size;
-    buffer = std::vector<BufferData>(cx * cy, { math::ColorRGB(0), 0 });
+    buffer = std::vector<BufferData>(cx * cy, { glm::dvec3(0), 0 });
     render_fragments = cx * cy * samples;
 	
 	for (uint32_t i = 0; i < number_of_threads; ++i)
@@ -75,9 +75,8 @@ void RendererAsync::render()
             double u = (static_cast<double>(x) + randomGenerator.random_size()) / static_cast<double>(cx);
             double v = (static_cast<double>(y) + randomGenerator.random_size()) / static_cast<double>(cy);
             auto fragment_color = render_scene->ray_trace_color(u, v);
-            fragment_color = glm::clamp(fragment_color, 0.0f, 1.0f);
             uint32_t i = ((cy - y - 1) * cx) + x;
-            buffer[i].first += fragment_color;
+            buffer[i].first += glm::dvec3(fragment_color);
             buffer[i].second += 1;
             actual_render_fragments++;
         }
