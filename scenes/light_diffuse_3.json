@@ -1,0 +1,66 @@
+{
+  "configuration_id": { "type": "Configuration", "maximum_depth": 50 },
+  "camera_id": { "type": "CameraLookAt", "look_from": [7.0, 6.0, -14.0], "look_at": [0.0, 4.0, 0.0], "up": [0, 1, 0], "fov": 40, "adepture": 0.0, "focus_distance": 10 },
+  "sky_id": { "type": "Sky", "nadir": [0.01, 0.02, 0.04], "zenith": 0 },
+  "lights": ["l1"],
+  "root_node_ids": [
+    {
+      "type": "Shape",
+      "geometry": { "type": "Sphere", "center": [0, -1000, 0], "radius": 1000 },
+      "material":  {
+        "type": "LambertianMaterial",
+        "albedo": { "type": "ConstantTexture", "color": [0.8, 0.8, 0.8, 1] }
+      }
+    },
+    {
+      "type": "Shape",
+      "geometry": { "type": "Sphere", "center": [-1.0, 4.0, -0.5], "radius": 0.8 },
+      "material": {
+        "type": "LambertianMaterial",
+        "albedo": { "type": "ConstantTexture", "color": 1, "opacity": 1 }
+      }
+    },
+    {
+      "type": "Shape",
+      "geometry": { "type": "Sphere", "center": [1.0, 4.0, 0.5], "radius": 0.8 },
+      "material": {
+        "type": "DielectricMaterial",
+        "refraction_index": 1.5,
+        "albedo": { "type": "ConstantTexture", "color": [1.0, 1.0, 0.5], "opacity": 1 }
+      }
+    },
+    {
+      "type": "Shape",
+      "geometry": { "type": "Sphere", "id": "l1", "center": [0.0, 8.0, 0.0], "radius": 0.5 },
+      "material": {
+        "type": "DiffuseLight",
+        "emit": { "type": "ConstantTexture", "color": [10, 10, 12], "opacity": 1 }
+      }
+    },
+    {
+      "type": "Shape",
+      "geometry": { "type": "Sphere", "id": "l1", "center": [0.0, 7.5, 0.0], "radius": 1.01 },
+      "material": {
+        "type": "MetalMaterial",
+        "fuzz": 0.5,
+        "albedo": {
+          "type": "BlendTextures",
+          "blend_function": { "type": "TestBlendFunction", "blend_type": "CosineHole", "direction": [0, -1, 0], "cosine": 0 },
+          "texture1": { "type": "ConstantTexture", "color": [1, 1, 1, 1] }
+        }
+      }
+    },
+    {
+      "type": "Shape",
+      "geometry": {
+        "type": "ConstantMedium",
+        "density": 0.01,
+        "boundary": { "type": "Sphere", "center": 0, "radius": 5000 }
+      },
+      "material": {
+        "type": "IsotropicMaterial",
+        "albedo": { "type": "ConstantTexture", "color": 1, "opacity": 1 }
+      }
+    }
+  ]
+}

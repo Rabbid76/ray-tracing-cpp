@@ -13,6 +13,11 @@ namespace ray_tracing_core::geometry
 		return rectangle_geometry.bounding_box();
 	}
 
+    bool Rectangle::hit_distance_range(const math::Ray &ray, math::DistanceRange &hit_range) const
+    {
+        return rectangle_geometry.hit_distance_range(ray, hit_range);
+    }
+
 	bool Rectangle::hit(
 		const math::Ray& ray, 
 		const math::DistanceRange& distance_range, 

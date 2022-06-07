@@ -13,19 +13,18 @@ namespace ray_tracing_core::geometry
 		: public Geometry
 	{
     private:
-
         math::Rectangle rectangle_geometry;
 
     public:
-
         Rectangle(math::Rectangle::Orientation orientation, math::Distance k, const math::Point2D& a, const math::Point2D& b);
-        virtual ~Rectangle() = default;
-        virtual math::AxisAlignedBoundingBox bounding_box(void) const override;
-        virtual bool hit(const math::Ray& ray, const math::DistanceRange& distance_range, bool set_texture_coordinatne,
+        ~Rectangle() override = default;
+        math::AxisAlignedBoundingBox bounding_box(void) const override;
+        bool hit_distance_range(const math::Ray &ray, math::DistanceRange &hit_range) const override;
+        bool hit(const math::Ray& ray, const math::DistanceRange& distance_range, bool set_texture_coordinate,
             core::HitRecord& hit_record) const override;
-        virtual math::Distance probability_density_function_value(
+        math::Distance probability_density_function_value(
             const math::Point3D& origin, const math::Vector3D& direction) const override;
-        virtual math::Vector3D random(const math::Point3D& origin) const override;
+        math::Vector3D random(const math::Point3D& origin) const override;
 	};
 }
 

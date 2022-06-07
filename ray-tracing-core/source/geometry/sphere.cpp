@@ -15,6 +15,11 @@ namespace ray_tracing_core::geometry
         return sphere_geometry.bounding_box();
     }
 
+    bool Sphere::hit_distance_range(const math::Ray &ray, math::DistanceRange &hit_range) const
+    {
+        return sphere_geometry.hit_distance_range(ray, hit_range);
+    }
+
     bool Sphere::hit(
             const math::Ray &ray,
             const math::DistanceRange &distance_range,

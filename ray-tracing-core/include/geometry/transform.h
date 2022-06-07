@@ -11,7 +11,6 @@ namespace ray_tracing_core::geometry
         : public Geometry
     {
     private:
-
         const Geometry *geometry;
         math::TransformationMatrix model_matrix;
         math::TransformationMatrix inverse_model_matrix;
@@ -19,15 +18,15 @@ namespace ray_tracing_core::geometry
         math::NormalMatrix inverse_normal_matrix;
 
     public:
-
         Transform(const Geometry* geometry, const math::Point3D &translate, double angle, const math::Vector3D &axis, const math::Vector3D &scale);
-        virtual ~Transform() = default;
-        virtual math::AxisAlignedBoundingBox bounding_box(void) const override;
-        virtual bool hit(const math::Ray& ray, const math::DistanceRange& distance_range, bool set_texture_coordinatne,
+        ~Transform() override = default;
+        math::AxisAlignedBoundingBox bounding_box(void) const override;
+        bool hit_distance_range(const math::Ray &ray, math::DistanceRange &hit_range) const override;
+        bool hit(const math::Ray& ray, const math::DistanceRange& distance_range, bool set_texture_coordinate,
             core::HitRecord& hit_record) const override;
-        virtual math::Distance probability_density_function_value(
+        math::Distance probability_density_function_value(
             const math::Point3D& origin, const math::Vector3D& direction) const override;
-        virtual math::Vector3D random(const math::Point3D& origin) const override;
+        math::Vector3D random(const math::Point3D& origin) const override;
     };
 }
 

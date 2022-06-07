@@ -15,6 +15,7 @@ namespace ray_tracing_core
 
             virtual ~Geometry() = default;
             virtual math::AxisAlignedBoundingBox bounding_box(void) const = 0;
+            virtual bool hit_distance_range(const math::Ray &ray, math::DistanceRange &hit_range) const = 0;
             virtual bool hit(const math::Ray& ray, const math::DistanceRange& distance_range, bool set_texture_coordinatne,
                 core::HitRecord& hit_record) const = 0;
             virtual math::Distance probability_density_function_value(const math::Point3D& origin, const math::Vector3D& direction) const = 0;

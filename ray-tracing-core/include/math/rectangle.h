@@ -28,6 +28,7 @@ namespace ray_tracing_core::math
 
         inline static Rectangle new_rectangle(Orientation orientation, Distance k, const Point2D& a, const Point2D& b);
         inline AxisAlignedBoundingBox bounding_box(void) const;
+        inline bool hit_distance_range(const Ray &ray, DistanceRange &hit_range) const;
         inline bool hit(const Ray& ray, const DistanceRange& distance_range, HitPoint& hit_point) const;
         inline Vector3D normal_vector() const;
         inline core::TextureCoordinate texture_coordinates(const Point3D & point_in_rectangle) const;
@@ -57,6 +58,23 @@ namespace ray_tracing_core::math
             case Orientation::YZ: return AxisAlignedBoundingBox::new_box(Point3D{ k - 0.0001, a0, b0 }, Point3D{ k + 0.0001, a1, b1 });
             case Orientation::XZ: return AxisAlignedBoundingBox::new_box(Point3D{ a0, k - 0.0001, b0 }, Point3D{ a1, k + 0.0001, b1 });
         }
+    }
+
+    bool Rectangle::hit_distance_range(const Ray &ray, DistanceRange &hit_range) const
+    {
+        if (ray.direction[(uint32_t)orientation] == 0)
+            return false;
+        auto t = (k - ray.origin[(uint32_t)orientation]) / ray.direction[(uint32_t)orientation];
+        auto& [a0, a1] = rangeA;
+        auto& [b0, b1] = rangeB;
+        uint32_t iA = (orientation == Orientation::YZ) ? 1 : 0;
+        uint32_t iB = (orientation == Orientation::XY) ? 1 : 2;
+        auto a = ray.origin[iA] + t * ray.direction[iA];
+        auto b = ray.origin[iB] + t * ray.direction[iB];
+        if (a < a0 || a > a1 || b < b0 || b > b1)
+            return false;
+        hit_range = { t, t};
+        return true;
     }
 
     bool Rectangle::hit(const Ray& ray, const DistanceRange& distance_range, HitPoint& hit_point) const

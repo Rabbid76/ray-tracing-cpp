@@ -27,6 +27,16 @@ namespace ray_tracing_core::geometry
         return geometry->bounding_box().transform(model_matrix);
     }
 
+    bool Transform::hit_distance_range(const math::Ray &ray, math::DistanceRange &hit_range) const
+    {
+        auto transformed_ray = ray.new_ray_with_attributes(
+                math::transform(ray.origin, inverse_model_matrix),
+                math::transform(ray.direction, inverse_normal_matrix),
+                ray);
+        return geometry->hit_distance_range(transformed_ray, hit_range);
+        // TODO $$$ scale hit_record distance?
+    }
+
     bool Transform::hit(
             const math::Ray& ray,
             const math::DistanceRange& distance_range,
@@ -44,6 +54,7 @@ namespace ray_tracing_core::geometry
                 math::transform(hit_record.hit_point.position, model_matrix),
                 math::transform(hit_record.hit_point.normal, normal_matrix));
         return true;
+        // TODO $$$ scale hit_record distance?
     }
 
     math::Distance Transform::probability_density_function_value(const math::Point3D& origin, const math::Vector3D& direction) const

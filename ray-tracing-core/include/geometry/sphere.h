@@ -11,19 +11,18 @@ namespace ray_tracing_core::geometry
         : public Geometry
     {
     private:
-
         math::Sphere sphere_geometry;
 
     public:
-
         Sphere(const math::Point3D& center_point, math::Distance sphere_radius);
-        virtual ~Sphere() = default;
-        virtual math::AxisAlignedBoundingBox bounding_box(void) const override;
-        virtual bool hit(const math::Ray& ray, const math::DistanceRange& distance_range, bool set_texture_coordinatne,
+        ~Sphere() override = default;
+        math::AxisAlignedBoundingBox bounding_box(void) const override;
+        bool hit_distance_range(const math::Ray &ray, math::DistanceRange &hit_range) const override;
+        bool hit(const math::Ray& ray, const math::DistanceRange& distance_range, bool set_texture_coordinate,
             core::HitRecord& hit_record) const override;
-        virtual math::Distance probability_density_function_value(
+        math::Distance probability_density_function_value(
             const math::Point3D& origin, const math::Vector3D& direction) const override;
-        virtual math::Vector3D random(const math::Point3D& origin) const override;
+        math::Vector3D random(const math::Point3D& origin) const override;
     };
 }
 
