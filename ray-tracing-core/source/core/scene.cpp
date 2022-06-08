@@ -1,6 +1,7 @@
 #include "core/scene.h"
 #include "material/material.h"
 #include "math/random.h"
+#include "pdf/cosine_pdf.h"
 #include "pdf/geometry_pdf.h"
 #include <limits>
 
@@ -21,6 +22,7 @@ namespace ray_tracing_core
             auto ray = camera->ray_to(u, v);
             Color attenuation(1.0f);
             pdf::GeometryPDF geometry_pdf;
+            pdf::CosinePDF cosine_pdf;
             if (lights.size() == 1)
                 geometry_pdf.set_geometry(lights[0]);
             math::RandomGenerator generator;
@@ -44,7 +46,7 @@ namespace ray_tracing_core
                         }
                         else 
                         {
-                            auto pdf = scatter_record.probability_density_function.get();
+                            pdf::ProbabilityDensityFunction *pdf = nullptr;
                             if (!lights.empty() && generator.random_size() > 0.5)
                             {
                                 if (lights.size() > 1)
@@ -54,6 +56,11 @@ namespace ray_tracing_core
                                 }
                                 geometry_pdf.set_origin(hit_record.hit_point.position);
                                 pdf = &geometry_pdf;
+                            }
+                            else if (scatter_record.probability_density_function == pdf::ProbabilityDensityFunctionType::CosinePDFFromNormal)
+                            {
+                                cosine_pdf.set_normal_vector(hit_record.hit_point.normal);
+                                pdf = &cosine_pdf;
                             }
                             math::Distance scattering_pdf;
                             if (pdf)

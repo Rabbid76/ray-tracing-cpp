@@ -48,7 +48,7 @@ namespace ray_tracing_core::material
         scatter_record.is_specular = true;
         scatter_record.attenuation = albedo_color;
         scatter_record.alpha = alpha_value;
-        scatter_record.probability_density_function = nullptr;
+        scatter_record.probability_density_function = pdf::ProbabilityDensityFunctionType::None;
         scatter_record.material = this;
         return true;
     }

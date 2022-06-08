@@ -19,7 +19,7 @@ namespace ray_tracing_core {
             bool is_specular{false};
             Color attenuation{Color(0)};
             math::AlphaValue alpha{0.0f};
-            std::unique_ptr<pdf::ProbabilityDensityFunction> probability_density_function;
+            pdf::ProbabilityDensityFunctionType probability_density_function;
             const material::Material *material = nullptr;
 
             static inline ScatterRecord empty(void);
@@ -31,7 +31,7 @@ namespace ray_tracing_core {
                             .ray = math::Ray::new_ray(math::Point3D(0), math::Vector3D(0)),
                             .is_specular = false,
                             .alpha = 0,
-                            .probability_density_function = nullptr,
+                            .probability_density_function = pdf::ProbabilityDensityFunctionType::None,
                             .material = nullptr
                     };
         }

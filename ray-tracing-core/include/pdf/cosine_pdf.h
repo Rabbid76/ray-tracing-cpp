@@ -19,8 +19,10 @@ namespace ray_tracing_core::pdf
 
         static inline CosinePDF from_normal(const math::Vector3D &normal_vector);
 
+        inline CosinePDF() = default;
         inline CosinePDF(math::OrthoNormalBase&& ortho_normal);
         ~CosinePDF() override = default;
+        inline void set_normal_vector(const math::Vector3D &normal_vector);
         inline math::Distance value(const math::Vector3D &direction) const override;
         inline math::Vector3D generate() const override;
 
@@ -34,6 +36,11 @@ namespace ray_tracing_core::pdf
     CosinePDF::CosinePDF(math::OrthoNormalBase&& ortho_normal)
         : ortho_normal_base(ortho_normal)
     {}
+
+    void CosinePDF::set_normal_vector(const math::Vector3D &normal_vector)
+    {
+        ortho_normal_base = math::OrthoNormalBase::from_normal(normal_vector);
+    }
 
     math::Distance CosinePDF::value(const math::Vector3D &direction) const
     {

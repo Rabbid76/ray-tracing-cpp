@@ -5,6 +5,12 @@
 
 namespace ray_tracing_core::pdf
 {
+    enum class ProbabilityDensityFunctionType
+    {
+        None,
+        CosinePDFFromNormal
+    };
+
     class ProbabilityDensityFunction
     {
     public:
