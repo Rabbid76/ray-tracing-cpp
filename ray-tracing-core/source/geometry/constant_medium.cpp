@@ -32,8 +32,9 @@ namespace {
 
 namespace ray_tracing_core::geometry
 {
-    ConstantMedium::ConstantMedium(math::Distance density, const Geometry *boundary)
-            : density(density)
+    ConstantMedium::ConstantMedium(Type type, math::Distance density, const Geometry *boundary)
+            : type(type)
+            , density(density)
             , negative_inverse_density(-1.0 / density)
             , boundary(boundary)
     {}
@@ -54,6 +55,8 @@ namespace ray_tracing_core::geometry
             bool set_texture_coordinate,
             core::HitRecord &hit_record) const
     {
+        if (type == Type::Environment && hit_record.in_volume)
+            return false;
         math::DistanceRange range_in_medium;
         if (!boundary->hit_distance_range(ray, range_in_medium))
             return false;

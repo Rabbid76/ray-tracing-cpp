@@ -23,12 +23,12 @@ namespace ray_tracing_core::geometry
     bool Sphere::hit(
             const math::Ray &ray,
             const math::DistanceRange &distance_range,
-            bool set_texture_coordinatne,
+            bool set_texture_coordinate,
             core::HitRecord &hit_record) const
     {
         if (!sphere_geometry.hit(ray, distance_range, hit_record.hit_point))
             return false;
-        hit_record.texture_coordinate = set_texture_coordinatne
+        hit_record.texture_coordinate = set_texture_coordinate
                                         ? core::TextureCoordinate::from_sphere(hit_record.hit_point.normal)
                                         : core::TextureCoordinate::null();
         return true;

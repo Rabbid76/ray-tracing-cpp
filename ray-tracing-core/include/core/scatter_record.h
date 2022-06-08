@@ -15,7 +15,6 @@ namespace ray_tracing_core {
     namespace core {
         class ScatterRecord {
         public:
-
             math::Ray ray;
             bool is_specular{false};
             Color attenuation{Color(0)};

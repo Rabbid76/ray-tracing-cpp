@@ -639,11 +639,27 @@ geometry::Geometry* RapidjsonSceneDeserializer::read_transform(const rapidjson::
 
 geometry::Geometry* RapidjsonSceneDeserializer::read_constant_medium(const rapidjson::Document::ConstObject& scene_object)
 {
+    static std::map<std::string, geometry::ConstantMedium::Type>
+            decoder_map =
+            {
+                    { "Environment", geometry::ConstantMedium::Type::Environment },
+                    { "Volume", geometry::ConstantMedium::Type::Volume },
+            };
+    auto medium_type = geometry::ConstantMedium::Type::Environment;
+    if (scene_object.HasMember("medium_type"))
+    {
+        auto it = decoder_map.find(scene_object["medium_type"].GetString());
+        if (it != decoder_map.end())
+            medium_type = it->second;
+    }
     auto density = scene_object.HasMember("density")
         ? scene_object["density"].GetDouble()
         : 0;
     auto boundary = read_geometry(scene_object["boundary"]);
-    return new geometry::ConstantMedium(density, boundary);
+    auto environment = scene_object.HasMember("environment")
+            ? scene_object["environment"].GetDouble()
+                   : 0;
+    return new geometry::ConstantMedium(medium_type, density, boundary);
 }
 
 geometry::Geometry* RapidjsonSceneDeserializer::read_sphere(const rapidjson::Document::ConstObject& scene_object)

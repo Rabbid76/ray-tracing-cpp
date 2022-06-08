@@ -9,13 +9,21 @@ namespace ray_tracing_core::geometry
     class ConstantMedium
         : public Geometry
     {
+    public:
+        enum class Type
+        {
+            Environment,
+            Volume
+        };
+
     private:
+        Type type;
         math::Distance density;
         math::Distance negative_inverse_density;
         const Geometry *boundary;
 
     public:
-        ConstantMedium(math::Distance density, const Geometry *boundary);
+        ConstantMedium(Type environment, math::Distance density, const Geometry *boundary);
         ~ConstantMedium() override = default;
         math::AxisAlignedBoundingBox bounding_box() const override;
         bool hit_distance_range(const math::Ray &ray, math::DistanceRange &hit_range) const override;

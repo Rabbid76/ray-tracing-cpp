@@ -23,7 +23,7 @@ namespace ray_tracing_core_unit_test::geometry
 
         for (auto [expected_coordinates, sphere, in_ray, distance_range, set_texture_coordinate] : test_data)
         {
-            geometry::ConstantMedium constant_medium(1, &sphere);
+            geometry::ConstantMedium constant_medium(geometry::ConstantMedium::Type::Environment, 1, &sphere);
             core::HitRecord hit_record;
             if (constant_medium.hit(in_ray, distance_range, set_texture_coordinate, hit_record))
                 assert_equal_texture_coordinate(expected_coordinates, hit_record.texture_coordinate, set_texture_coordinate ? 0.001f : 0);
@@ -40,7 +40,7 @@ namespace ray_tracing_core_unit_test::geometry
 
         for (auto [expected_pdf_value, sphere, origin, direction] : test_data)
         {
-            geometry::ConstantMedium constant_medium(1, &sphere);
+            geometry::ConstantMedium constant_medium(geometry::ConstantMedium::Type::Environment, 1, &sphere);
             auto actual_pdf_value = constant_medium.probability_density_function_value(origin, direction);
             TEST_ASSERT_EQUAL_DELTA(expected_pdf_value, actual_pdf_value, 0.001);
         }
@@ -59,7 +59,7 @@ namespace ray_tracing_core_unit_test::geometry
         {
             for (int iteration = 0; iteration < test_iterations; ++iteration)
             {
-                geometry::ConstantMedium constant_medium(1, &sphere);
+                geometry::ConstantMedium constant_medium(geometry::ConstantMedium::Type::Environment, 1, &sphere);
                 auto actual_vector = constant_medium.random(origin);
                 assert_equal_vector(expected_vector, actual_vector, expected_delta);
                 auto actual_length = std::sqrt(math::dot(actual_vector, actual_vector));

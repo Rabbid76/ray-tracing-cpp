@@ -80,6 +80,7 @@ namespace ray_tracing_core::material
         {
             direction = glm::reflect(ray.direction, hit_record.hit_point.normal);
         }
+        hit_record.in_volume = math::dot(direction, hit_record.hit_point.normal) < 0.0;
 
         auto [albedo_color, alpha_value] = albedo_texture->channels(hit_record.texture_coordinate, hit_record.hit_point.position);
         scatter_record.ray = math::Ray::new_ray_with_attributes(hit_record.hit_point.position, direction, ray);

@@ -24,11 +24,14 @@ namespace ray_tracing_core
             if (lights.size() == 1)
                 geometry_pdf.set_geometry(lights[0]);
             math::RandomGenerator generator;
+            bool in_volume = false;
             for (uint32_t i = 0; i < configuration.maximum_depth; ++i)
             {
                 HitRecord hit_record;
+                hit_record.in_volume = in_volume;
                 if (world->hit(ray, { 0.001, std::numeric_limits<math::Distance>::max() }, hit_record))
                 {
+                    hit_record.in_volume = false;
                     auto emitted = hit_record.material->emit(ray, hit_record);
                     color += attenuation * emitted;
                     ScatterRecord scatter_record;
@@ -67,6 +70,7 @@ namespace ray_tracing_core
                             }
                             attenuation *= scatter_record.attenuation * (math::AlphaValue)scattering_pdf;
                         }
+                        in_volume = hit_record.in_volume;
                     }
                     else
                     {

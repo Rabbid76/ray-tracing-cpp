@@ -22,6 +22,7 @@ namespace ray_tracing_core
 			core::TextureCoordinate texture_coordinate;
 			const material::Material *material;
 			bool scatter_record_is_set;
+            bool in_volume;
 
 			static inline HitRecord empty(void);
 		};
@@ -34,6 +35,7 @@ namespace ray_tracing_core
 				.texture_coordinate = core::TextureCoordinate::null(),
 				.material = nullptr,
 				.scatter_record_is_set = false,
+                .in_volume = false,
 			};
 		}
 	}
